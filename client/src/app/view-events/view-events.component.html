@@ -1,1 +1,42 @@
-//todo: complete missing code
+<div class="container">
+
+  <h2>View / Update Events</h2>
+
+  <ul>
+    <li *ngFor="let e of eventList">
+      {{ e.name }} - {{ e.description }}
+      <button (click)="edit(e)">Edit</button>
+    </li>
+  </ul>
+
+  <hr />
+
+  <h3 *ngIf="isUpdate">Update Event</h3>
+
+  <form *ngIf="isUpdate" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+    <label>Name</label>
+    <input formControlName="name" />
+    <div class="error" *ngIf="itemForm.controls['name'].touched && itemForm.controls['name'].invalid">
+      Name is required
+    </div>
+
+    <label>Description</label>
+    <input formControlName="description" />
+    <div class="error" *ngIf="itemForm.controls['description'].touched && itemForm.controls['description'].invalid">
+      Description is required
+    </div>
+
+    <label>Materials</label>
+    <input formControlName="materials" />
+    <div class="error" *ngIf="itemForm.controls['materials'].touched && itemForm.controls['materials'].invalid">
+      Materials required
+    </div>
+
+    <button type="submit">Update</button>
+  </form>
+
+  <div class="error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
+
+</div>

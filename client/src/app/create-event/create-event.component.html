@@ -1,1 +1,42 @@
-//doto:complete missing code..
+<div class="container">
+
+  <h2>Create Event</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+    <label>Event Name</label>
+    <input formControlName="name" type="text" />
+    <div class="error" *ngIf="itemForm.controls['name'].touched && itemForm.controls['name'].invalid">
+      Event name is required
+    </div>
+
+    <label>Description</label>
+    <input formControlName="description" type="text" />
+    <div class="error" *ngIf="itemForm.controls['description'].touched && itemForm.controls['description'].invalid">
+      Description is required
+    </div>
+
+    <label>Materials</label>
+    <input formControlName="materials" type="text" />
+    <div class="error" *ngIf="itemForm.controls['materials'].touched && itemForm.controls['materials'].invalid">
+      Materials are required
+    </div>
+
+    <button type="submit">Create Event</button>
+
+    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
+
+  </form>
+
+  <hr />
+
+  <h3>Events List</h3>
+
+  <ul>
+    <li *ngFor="let e of eventList">
+      {{ e.name }} - {{ e.description }}
+    </li>
+  </ul>
+
+</div>

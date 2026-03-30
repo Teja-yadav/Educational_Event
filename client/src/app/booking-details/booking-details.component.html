@@ -1,1 +1,27 @@
-//todo: complete missing code
+<div class="container">
+
+  <h2>Booking Details</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="searchEvent()">
+
+    <label>Student ID</label>
+    <input type="text" formControlName="studentId" />
+
+    <div class="error" *ngIf="itemForm.controls['studentId'].touched && itemForm.controls['studentId'].invalid">
+      Student ID is required
+    </div>
+
+    <button type="submit">Search</button>
+
+  </form>
+
+  <div class="error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
+
+  <ul>
+    <li *ngFor="let e of eventList">
+      {{ e.event?.name }} - {{ e.status }}
+    </li>
+  </ul>
+
+</div>

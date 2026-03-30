@@ -1,0 +1,38 @@
+.container {
+  width: 55%;
+  margin: auto;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-left: 15px;
+  padding: 5px 12px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+}
+
+.success {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+}

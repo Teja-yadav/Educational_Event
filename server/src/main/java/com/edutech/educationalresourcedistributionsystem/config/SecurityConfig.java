@@ -1,7 +1,6 @@
 package com.edutech.educationalresourcedistributionsystem.config;
-
+import com.edutech.educationalresourcedistributionsystem.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,31 +13,62 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+   @Autowired
+   private JwtRequestFilter jwtRequestFilter;
+   @Autowired
+   private UserDetailsService userDetailsService;
+   @Autowired
+   private PasswordEncoder passwordEncoder;
+   
+   @Override
+   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+      auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+   }
 
-import com.edutech.educationalresourcedistributionsystem.jwt.JwtRequestFilter;
+   @Override
+   protected void configure(HttpSecurity http) throws Exception {
+       http
+          .csrf().disable()
+          .cors().and()
+ 
+          .authorizeRequests()
+          .antMatchers("/api/user/register", "/api/user/login")
+          .permitAll()
+          .antMatchers(HttpMethod.POST, "/api/institution/event")
+          .hasAuthority("INSTITUTION")
+          .antMatchers(HttpMethod.GET, "/api/institution/events")
+          .hasAuthority("INSTITUTION")
+          .antMatchers(HttpMethod.POST, "/api/institution/resource")
+          .hasAuthority("INSTITUTION")
+          .antMatchers(HttpMethod.GET, "/api/institution/resources")
+          .hasAuthority("INSTITUTION")
+          .antMatchers("/api/institution/event/allocate-resources")
+          .hasAuthority("INSTITUTION")
+          .antMatchers("/api/educator/agenda")
+          .hasAuthority("EDUCATOR")
+          .antMatchers("/api/educator/update-material/**")
+          .hasAuthority("EDUCATOR")
+          .antMatchers("/api/student/register/**")
+          .hasAuthority("STUDENT")
+          .antMatchers("/api/student/registration-status/**")
+          .hasAuthority("STUDENT")
+          .anyRequest().authenticated()
+           .and()
+          .sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+      http.addFilterBefore(
+              jwtRequestFilter,
+              UsernamePasswordAuthenticationFilter.class
+       );
+   }
 
-
-public class SecurityConfig  {
-
-        // TODO: implement the security configuration
-
-        // configure CORS and CSRF
-        // configure the routes that are accessible without authentication
-        // configure the routes that are accessible with specific authority
-        // set the permission w.r.t to authorities
-        // - /api/user/register: accessible to everyone
-        // - /api/user/login: accessible to everyone
-        // - /api/institution/event: accessible to INSTITUTION authority
-        // - /api/institution/events: accessible to INSTITUTION authority
-        // - /api/institution/resource: accessible to INSTITUTION authority
-        // - /api/institution/resources: accessible to INSTITUTION authority
-        // - /api/institution/event/allocate-resources: accessible to INSTITUTION authority
-        // - /api/educator/agenda: accessible to EDUCATOR authority
-        // - /api/educator/update-material/{eventId}: accessible to EDUCATOR authority
-        // - /api/student/register/{eventId}: accessible to STUDENT authority
-        // - /api/student/registration-status/{studentId}: accessible to STUDENT authority
-        // - any other route: accessible to authenticated users
-        // configure the session management
-        // add the jwtRequestFilter before the UsernamePasswordAuthenticationFilter
-    
+   @Override
+   public AuthenticationManager authenticationManagerBean() throws Exception {
+       return super.authenticationManagerBean();
+   }
 }
+ 

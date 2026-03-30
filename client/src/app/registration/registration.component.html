@@ -1,1 +1,39 @@
-//todo: complete missing code..
+<div class="container">
+
+  <h2>User Registration</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
+
+    <label>Username</label>
+    <input formControlName="username" type="text" />
+
+    <label>Password</label>
+    <input formControlName="password" type="password" />
+
+    <label>Role</label>
+    <select formControlName="role">
+      <option value="">Select Role</option>
+      <option value="INSTITUTION">Institution</option>
+      <option value="EDUCATOR">Educator</option>
+      <option value="STUDENT">Student</option>
+    </select>
+
+    <label>Email</label>
+    <input formControlName="email" type="email" />
+
+    <button type="submit">Register</button>
+
+    <div *ngIf="showMessage" class="success">
+      {{ responseMessage }}
+    </div>
+
+    <button 
+      type="button" 
+      class="login-btn"
+      routerLink="/login">
+      Go to Login
+    </button>
+
+  </form>
+
+</div>

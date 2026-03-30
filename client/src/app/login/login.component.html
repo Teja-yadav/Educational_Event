@@ -1,1 +1,31 @@
-//todo: complete missing code..
+
+<div class="container">
+
+  <h2>Login</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="registration()">
+
+    <label>Username</label>
+    <input formControlName="username" type="text" />
+    <div class="error" *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].invalid">
+      Username is required
+    </div>
+
+    <label>Password</label>
+    <input formControlName="password" type="password" />
+    <div class="error" *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].invalid">
+      Password is required
+    </div>
+
+    <button type="submit">Login</button>
+
+    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+  </form>
+
+  <!-- ✅ Add this NEW section -->
+  <div class="register-link">
+    <p>Don't have an account?</p>
+    <button routerLink="/registration">Register Here</button>
+  </div>
+
+</div>

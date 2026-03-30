@@ -1,30 +1,35 @@
-<div class="d-flex justify-content-between mt-4">
-    <h2 class="mb-0">  Registration for event</h2>  
-  
-  </div>
-  <div class="row mt-4">
-    <div class="col-md-5">
-        <div class="mb-3">
-            <label for="content" class="form-label ">Event ID</label>
-           <!-- //create input with formModel.eventId -->
-          </div>
-    </div>
-    <div class="col-md-5">
-      <div class="mb-3">
-          <label for="content" class="form-label ">Student ID</label>
-          <!-- //create input with formModel.studentId -->
-        </div>
-  </div>
-    <div class="col-md-2">
-        <br>
-        <button (click)="Submit()" class="btn btn-primary mt-1 w-100" >Submit</button>
-    </div>
-</div>
-<div *ngIf="showMessage" class="alert alert-success mt-4" role="alert">
-  {{ responseMessage }}
-</div>
-<div *ngIf="showError" class="alert alert-danger" role="alert">
-  {{errorMessage}}
-</div>
+<div class="container">
 
+  <h2>Register For Event</h2>
 
+  <form [formGroup]="itemForm" (ngSubmit)="Submit()">
+
+    <label>Student ID</label>
+    <input type="text" formControlName="studentId" />
+    <div class="error" *ngIf="itemForm.controls['studentId'].touched && itemForm.controls['studentId'].invalid">
+      Student ID is required
+    </div>
+
+    <label>Select Event</label>
+    <select formControlName="eventId">
+      <option value="">Select Event</option>
+      <option *ngFor="let e of eventList" [value]="e.id">{{ e.name }}</option>
+    </select>
+    <div class="error" *ngIf="itemForm.controls['eventId'].touched && itemForm.controls['eventId'].invalid">
+      Event selection is required
+    </div>
+
+    <label>Status</label>
+    <input type="text" formControlName="status" />
+    <div class="error" *ngIf="itemForm.controls['status'].touched && itemForm.controls['status'].invalid">
+      Status is required
+    </div>
+
+    <button type="submit">Register</button>
+
+    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
+
+  </form>
+
+</div>

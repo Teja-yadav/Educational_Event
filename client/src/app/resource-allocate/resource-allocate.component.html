@@ -1,1 +1,33 @@
-//todo: complete missing code
+<div class="container">
+
+  <h2>Allocate Resources</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+    <label>Event</label>
+    <select formControlName="eventId">
+      <option value="">Select Event</option>
+      <option *ngFor="let e of eventList" [value]="e.id">{{ e.name }}</option>
+    </select>
+    <div class="error" *ngIf="itemForm.controls['eventId'].touched && itemForm.controls['eventId'].invalid">
+      Event is required
+    </div>
+
+    <label>Resource</label>
+    <select formControlName="resourceId">
+      <option value="">Select Resource</option>
+      <option *ngFor="let r of resourceList" [value]="r.id">
+        {{ r.resourceType }} - {{ r.description }}
+      </option>
+    </select>
+    <div class="error" *ngIf="itemForm.controls['resourceId'].touched && itemForm.controls['resourceId'].invalid">
+      Resource is required
+    </div>
+
+    <button type="submit">Allocate</button>
+
+    <div class="error" *ngIf="showError">{{ errorMessage }}</div>
+    <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
+  </form>
+
+</div>

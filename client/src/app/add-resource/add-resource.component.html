@@ -1,1 +1,42 @@
-//todo: complete missing code..
+<div class="container">
+
+  <h2>Add Resource</h2>
+
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+    <label>Resource Type</label>
+    <input formControlName="resourceType" type="text" />
+    <div class="error" *ngIf="itemForm.controls['resourceType'].touched && itemForm.controls['resourceType'].invalid">
+      Resource Type is required
+    </div>
+
+    <label>Description</label>
+    <input formControlName="description" type="text" />
+    <div class="error" *ngIf="itemForm.controls['description'].touched && itemForm.controls['description'].invalid">
+      Description is required
+    </div>
+
+    <label>Availability</label>
+    <input formControlName="availability" type="text" />
+    <div class="error" *ngIf="itemForm.controls['availability'].touched && itemForm.controls['availability'].invalid">
+      Availability is required
+    </div>
+
+    <button type="submit">Add Resource</button>
+
+    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
+
+  </form>
+
+  <hr />
+
+  <h3>All Resources</h3>
+
+  <ul>
+    <li *ngFor="let r of resourceList">
+      {{ r.resourceType }} - {{ r.description }}
+    </li>
+  </ul>
+
+</div>

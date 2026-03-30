@@ -1,0 +1,36 @@
+.container {
+  width: 50%;
+  margin: auto;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #1976d2;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+}
+
+.success {
+  color: green;
+  margin-top: 10px;
+  font-size: 14px;
+}

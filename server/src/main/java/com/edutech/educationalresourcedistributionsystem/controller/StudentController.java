@@ -1,23 +1,22 @@
 package com.edutech.educationalresourcedistributionsystem.controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
 import com.edutech.educationalresourcedistributionsystem.service.RegistrationService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-
+@RestController
+@RequestMapping("/api/student")
 public class StudentController {
-
-
-    
-        // register in an event and return the registration details with status code 201 (CREATED)
-    
-
-   
-        // return the list of events registered by the student with status code 200 (OK)
-    
+   @Autowired
+   private RegistrationService registrationService;
+   @PostMapping(value = "/register/{eventId}",consumes = "application/json",produces = "application/json")
+   public EventRegistration register(@PathVariable Long eventId,@RequestBody EventRegistration registration) {
+       return registrationService.registerStudent(eventId, registration.getStudentId());
+   }
+   @GetMapping(value = "/registration-status/{eventId}",produces = "application/json")
+   public List<EventRegistration> getRegistrationStatus(@PathVariable Long eventId) {
+       return registrationService.getAllRegistrations();
+   }
 }
+ 

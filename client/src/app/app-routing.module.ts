@@ -5,20 +5,19 @@ import { RegistrationComponent } from './registration/registration.component';
 
 
 import { AppComponent } from './app.component';
-import { DashbaordComponent } from './dashbaord/dashbaord.component';
-
 import { CreateEventComponent } from './create-event/create-event.component';
 import { AddResourceComponent } from './add-resource/add-resource.component';
 import { ResourceAllocateComponent } from './resource-allocate/resource-allocate.component';
 import { ViewEventsComponent } from './view-events/view-events.component';
 import { BookingDetailsComponent } from './booking-details/booking-details.component';
 import { RegisterForEventComponent } from './register-for-event/register-for-event.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'dashboard', component: DashbaordComponent },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'create-event', component: CreateEventComponent },  
   { path: 'add-resource', component: AddResourceComponent }, 
   { path: 'resource-allocate', component: ResourceAllocateComponent },  

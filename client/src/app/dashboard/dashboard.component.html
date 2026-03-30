@@ -1,0 +1,30 @@
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+
+  <p *ngIf="role">Logged in as: <b>{{ role }}</b></p>
+
+  <!-- INSTITUTION ACCESS -->
+  <div *ngIf="role === 'INSTITUTION'" class="card">
+    <h3>Institution Panel</h3>
+    <button routerLink="/create-event">Create Event</button>
+    <button routerLink="/add-resource">Add Resource</button>
+    <button routerLink="/resource-allocate">Allocate Resource</button>
+    <button routerLink="/view-events">View Events</button>
+  </div>
+
+  <!-- EDUCATOR ACCESS -->
+  <div *ngIf="role === 'EDUCATOR'" class="card">
+    <h3>Educator Panel</h3>
+    <button routerLink="/view-events">View Agenda</button>
+    <button routerLink="/update-materials">Update Event Materials</button>
+  </div>
+
+  <!-- STUDENT ACCESS -->
+  <div *ngIf="role === 'STUDENT'" class="card">
+    <h3>Student Panel</h3>
+    <button routerLink="/register-for-event">Register for Event</button>
+    <button routerLink="/booking-details">View Registration Status</button>
+  </div>
+
+  <button class="logout" (click)="logout()">Logout</button>
+</div>
