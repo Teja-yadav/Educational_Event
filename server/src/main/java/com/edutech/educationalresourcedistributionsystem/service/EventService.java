@@ -21,7 +21,7 @@ public class EventService {
    }
    public Event updateEvent(Long eventId, Event updatedEvent) {
        Event event = eventRepository.findById(eventId)
-              .orElseThrow(() -> new RuntimeException("Event not found"));
+          .orElseThrow(() -> new RuntimeException("Event not found"));
       event.setName(updatedEvent.getName());
       event.setDescription(updatedEvent.getDescription());
       event.setMaterials(updatedEvent.getMaterials());
