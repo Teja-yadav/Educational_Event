@@ -1,39 +1,56 @@
 package com.edutech.educationalresourcedistributionsystem.controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import com.edutech.educationalresourcedistributionsystem.dto.*;
 import com.edutech.educationalresourcedistributionsystem.entity.Event;
 import com.edutech.educationalresourcedistributionsystem.entity.Resource;
 import com.edutech.educationalresourcedistributionsystem.service.EventService;
 import com.edutech.educationalresourcedistributionsystem.service.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/institution")
 public class InstitutionController {
-   @Autowired
-   private EventService eventService;
-   @Autowired
-   private ResourceService resourceService;
-   @PostMapping(value = "/event",consumes = "application/json",produces = "application/json")
-   public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-       return ResponseEntity.ok(eventService.createEvent(event));
-   }
-   @GetMapping(value = "/events",produces = "application/json")
-   public ResponseEntity<List<Event>> getAllEvents() {
-       return ResponseEntity.ok(eventService.getAllEvents());
-   }
-   @PostMapping(value = "/resource",consumes = "application/json", produces = "application/json")
-   public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
-       return ResponseEntity.ok(resourceService.createResource(resource));
-   }
-   @GetMapping(value = "/resources",produces = "application/json")
-   public ResponseEntity<List<Resource>> getAllResources() {
-       return ResponseEntity.ok(resourceService.getAllResources());
-   }
-   @PostMapping(value = "/event/allocate-resources",produces = "application/json")
-   public ResponseEntity<Event> allocateResources(@RequestParam Long eventId,@RequestParam Long resourceId) {
-       Event updatedEvent =eventService.allocateResource(eventId, resourceId);
-       return ResponseEntity.ok(updatedEvent);
-   }
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private ResourceService resourceService;
+    @PostMapping(value = "/event",consumes = "application/json",produces = "application/json")
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO dto) {
+        Event event = new Event();
+        event.setName(dto.getName());
+        event.setDescription(dto.getDescription());
+        event.setMaterials(dto.getMaterials());
+        return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.createEvent(event)));
+    }
+    @GetMapping(value = "/events", produces = "application/json")
+    public ResponseEntity<List<EventDTO>> getAllEvents() {
+        return ResponseEntity.ok(
+                eventService.getAllEvents()
+                        .stream()
+                        .map(DtoMapper::toEventDTO)
+                        .collect(Collectors.toList())
+        );
+    }
+    @PostMapping(value = "/resource",consumes = "application/json",produces = "application/json")
+    public ResponseEntity<ResourceDTO> createResource(@RequestBody ResourceDTO dto) {
+        Resource resource = new Resource();
+        resource.setResourceType(dto.getResourceType());
+        resource.setDescription(dto.getDescription());
+        return ResponseEntity.ok(DtoMapper.toResourceDTO(resourceService.createResource(resource)));
+    }
+    @GetMapping(value = "/resources", produces = "application/json")
+    public ResponseEntity<List<ResourceDTO>> getAllResources() {
+        return ResponseEntity.ok(
+                resourceService.getAllResources()
+                        .stream()
+                        .map(DtoMapper::toResourceDTO)
+                        .collect(Collectors.toList())
+        );
+    }
+    @PostMapping(value = "/event/allocate-resources",produces = "application/json")
+    public ResponseEntity<Event> allocateResources(@RequestParam Long eventId,@RequestParam Long resourceId) {
+        return ResponseEntity.ok(eventService.allocateResource(eventId, resourceId));
+    }
 }
- 

@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         this.auth.saveToken(res.token);
         this.auth.SetRole(res.role);
+        localStorage.setItem('username', res.username);
 
         this.router.navigate(['/dashboard']);
       },
