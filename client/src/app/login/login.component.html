@@ -1,28 +1,35 @@
-
 <div class="container">
 
   <h2>Login</h2>
-
   <form [formGroup]="itemForm" (ngSubmit)="registration()">
 
+    <!-- Username -->
     <label>Username</label>
     <input formControlName="username" type="text" />
-    <div class="error" *ngIf="itemForm.controls['username'].touched && itemForm.controls['username'].invalid">
-      Username is required
+    <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors">
+      <div *ngIf="itemForm.get('username')?.errors?.['required']">Username is required</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['minlength']">Minimum 3 characters required</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">Maximum 20 characters allowed</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['pattern']">Only letters, numbers, and underscore allowed</div>
     </div>
 
+    <!-- Password -->
     <label>Password</label>
     <input formControlName="password" type="password" />
-    <div class="error" *ngIf="itemForm.controls['password'].touched && itemForm.controls['password'].invalid">
-      Password is required
+    <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors">
+      <div *ngIf="itemForm.get('password')?.errors?.['required']">Password is required</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['minlength']">Minimum 8 characters required</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">Maximum 30 characters allowed</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
+        Must contain 1 uppercase, 1 lowercase, 1 number, and 1 special character
+      </div>
     </div>
 
     <button type="submit">Login</button>
-
     <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+
   </form>
 
-  <!-- ✅ Add this NEW section -->
   <div class="register-link">
     <p>Don't have an account?</p>
     <button routerLink="/registration">Register Here</button>

@@ -4,12 +4,29 @@
 
   <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
 
+    <!-- Username -->
     <label>Username</label>
     <input formControlName="username" type="text" />
+    <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors">
+      <div *ngIf="itemForm.get('username')?.errors?.['required']">Username is required</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['minlength']">Minimum 3 characters required</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">Maximum 20 characters allowed</div>
+      <div *ngIf="itemForm.get('username')?.errors?.['pattern']">Only letters, numbers, and underscore allowed</div>
+    </div>
 
+    <!-- Password -->
     <label>Password</label>
     <input formControlName="password" type="password" />
+    <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors">
+      <div *ngIf="itemForm.get('password')?.errors?.['required']">Password is required</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['minlength']">Minimum 8 characters required</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">Maximum 30 characters allowed</div>
+      <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
+        Must contain 1 uppercase, 1 lowercase, 1 number, and 1 special character
+      </div>
+    </div>
 
+    <!-- Role -->
     <label>Role</label>
     <select formControlName="role">
       <option value="">Select Role</option>
@@ -17,9 +34,17 @@
       <option value="EDUCATOR">Educator</option>
       <option value="STUDENT">Student</option>
     </select>
+    <div class="error" *ngIf="itemForm.get('role')?.touched && itemForm.get('role')?.errors">
+      <div *ngIf="itemForm.get('role')?.errors?.['required']">Role is required</div>
+    </div>
 
+    <!-- Email -->
     <label>Email</label>
     <input formControlName="email" type="email" />
+    <div class="error" *ngIf="itemForm.get('email')?.touched && itemForm.get('email')?.errors">
+      <div *ngIf="itemForm.get('email')?.errors?.['required']">Email is required</div>
+      <div *ngIf="itemForm.get('email')?.errors?.['pattern']">Email format is invalid</div>
+    </div>
 
     <button type="submit">Register</button>
 
