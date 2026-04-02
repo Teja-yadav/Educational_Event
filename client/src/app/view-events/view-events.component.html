@@ -1,4 +1,4 @@
-<app-dashboard></app-dashboard>
+<app-navbar></app-navbar>
 <h2 class="page-title">Manage Events</h2>
 
 <!-- VIEW & UPDATE EVENTS CARD -->
@@ -17,6 +17,7 @@
         <th>Name</th>
         <th>Description</th>
         <th>Material</th>
+        <th>Resources</th>
         <th *ngIf="isEducator">Action</th>
       </tr>
     </thead>
@@ -27,6 +28,13 @@
         <td>{{ e.name }}</td>
         <td>{{ e.description }}</td>
         <td>{{ e.materials }}</td>
+        <td>
+          <ul *ngIf="e.resources">
+            <li *ngFor="let r of e.resources">
+              {{r.resourceType}}
+            </li>
+          </ul>
+        </td>
         <td *ngIf="isEducator">
           <button class="update-btn" (click)="edit(e)">Update</button>
         </td>

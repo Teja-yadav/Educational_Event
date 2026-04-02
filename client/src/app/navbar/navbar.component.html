@@ -1,0 +1,24 @@
+<div class="top-navbar">
+  <span class="brand">Educational-Event-Management</span>
+
+  <!-- INSTITUTION -->
+  <ng-container *ngIf="role === 'INSTITUTION'">
+    <a routerLink="/create-event">Create Event</a>
+    <a routerLink="/add-resource">Add Resource</a>
+    <a routerLink="/resource-allocate">Resource Allocate</a>
+    <a routerLink="/view-events">View Events</a>
+  </ng-container>
+
+  <!-- EDUCATOR -->
+  <ng-container *ngIf="role === 'EDUCATOR'">
+    <a routerLink="/view-events">View Events</a>
+  </ng-container>
+
+  <!-- STUDENT -->
+  <ng-container *ngIf="role === 'STUDENT'">
+    <a routerLink="/register-for-event">Register Event</a>
+    <a routerLink="/booking-details">Booking Details</a>
+  </ng-container>
+
+  <a class="logout-link" (click)="logout()">Logout</a>
+</div>

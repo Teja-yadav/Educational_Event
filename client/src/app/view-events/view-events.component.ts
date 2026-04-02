@@ -24,7 +24,7 @@ export class ViewEventsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const role = localStorage.getItem('role');
@@ -42,13 +42,18 @@ export class ViewEventsComponent implements OnInit {
   loadEvents() {
     if (this.isEducator) {
       this.http.getAllEducatorAgenda().subscribe({
-        next: res => this.eventList = res,
+        next: res => {
+          this.eventList = res
+          console.log(res);
+        },
         error: () => this.eventList = []
       });
     } else {
       this.http.GetAllevents().subscribe({
-        next: res => this.eventList = res,
-        error: () => this.eventList = []
+        next: res => {
+          this.eventList = res
+          console.log(res);
+        }, error: () => this.eventList = []
       });
     }
   }
