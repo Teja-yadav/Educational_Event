@@ -21,42 +21,50 @@ export class RegistrationComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
+  //   this.itemForm = this.fb.group({
+  //     username: [
+  //       '',
+  //       [
+  //         Validators.required,
+  //         Validators.minLength(3),
+  //         Validators.maxLength(20),
+  //         Validators.pattern(/^[a-zA-Z0-9_]+$/)   // letters, numbers, underscore
+  //       ]
+  //     ],
+
+  //     password: [
+  //       '',
+  //       [
+  //         Validators.required,
+  //         Validators.minLength(8),
+  //         Validators.maxLength(30),
+  //         Validators.pattern(
+  //           /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).+$/
+  //         )  // strong password
+  //       ]
+  //     ],
+
+  //     role: ['', Validators.required],
+
+  //     email: [
+  //       '',
+  //       [
+  //         Validators.required,
+  //         Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) // strict email format
+  //       ]
+  //     ]
+  //   });
+  // }
+
+   ngOnInit(): void {
     this.itemForm = this.fb.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern(/^[a-zA-Z0-9_]+$/)   // letters, numbers, underscore
-        ]
-      ],
-
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(30),
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).+$/
-          )  // strong password
-        ]
-      ],
-
+      username: ['', Validators.required],
+      password: ['', Validators.required],
       role: ['', Validators.required],
-
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) // strict email format
-        ]
-      ]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
-
   onRegister() {
     if (this.itemForm.invalid) {
       this.showMessage = true;
