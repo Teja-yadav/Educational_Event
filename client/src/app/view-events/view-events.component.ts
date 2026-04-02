@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-view-events',
@@ -12,66 +10,68 @@ import { AuthService } from '../../services/auth.service';
 export class ViewEventsComponent implements OnInit {
 
   itemForm!: FormGroup;
-  formModel: any = {};
-  showError: boolean = false;
-  errorMessage: any = '';
+  eventList: any[] = [];
   eventObj: any = {};
-  assignModel: any = {};
-  showMessage: boolean = false;
-  responseMessage: any = '';
-  isUpdate: boolean = false;
-  eventList: any = [];
+
+  isUpdate = false;
+  isEducator = false;
+
+  showError = false;
+  errorMessage = '';
+  showMessage = false;
+  responseMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpService,
-    private auth: AuthService,
-    private router: Router
+    private http: HttpService
   ) {}
 
   ngOnInit(): void {
+    const role = localStorage.getItem('role');
+    this.isEducator = role === 'EDUCATOR';
+
     this.itemForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       materials: ['', Validators.required]
     });
 
-    this.getEvents();
+    this.loadEvents();
   }
 
-  getEvents() {
-    this.http.GetAllevents().subscribe({
-      next: (res) => { this.eventList = res; },
-      error: () => { this.eventList = []; }
-    });
+  loadEvents() {
+    if (this.isEducator) {
+      this.http.getAllEducatorAgenda().subscribe({
+        next: res => this.eventList = res,
+        error: () => this.eventList = []
+      });
+    } else {
+      this.http.GetAllevents().subscribe({
+        next: res => this.eventList = res,
+        error: () => this.eventList = []
+      });
+    }
   }
 
-  edit(val: any) {
+  edit(event: any) {
     this.isUpdate = true;
-    this.eventObj = val;
+    this.eventObj = event;
     this.itemForm.patchValue({
-      name: val.name,
-      description: val.description,
-      materials: val.materials
+      name: event.name,
+      description: event.description,
+      materials: event.materials
     });
   }
 
   onSubmit() {
-    if (this.itemForm.invalid) {
-      this.showError = true;
-      this.errorMessage = 'All fields are required';
-      return;
-    }
+    if (this.itemForm.invalid) return;
 
-    this.formModel = this.itemForm.value;
-
-    this.http.updateEvent(this.formModel, this.eventObj.id).subscribe({
+    this.http.updateEvent(this.itemForm.value, this.eventObj.id).subscribe({
       next: () => {
         this.showMessage = true;
         this.responseMessage = 'Event updated successfully';
         this.isUpdate = false;
-        this.itemForm.reset();
-        this.getEvents();
+        this.loadEvents();
       },
       error: () => {
         this.showError = true;

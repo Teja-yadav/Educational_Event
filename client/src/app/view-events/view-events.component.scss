@@ -1,38 +1,132 @@
-.container {
-  width: 55%;
-  margin: auto;
+.page-title {
+  margin: 20px 0;
+  font-weight: 600;
 }
 
-ul {
-  list-style-type: none;
+/* CARD STYLE */
+.card-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
-li {
-  margin-bottom: 10px;
+.card-header {
+  padding: 10px 15px;
+  background: #f5f5f5;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
 }
 
-button {
-  margin-left: 15px;
-  padding: 5px 12px;
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-label {
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #fafafa;
+}
+
+/* UPDATE BUTTON (YELLOW LIKE IMAGE) */
+.update-btn {
+  background: #fbbc04;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* UPDATE FORM */
+.update-form {
+  padding: 15px;
+}
+
+.update-form label {
   display: block;
   margin-top: 10px;
+  font-weight: 600;
 }
 
-input {
+.update-form input {
   width: 100%;
   padding: 8px;
+  margin-top: 5px;
 }
 
+.update-submit {
+  margin-top: 15px;
+  padding: 6px 18px;
+}
+
+/* MESSAGES */
 .error {
   color: red;
-  font-size: 13px;
+  margin-top: 10px;
 }
 
 .success {
   color: green;
-  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Card already defined earlier */
+
+/* ✅ Update Event card spacing */
+.update-card {
+  margin-top: 20px;
+}
+
+/* ✅ Form layout */
+.update-form {
+  max-width: 600px;
+  padding: 20px;
+}
+
+/* ✅ Each row spacing */
+.form-row {
+  margin-bottom: 15px;
+}
+
+/* ✅ Input blocks */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ✅ Button aligned properly */
+.form-actions {
+  text-align: right;
+}
+
+.update-submit {
+  padding: 6px 18px;
+  background: #fbbc04;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ✅ Success message spacing */
+.success {
   margin-top: 10px;
 }

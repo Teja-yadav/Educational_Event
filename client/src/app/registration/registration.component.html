@@ -1,63 +1,64 @@
-<div class="container">
-
+<app-dashboard></app-dashboard>
+<div class="register-container">
   <h2>User Registration</h2>
-
   <form [formGroup]="itemForm" (ngSubmit)="onRegister()">
-
     <!-- Username -->
-    <label>Username</label>
-    <input formControlName="username" type="text" />
-    <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors">
-      <div *ngIf="itemForm.get('username')?.errors?.['required']">Username is required</div>
-      <div *ngIf="itemForm.get('username')?.errors?.['minlength']">Minimum 3 characters required</div>
-      <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">Maximum 20 characters allowed</div>
-      <div *ngIf="itemForm.get('username')?.errors?.['pattern']">Only letters, numbers, and underscore allowed</div>
-    </div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" formControlName="username" placeholder="Enter username" />
 
+      <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.invalid">
+        Username must be 3–20 characters (letters, numbers, underscore)
+      </div>
+    </div>
     <!-- Password -->
-    <label>Password</label>
-    <input formControlName="password" type="password" />
-    <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors">
-      <div *ngIf="itemForm.get('password')?.errors?.['required']">Password is required</div>
-      <div *ngIf="itemForm.get('password')?.errors?.['minlength']">Minimum 8 characters required</div>
-      <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">Maximum 30 characters allowed</div>
-      <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
-        Must contain 1 uppercase, 1 lowercase, 1 number, and 1 special character
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" formControlName="password" placeholder="Enter password" />
+
+      <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.invalid">
+        Password must contain uppercase, lowercase, number & special character
       </div>
     </div>
 
     <!-- Role -->
-    <label>Role</label>
-    <select formControlName="role">
-      <option value="">Select Role</option>
-      <option value="INSTITUTION">Institution</option>
-      <option value="EDUCATOR">Educator</option>
-      <option value="STUDENT">Student</option>
-    </select>
-    <div class="error" *ngIf="itemForm.get('role')?.touched && itemForm.get('role')?.errors">
-      <div *ngIf="itemForm.get('role')?.errors?.['required']">Role is required</div>
+    <div class="form-group">
+<label>Role</label>
+<select formControlName="role">
+  <option value="">Select Role</option>
+
+  <!-- ✅ VALUES MUST BE UPPERCASE -->
+  <option value="INSTITUTION">Institution</option>
+  <option value="EDUCATOR">Educator</option>
+  <option value="STUDENT">Student</option>
+</select>
+
+<div class="error" *ngIf="itemForm.get('role')?.touched && itemForm.get('role')?.invalid">
+  Role is required
+</div>
+
     </div>
 
     <!-- Email -->
-    <label>Email</label>
-    <input formControlName="email" type="email" />
-    <div class="error" *ngIf="itemForm.get('email')?.touched && itemForm.get('email')?.errors">
-      <div *ngIf="itemForm.get('email')?.errors?.['required']">Email is required</div>
-      <div *ngIf="itemForm.get('email')?.errors?.['pattern']">Email format is invalid</div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="Enter email" />
+
+      <div class="error" *ngIf="itemForm.get('email')?.touched && itemForm.get('email')?.invalid">
+        Enter a valid email address
+      </div>
     </div>
 
     <button type="submit">Register</button>
 
-    <div *ngIf="showMessage" class="success">
+    <div class="success" *ngIf="showMessage">
       {{ responseMessage }}
     </div>
 
-    <button 
-      type="button" 
-      class="login-btn"
-      routerLink="/login">
-      Go to Login
-    </button>
+    <div class="login-link">
+      Already registered?
+      <a routerLink="/login">Login here</a>
+    </div>
 
   </form>
 

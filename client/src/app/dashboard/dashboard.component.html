@@ -1,30 +1,28 @@
-<div class="dashboard-container">
-  <h2>Dashboard</h2>
+<div class="top-navbar">
+  <span class="brand">Educational-Event-Management</span>
 
-  <p *ngIf="role">Logged in as: <b>{{ role }}</b></p>
+  <!-- INSTITUTION -->
+  <ng-container *ngIf="role === 'INSTITUTION'">
+    <a routerLink="/create-event">Create Event</a>
+    <a routerLink="/add-resource">Add Resource</a>
+    <a routerLink="/resource-allocate">Resource Allocate</a>
+    <a routerLink="/view-events">View Events</a>
+  </ng-container>
 
-  <!-- INSTITUTION ACCESS -->
-  <div *ngIf="role === 'INSTITUTION'" class="card">
-    <h3>Institution Panel</h3>
-    <button routerLink="/create-event">Create Event</button>
-    <button routerLink="/add-resource">Add Resource</button>
-    <button routerLink="/resource-allocate">Allocate Resource</button>
-    <button routerLink="/view-events">View Events</button>
-  </div>
+  <!-- EDUCATOR -->
+  <ng-container *ngIf="role === 'EDUCATOR'">
+    <a routerLink="/view-events">View Events</a>
+  </ng-container>
 
-  <!-- EDUCATOR ACCESS -->
-  <div *ngIf="role === 'EDUCATOR'" class="card">
-    <h3>Educator Panel</h3>
-    <button routerLink="/view-events">View Agenda</button>
-    <button routerLink="/update-materials">Update Event Materials</button>
-  </div>
+  <!-- STUDENT -->
+  <ng-container *ngIf="role === 'STUDENT'">
+    <a routerLink="/register-for-event">Register Event</a>
+    <a routerLink="/booking-details">Booking Details</a>
+  </ng-container>
 
-  <!-- STUDENT ACCESS -->
-  <div *ngIf="role === 'STUDENT'" class="card">
-    <h3>Student Panel</h3>
-    <button routerLink="/register-for-event">Register for Event</button>
-    <button routerLink="/booking-details">View Registration Status</button>
-  </div>
-
-  <button class="logout" (click)="logout()">Logout</button>
+  <a class="logout-link" (click)="logout()">Logout</a>
 </div>
+
+<div class="content-wrapper">
+  <router-outlet></router-outlet>
+</div>`

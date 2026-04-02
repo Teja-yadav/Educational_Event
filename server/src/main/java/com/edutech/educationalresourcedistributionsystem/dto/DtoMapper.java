@@ -1,9 +1,6 @@
 package com.edutech.educationalresourcedistributionsystem.dto;
 import com.edutech.educationalresourcedistributionsystem.entity.*;
 public class DtoMapper {
-    /* =========================
-       ENTITY → DTO
-       ========================= */
     public static EventDto toEventDTO(Event event) {
         return new EventDto(event.getId(),event.getName(),event.getDescription(),event.getMaterials());
     }

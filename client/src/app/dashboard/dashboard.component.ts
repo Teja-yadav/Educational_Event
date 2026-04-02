@@ -18,7 +18,11 @@ export class DashboardComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
+    const confirmLogout = window.confirm('Are you sure you want to logout?');
+
+    if (confirmLogout) {
+      this.auth.logout();
+      this.router.navigate(['/login']);
+    }
   }
 }

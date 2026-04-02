@@ -33,11 +33,25 @@ public class RegisterAndLoginController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
-    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UserDto> register(@RequestBody User user) {
+   @PostMapping("/register")
+public ResponseEntity<UserDto> register(@RequestBody User user) {
+    try {
+        System.out.println("=== REGISTER REQUEST RECEIVED ===");
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Role: " + user.getRole());
+
         User savedUser = userService.registerUser(user);
+
+        System.out.println("=== USER SAVED SUCCESSFULLY ===");
+
         return ResponseEntity.status(201)
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(DtoMapper.toUserDTO(savedUser));
+
+    } catch (Exception e) {
+        System.out.println("=== REGISTRATION FAILED ===");
+        e.printStackTrace();   // 🔥 THIS IS THE KEY
+        return ResponseEntity.status(500).build();
     }
+}
 }

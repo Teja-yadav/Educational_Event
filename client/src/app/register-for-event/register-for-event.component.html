@@ -1,35 +1,38 @@
-<div class="container">
+<app-dashboard></app-dashboard>
+<h2 class="page-title">Register For Event</h2>
 
-  <h2>Register For Event</h2>
+<div class="card-box">
+  <div class="card-header">Event Registration</div>
 
-  <form [formGroup]="itemForm" (ngSubmit)="Submit()">
+  <form [formGroup]="itemForm" (ngSubmit)="Submit()" class="register-form">
 
-    <label>Student ID</label>
-    <input type="text" formControlName="studentId" />
-    <div class="error" *ngIf="itemForm.controls['studentId'].touched && itemForm.controls['studentId'].invalid">
-      Student ID is required
+    <div class="form-group">
+      <label>Student ID</label>
+      <input type="text" formControlName="studentId" />
     </div>
 
-    <label>Select Event</label>
-    <select formControlName="eventId">
-      <option value="">Select Event</option>
-      <option *ngFor="let e of eventList" [value]="e.id">{{ e.name }}</option>
-    </select>
-    <div class="error" *ngIf="itemForm.controls['eventId'].touched && itemForm.controls['eventId'].invalid">
-      Event selection is required
+    <div class="form-group">
+      <label>Select Event</label>
+      <select formControlName="eventId">
+        <option value="">Select Event</option>
+        <option *ngFor="let e of eventList" [value]="e.id">
+          {{ e.name }}
+        </option>
+      </select>
+      <div class="error" *ngIf="itemForm.controls['eventId'].invalid && itemForm.controls['eventId'].touched">
+        Event selection is required
+      </div>
     </div>
 
-    <label>Status</label>
-    <input type="text" formControlName="status" />
-    <div class="error" *ngIf="itemForm.controls['status'].touched && itemForm.controls['status'].invalid">
-      Status is required
+    <div class="form-group">
+      <label>Status</label>
+      <input type="text" formControlName="status" />
     </div>
 
-    <button type="submit">Register</button>
+    <button type="submit" class="register-btn">Register</button>
 
-    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
-    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
+    <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
+    <div class="error" *ngIf="showError">{{ errorMessage }}</div>
 
   </form>
-
 </div>

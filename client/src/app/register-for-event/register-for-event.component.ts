@@ -15,12 +15,9 @@ export class RegisterForEventComponent implements OnInit {
   formModel: any = {};
   showError: boolean = false;
   errorMessage: any = '';
-  eventObj: any = {};
-  assignModel: any = {};
   showMessage: boolean = false;
   responseMessage: any = '';
-  isUpdate: boolean = false;
-  eventList: any = [];
+  eventList: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,8 +36,9 @@ export class RegisterForEventComponent implements OnInit {
     this.getEvents();
   }
 
+  // ✅ FIXED METHOD
   getEvents() {
-    this.http.GetAllevents().subscribe({
+    this.http.getStudentEvents().subscribe({
       next: (res) => {
         this.eventList = res;
       },
@@ -60,7 +58,7 @@ export class RegisterForEventComponent implements OnInit {
     this.formModel = this.itemForm.value;
 
     this.http.registerForEvent(this.formModel.eventId, this.formModel).subscribe({
-      next: (res) => {
+      next: () => {
         this.showMessage = true;
         this.responseMessage = 'Registered Successfully';
         this.itemForm.reset();
@@ -71,5 +69,4 @@ export class RegisterForEventComponent implements OnInit {
       }
     });
   }
-
 }

@@ -23,38 +23,30 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-// ngOnInit(): void {
-//   this.itemForm = this.fb.group({
-//     username: [
-//       '',
-//       [
-//         Validators.required,
-//         Validators.minLength(3),
-//         Validators.maxLength(20),
-//         Validators.pattern(/^[a-zA-Z0-9_]+$/)
-//       ]
-//     ],
-//     password: [
-//       '',
-//       [
-//         Validators.required,
-//         Validators.minLength(8),
-//         Validators.maxLength(30),
-//         Validators.pattern(
-//           /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).+$/
-//         )
-//       ]
-//     ]
-//   });
-// }
-
-  ngOnInit(): void {
-    this.itemForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
-
+ngOnInit(): void {
+  this.itemForm = this.fb.group({
+    username: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+      ]
+    ],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(30),
+        Validators.pattern(
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-={}[\]|:;"'<>,.?/]).+$/
+        )
+      ]
+    ]
+  });
+}
 
   registration() {
     if (this.itemForm.invalid) {

@@ -1,42 +1,55 @@
-<div class="container">
+<app-dashboard></app-dashboard>
+<!-- Page Heading -->
+<h2 class="page-title">Add Resource</h2>
 
-  <h2>Add Resource</h2>
+<!-- Card Container -->
+<div class="card-container">
+  <div class="card-header">Add Resource</div>
 
   <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
 
-    <label>Resource Type</label>
-    <input formControlName="resourceType" type="text" />
-    <div class="error" *ngIf="itemForm.controls['resourceType'].touched && itemForm.controls['resourceType'].invalid">
-      Resource Type is required
+      <div class="form-group">
+        <label>Resource Type</label>
+        <input type="text" formControlName="resourceType" />
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" formControlName="description" />
+      </div>
+
+      <div class="form-group">
+        <label>Availability</label>
+        <input type="text" formControlName="availability" />
+      </div>
+
+      <div class="form-group button-group">
+        <button type="submit">Add Resource</button>
+      </div>
+
     </div>
-
-    <label>Description</label>
-    <input formControlName="description" type="text" />
-    <div class="error" *ngIf="itemForm.controls['description'].touched && itemForm.controls['description'].invalid">
-      Description is required
-    </div>
-
-    <label>Availability</label>
-    <input formControlName="availability" type="text" />
-    <div class="error" *ngIf="itemForm.controls['availability'].touched && itemForm.controls['availability'].invalid">
-      Availability is required
-    </div>
-
-    <button type="submit">Add Resource</button>
 
     <div *ngIf="showError" class="error">{{ errorMessage }}</div>
     <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
-
   </form>
+</div>
 
-  <hr />
+<!-- Resource List -->
+<div class="card-container">
+  <div class="card-header">All Resources</div>
 
-  <h3>All Resources</h3>
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Resource Type</th>
+      <th>Description</th>
+    </tr>
 
-  <ul>
-    <li *ngFor="let r of resourceList">
-      {{ r.resourceType }} - {{ r.description }}
-    </li>
-  </ul>
-
+    <tr *ngFor="let r of resourceList; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ r.resourceType }}</td>
+      <td>{{ r.description }}</td>
+    </tr>
+  </table>
 </div>
