@@ -26,7 +26,7 @@ export class ResourceAllocateComponent implements OnInit {
     private http: HttpService,
     private auth: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
