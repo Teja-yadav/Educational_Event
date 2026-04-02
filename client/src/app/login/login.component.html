@@ -1,0 +1,43 @@
+<div class="login-page">
+  <div class="login-container">
+
+    <h2>Login</h2>
+
+    <form [formGroup]="itemForm" (ngSubmit)="registration()">
+
+      <!-- Username -->
+      <label>Username</label>
+      <input formControlName="username" placeholder="Enter the username" type="text" />
+      <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors">
+        <div *ngIf="itemForm.get('username')?.errors?.['required']">Username is required</div>
+        <div *ngIf="itemForm.get('username')?.errors?.['minlength']">Minimum 3 characters required</div>
+        <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">Maximum 20 characters allowed</div>
+        <div *ngIf="itemForm.get('username')?.errors?.['pattern']">
+          Only letters, numbers, and underscore allowed
+        </div>
+      </div>
+
+      <!-- Password -->
+      <label>Password</label>
+      <input formControlName="password" placeholder="Enter the password" type="password" />
+      <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors">
+        <div *ngIf="itemForm.get('password')?.errors?.['required']">Password is required</div>
+        <div *ngIf="itemForm.get('password')?.errors?.['minlength']">Minimum 8 characters required</div>
+        <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">Maximum 30 characters allowed</div>
+        <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
+          Must contain uppercase, lowercase, number, and special character
+        </div>
+      </div>
+
+      <button type="submit" class="login-btn">Login</button>
+
+      <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+    </form>
+
+    <div class="register-link">
+      <p>Don't have an account?</p>
+      <button routerLink="/registration">Register Here</button>
+    </div>
+
+  </div>
+</div>

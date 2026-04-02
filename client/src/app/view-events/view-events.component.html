@@ -1,0 +1,72 @@
+<app-dashboard></app-dashboard>
+<h2 class="page-title">Manage Events</h2>
+
+<!-- VIEW & UPDATE EVENTS CARD -->
+<div class="card-box">
+  <div class="card-header">View & Update Events</div>
+</div>
+
+<!-- EVENT INFORMATION CARD -->
+<div class="card-box">
+  <div class="card-header">Event Information</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sr#</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Material</th>
+        <th *ngIf="isEducator">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let e of eventList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ e.name }}</td>
+        <td>{{ e.description }}</td>
+        <td>{{ e.materials }}</td>
+        <td *ngIf="isEducator">
+          <button class="update-btn" (click)="edit(e)">Update</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ✅ UPDATE EVENT CARD -->
+<div class="card-box update-card" *ngIf="isUpdate && isEducator">
+  <div class="card-header">Update Event</div>
+
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="update-form">
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name</label>
+        <input formControlName="name" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Description</label>
+        <input formControlName="description" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Materials</label>
+        <input formControlName="materials" />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="update-submit">Update</button>
+    </div>
+
+  </form>
+</div>
+<div class="error" *ngIf="showError">{{ errorMessage }}</div>
+<div class="success" *ngIf="showMessage">{{ responseMessage }}</div>

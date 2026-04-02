@@ -1,0 +1,89 @@
+.page-title {
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+/* CARD BOXS */
+.card-box {
+  border: 1px solid #ddd;
+  margin-bottom: 25px;
+  border-radius: 4px;
+
+  /* ✅ FIX: Prevent overlap with form */
+  position: relative;
+  z-index: 1;
+}
+
+.card-header {
+  padding: 10px 15px;
+  background: #f6f6f6;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+
+/* FORM */
+.form-row {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+
+  /* ✅ FIX: Keep form above table */
+  position: relative;
+  z-index: 5;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* ✅ FIX: Button container */
+.btn-group {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* ✅ FIX: Make button clickable */
+button {
+  padding: 8px 25px;
+  margin-top: 22px;
+  cursor: pointer;
+
+  position: relative;     /* ✅ key fix */
+  z-index: 10;             /* ✅ key fix */
+  pointer-events: auto;    /* ✅ key fix */
+  background: white;
+  border: 1px solid #333;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  position: relative;
+  z-index: 0; /* ✅ keep table below form layer */
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  background: #fafafa;
+}
