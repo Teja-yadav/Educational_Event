@@ -2,10 +2,29 @@ package com.edutech.educationalresourcedistributionsystem.dto;
 
 import com.edutech.educationalresourcedistributionsystem.entity.*;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class DtoMapper {
     public static EventDto toEventDTO(Event event) {
-        return new EventDto(event.getId(), event.getName(), event.getDescription(), event.getMaterials(),
-                event.getResourceAllocations());
+
+        List<ResourceDto> resources =
+                event.getResourceAllocations() == null
+                        ? Collections.emptyList()
+                        : event.getResourceAllocations()
+                               .stream()
+                               .map(DtoMapper::toResourceDTO)
+                               .collect(Collectors.toList());
+
+        return new EventDto(
+                event.getId(),
+                event.getName(),
+                event.getDescription(),
+                event.getMaterials(),
+                event.getEventDateTime(),
+                resources
+        );
     }
 
     public static ResourceDto toResourceDTO(Resource resource) {
@@ -17,8 +36,12 @@ public class DtoMapper {
     }
 
     public static EventRegistrationDto toRegistrationDTO(EventRegistration registration) {
-        return new EventRegistrationDto(registration.getId(), registration.getStatus(), registration.getStudentId(),
-                registration.getEvent().getId());
+        return new EventRegistrationDto(
+                registration.getId(),
+                registration.getStatus(),
+                registration.getStudentId(),
+                registration.getEvent().getId()
+        );
     }
 
     public static Event toEventEntity(EventDto dto) {
@@ -27,6 +50,7 @@ public class DtoMapper {
         event.setName(dto.getName());
         event.setDescription(dto.getDescription());
         event.setMaterials(dto.getMaterials());
+        event.setEventDateTime(dto.getEventDateTime());
         return event;
     }
 

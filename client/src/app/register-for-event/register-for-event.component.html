@@ -1,38 +1,45 @@
 <app-navbar></app-navbar>
-<h2 class="page-title">Register For Event</h2>
+<div class="container">
 
-<div class="card-box">
-  <div class="card-header">Event Registration</div>
+  <h2>Register For Event</h2>
 
-  <form [formGroup]="itemForm" (ngSubmit)="Submit()" class="register-form">
+  <form [formGroup]="itemForm" (ngSubmit)="Submit()">
 
-    <div class="form-group">
-      <label>Student ID</label>
-      <input type="text" formControlName="studentId" />
-    </div>
+    <label>Student ID</label>
+    <input type="text" formControlName="studentId" placeholder="Example: LTM01" />
 
-    <div class="form-group">
-      <label>Select Event</label>
-      <select formControlName="eventId">
-        <option value="">Select Event</option>
-        <option *ngFor="let e of eventList" [value]="e.id">
-          {{ e.name }}
-        </option>
-      </select>
-      <div class="error" *ngIf="itemForm.controls['eventId'].invalid && itemForm.controls['eventId'].touched">
-        Event selection is required
+    <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
+      <div *ngIf="itemForm.get('studentId')?.errors?.['required']">
+        Student ID is required
+      </div>
+      <div *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
+        Student ID must be like LTM01, LTM09, LTM90 (starts with LTM + 2 digits)
       </div>
     </div>
 
-    <div class="form-group">
-      <label>Status</label>
-      <input type="text" formControlName="status" />
+    <label>Select Event</label>
+    <select formControlName="eventId">
+      <option value="">Select Event</option>
+      <option *ngFor="let e of eventList" [value]="e.id">
+        {{ e.name }} - {{ e.eventDateTime | date:'dd-MMM-yyyy, hh:mm a' }}
+      </option>
+    </select>
+
+    <div class="error" *ngIf="itemForm.get('eventId')?.touched && itemForm.get('eventId')?.invalid">
+      Event selection is required
     </div>
 
-    <button type="submit" class="register-btn">Register</button>
+    <!-- <label>Status</label>
+    <input type="text" formControlName="status" />
 
-    <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
-    <div class="error" *ngIf="showError">{{ errorMessage }}</div>
+    <div class="error" *ngIf="itemForm.get('status')?.touched && itemForm.get('status')?.invalid">
+      Status is required
+    </div> -->
+
+    <button type="submit">Register</button>
+
+    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
+    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
 
   </form>
 </div>

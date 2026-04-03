@@ -4,7 +4,7 @@ import com.edutech.educationalresourcedistributionsystem.entity.EventRegistratio
 import java.util.List;
 
 public interface RegistrationService {
-    EventRegistration registerStudent(Long eventId, Long studentId);
+    EventRegistration registerStudent(Long eventId, String studentId);
     List<EventRegistration> getAllRegistrations();
-    List<EventRegistration>getStatus(Long studentId);
+    List<EventRegistration>getStatus(String studentId);
 }

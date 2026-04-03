@@ -8,16 +8,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "event_registration")
+
+@Table(name = "event_registration",uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "event_id"}))
 public class EventRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "student_id", nullable = false)
-    private Long studentId;
+    private String studentId;
     @Column(name = "status", nullable = false)
     private String status;
     @ManyToOne
@@ -32,11 +34,11 @@ public class EventRegistration {
         this.id = id;
     }
 
-    public Long getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 

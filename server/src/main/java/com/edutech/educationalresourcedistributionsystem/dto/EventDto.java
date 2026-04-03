@@ -1,26 +1,25 @@
 package com.edutech.educationalresourcedistributionsystem.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
-import com.edutech.educationalresourcedistributionsystem.entity.Event;
-import com.edutech.educationalresourcedistributionsystem.entity.Resource;
 
 public class EventDto {
     private Long id;
     private String name;
     private String description;
     private String materials;
-    private List<Resource> resources;
+    private LocalDateTime eventDateTime;
 
-    public EventDto() {
-    }
+    private List<ResourceDto> resourceAllocations;
 
-    public EventDto(Long id, String name, String description, String materials, List<Resource> resources) {
+    public EventDto(Long id, String name, String description, String materials, LocalDateTime eventDateTime,
+            List<ResourceDto> resourceAllocations) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.materials = materials;
-        this.resources = resources;
+        this.eventDateTime = eventDateTime;
+        this.resourceAllocations = resourceAllocations;
     }
 
     public Long getId() {
@@ -39,28 +38,11 @@ public class EventDto {
         return materials;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public LocalDateTime getEventDateTime() {
+        return eventDateTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<ResourceDto> getResourceAllocations() {
+        return resourceAllocations;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMaterials(String materials) {
-        this.materials = materials;
-    }
-
-    public List<Resource> getResources() {
-        return resources;
-    }
-
-    public void setResources(List<Resource> resources) {
-        this.resources = resources;
-    }
-
 }

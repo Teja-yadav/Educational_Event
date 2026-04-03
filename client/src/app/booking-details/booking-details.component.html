@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="container">
 
   <h2>Booking Details</h2>
@@ -6,10 +7,15 @@
   <form [formGroup]="itemForm" (ngSubmit)="searchEvent()">
 
     <label>Student ID</label>
-    <input type="text" formControlName="studentId" />
+    <input type="text" formControlName="studentId" placeholder="Example: LTM01" />
 
-    <div class="error" *ngIf="itemForm.controls['studentId'].touched && itemForm.controls['studentId'].invalid">
-      Student ID is required
+    <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
+      <div *ngIf="itemForm.get('studentId')?.errors?.['required']">
+        Student ID is required
+      </div>
+      <div *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
+        Student ID must be like LTM01, LTM09, LTM11 (starts with LTM + 2 digits)
+      </div>
     </div>
 
     <button type="submit">Search</button>
@@ -19,7 +25,7 @@
   <div class="error" *ngIf="showError">{{ errorMessage }}</div>
   <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
 
-  <ul>
+  <ul *ngIf="eventList.length > 0">
     <li *ngFor="let e of eventList">
       {{ e.event?.name }} - {{ e.status }}
     </li>
