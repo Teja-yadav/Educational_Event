@@ -2,10 +2,10 @@ package com.edutech.educationalresourcedistributionsystem.dto;
 public class EventRegistrationDto {
     private Long id;
     private String status;
-    private Long studentId;
+    private String studentId;
     private Long eventId;
     public EventRegistrationDto() {}
-    public EventRegistrationDto(Long id, String status, Long studentId, Long eventId) {
+    public EventRegistrationDto(Long id, String status, String studentId, Long eventId) {
         this.id = id;
         this.status = status;
         this.studentId = studentId;
@@ -23,10 +23,10 @@ public class EventRegistrationDto {
     public void setStatus(String status) {
         this.status = status;
     }
-    public Long getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
-    public void setStudentId(Long studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
     public Long getEventId() {

@@ -43,7 +43,7 @@ export class ViewEventsComponent implements OnInit {
     if (this.isEducator) {
       this.http.getAllEducatorAgenda().subscribe({
         next: res => {
-          this.eventList = res
+          this.eventList = res;
           console.log(res);
         },
         error: () => this.eventList = []
@@ -51,16 +51,23 @@ export class ViewEventsComponent implements OnInit {
     } else {
       this.http.GetAllevents().subscribe({
         next: res => {
-          this.eventList = res
+          this.eventList = res;
           console.log(res);
-        }, error: () => this.eventList = []
+        },
+        error: () => this.eventList = []
       });
     }
   }
 
   edit(event: any) {
+    this.showMessage = false;
+    this.responseMessage = '';
+    this.showError = false;
+    this.errorMessage = '';
+
     this.isUpdate = true;
     this.eventObj = event;
+
     this.itemForm.patchValue({
       name: event.name,
       description: event.description,
@@ -69,6 +76,11 @@ export class ViewEventsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.showMessage = false;
+    this.responseMessage = '';
+    this.showError = false;
+    this.errorMessage = '';
+
     if (this.itemForm.invalid) return;
 
     this.http.updateEvent(this.itemForm.value, this.eventObj.id).subscribe({

@@ -1,43 +1,171 @@
-<div class="login-page">
-  <div class="login-container">
+<!-- login.component.html -->
+<div class="auth-page">
+  <!-- Background layer (CSS will handle gradients/glow) -->
+  <div class="auth-bg"></div>
 
-    <h2>Login</h2>
-
-    <form [formGroup]="itemForm" (ngSubmit)="registration()">
-
-      <!-- Username -->
-      <label>Username</label>
-      <input formControlName="username" placeholder="Enter the username" type="text" />
-      <div class="error" *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors">
-        <div *ngIf="itemForm.get('username')?.errors?.['required']">Username is required</div>
-        <div *ngIf="itemForm.get('username')?.errors?.['minlength']">Minimum 3 characters required</div>
-        <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">Maximum 20 characters allowed</div>
-        <div *ngIf="itemForm.get('username')?.errors?.['pattern']">
-          Only letters, numbers, and underscore allowed
+  <div class="auth-shell">
+    <!-- LEFT PANEL (Brand / Marketing) -->
+    <section class="auth-left" aria-label="Brand section">
+      <div class="brand">
+        <div class="brand-mark">
+          <span class="brand-cap">🎓</span>
+          <span class="brand-name">Edu<span class="accent">Event</span></span>
         </div>
+        <div class="brand-tag">EDUCATIONAL EVENT MANAGEMENT</div>
       </div>
 
-      <!-- Password -->
-      <label>Password</label>
-      <input formControlName="password" placeholder="Enter the password" type="password" />
-      <div class="error" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors">
-        <div *ngIf="itemForm.get('password')?.errors?.['required']">Password is required</div>
-        <div *ngIf="itemForm.get('password')?.errors?.['minlength']">Minimum 8 characters required</div>
-        <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">Maximum 30 characters allowed</div>
-        <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
-          Must contain uppercase, lowercase, number, and special character
+      <h1 class="headline">
+        Manage. Organize,<br />
+        <span class="accent">Elevate Events</span>
+      </h1>
+
+      <p class="subtext">
+        Streamline your college events, engage students, and create unforgettable experiences.
+      </p>
+
+      <div class="feature-row">
+        <div class="feature">
+          <div class="feature-icon">📅</div>
+          <div class="feature-text">
+            <div class="feature-title">Event Schedule</div>
+            <div class="feature-desc">Plan & track events easily</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🧩</div>
+          <div class="feature-text">
+            <div class="feature-title">Host & Manage</div>
+            <div class="feature-desc">Coordinate teams & resources</div>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🏆</div>
+          <div class="feature-text">
+            <div class="feature-title">Recognition</div>
+            <div class="feature-desc">Celebrate achievements</div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <button type="submit" class="login-btn">Login</button>
+    <!-- RIGHT PANEL (Login Card) -->
+    <section class="auth-right" aria-label="Login section">
+      <div class="card-glow">
+        <div class="auth-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              Welcome <span class="accent">Back!</span> 👋
+            </h2>
+            <p class="card-subtitle">Login to manage your educational events</p>
+          </div>
 
-      <div *ngIf="showError" class="error">{{ errorMessage }}</div>
-    </form>
+          <form class="auth-form" [formGroup]="itemForm" (ngSubmit)="registration()">
+            <!-- USERNAME -->
+            <div class="field">
+              <label class="field-label" for="username">Username</label>
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">👤</span>
+                <input
+                  id="username"
+                  class="input"
+                  formControlName="username"
+                  type="text"
+                  placeholder="Enter your username"
+                  autocomplete="username"
+                />
+              </div>
 
-    <div class="register-link">
-      <p>Don't have an account?</p>
-      <button routerLink="/registration">Register Here</button>
-    </div>
+              <div
+                class="error"
+                *ngIf="itemForm.get('username')?.touched && itemForm.get('username')?.errors"
+              >
+                <div *ngIf="itemForm.get('username')?.errors?.['required']">
+                  Username is required
+                </div>
+                <div *ngIf="itemForm.get('username')?.errors?.['minlength']">
+                  Minimum 3 characters required
+                </div>
+                <div *ngIf="itemForm.get('username')?.errors?.['maxlength']">
+                  Maximum 20 characters allowed
+                </div>
+                <div *ngIf="itemForm.get('username')?.errors?.['pattern']">
+                  Only letters, numbers, and underscore allowed
+                </div>
+              </div>
+            </div>
 
+            <!-- PASSWORD -->
+            <div class="field">
+              <div class="field-row">
+                <label class="field-label" for="password">Password</label>
+                <!-- If you later add forgot password route, you can enable this -->
+                <!-- <a class="link subtle" routerLink="/forgot-password">Forgot Password?</a> -->
+              </div>
+
+              <div class="input-wrap">
+                <span class="input-icon" aria-hidden="true">🔒</span>
+                <input
+                  id="password"
+                  class="input"
+                  formControlName="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                />
+                <!-- If you implement show/hide in TS later, we can wire it -->
+                <!-- <button type="button" class="icon-btn" aria-label="Toggle password visibility">👁️</button> -->
+              </div>
+
+              <div
+                class="error"
+                *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.errors"
+              >
+                <div *ngIf="itemForm.get('password')?.errors?.['required']">
+                  Password is required
+                </div>
+                <div *ngIf="itemForm.get('password')?.errors?.['minlength']">
+                  Minimum 8 characters required
+                </div>
+                <div *ngIf="itemForm.get('password')?.errors?.['maxlength']">
+                  Maximum 30 characters allowed
+                </div>
+                <div *ngIf="itemForm.get('password')?.errors?.['pattern']">
+                  Must contain 1 uppercase, 1 lowercase, 1 number, and 1 special character
+                </div>
+              </div>
+            </div>
+
+            <!-- Server/API error -->
+            <div *ngIf="showError" class="banner-error" role="alert">
+              {{ errorMessage }}
+            </div>
+
+            <!-- SUBMIT -->
+            <button class="btn-primary" type="submit">
+              <span>Login</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <div class="divider">
+              <span>or</span>
+            </div>
+
+            <!-- OPTIONAL social button (pure UI; no logic attached) -->
+            <button class="btn-secondary" type="button">
+              <span class="g-badge" aria-hidden="true">G</span>
+              <span>Continue with Google</span>
+            </button>
+
+            <!-- REGISTER -->
+            <div class="register">
+              <span class="muted">New here?</span>
+              <a class="link" routerLink="/registration">Sign Up</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </div>
 </div>

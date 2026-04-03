@@ -1,9 +1,8 @@
 <app-navbar></app-navbar>
-<h2 class="page-title">Manage Events</h2>
+<!-- <h2 class="page-title">Manage Events</h2> -->
 
-<!-- VIEW & UPDATE EVENTS CARD -->
 <div class="card-box">
-  <div class="card-header">View & Update Events</div>
+  <div class="card-header">View Events</div>
 </div>
 
 <!-- EVENT INFORMATION CARD -->
@@ -17,6 +16,7 @@
         <th>Name</th>
         <th>Description</th>
         <th>Material</th>
+        <th>Date & Time</th>
         <th>Resources</th>
         <th *ngIf="isEducator">Action</th>
       </tr>
@@ -28,13 +28,18 @@
         <td>{{ e.name }}</td>
         <td>{{ e.description }}</td>
         <td>{{ e.materials }}</td>
+        <td>{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
+
+        <!-- ✅ FIXED RESOURCES DISPLAY -->
         <td>
-          <ul *ngIf="e.resources">
-            <li *ngFor="let r of e.resources">
-              {{r.resourceType}}
-            </li>
-          </ul>
+          <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
+            <span *ngFor="let r of e.resourceAllocations; let last = last">
+              {{ r.resourceType }}<span *ngIf="!last">, </span>
+            </span>
+          </ng-container>
+          <ng-template #noRes>-</ng-template>
         </td>
+
         <td *ngIf="isEducator">
           <button class="update-btn" (click)="edit(e)">Update</button>
         </td>
@@ -76,5 +81,6 @@
 
   </form>
 </div>
+
 <div class="error" *ngIf="showError">{{ errorMessage }}</div>
 <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>

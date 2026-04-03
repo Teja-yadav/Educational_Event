@@ -15,9 +15,14 @@ export class RegisterForEventComponent implements OnInit {
   formModel: any = {};
   showError: boolean = false;
   errorMessage: any = '';
+  eventObj: any = {};
+  assignModel: any = {};
   showMessage: boolean = false;
   responseMessage: any = '';
-  eventList: any[] = [];
+  isUpdate: boolean = false;
+  eventList: any = [];
+
+  private studentIdPattern = /^LTM\d{2}$/;
 
   constructor(
     private fb: FormBuilder,
@@ -28,44 +33,66 @@ export class RegisterForEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
-      studentId: ['', Validators.required],
+      studentId: ['', [Validators.required, Validators.pattern(this.studentIdPattern)]],
       eventId: ['', Validators.required],
-      status: ['', Validators.required]
+      //status: ['', Validators.required]
     });
 
     this.getEvents();
   }
 
-  // ✅ FIXED METHOD
-  getEvents() {
-    this.http.getStudentEvents().subscribe({
-      next: (res) => {
-        this.eventList = res;
-      },
-      error: () => {
-        this.eventList = [];
-      }
-    });
-  }
+getEvents() {
+  this.http.getStudentEvents().subscribe({
+    next: (res) => {
+      const now = new Date().getTime();
+
+      this.eventList = (res || []).filter((e: any) => {
+        const t = new Date(e.eventDateTime).getTime();
+        return !isNaN(t) && t >= now;
+      });
+    },
+    error: () => {
+      this.eventList = [];
+    }
+  });
+}
 
   Submit() {
+    this.showError = false;
+    this.errorMessage = '';
+    this.showMessage = false;
+    this.responseMessage = '';
+
     if (this.itemForm.invalid) {
       this.showError = true;
-      this.errorMessage = 'All fields are required';
+
+      const ctrl = this.itemForm.get('studentId');
+      if (ctrl?.errors?.['required']) {
+        this.errorMessage = 'Student ID is required';
+      } else if (ctrl?.errors?.['pattern']) {
+        this.errorMessage = 'Student ID must be like LTM01, LTM09, LTM90 (starts with LTM + 2 digits)';
+      } else {
+        this.errorMessage = 'All fields are required';
+      }
+
       return;
     }
 
-    this.formModel = this.itemForm.value;
+    const payload = {
+      studentId: (this.itemForm.value.studentId as string).toUpperCase(),
+      eventId: this.itemForm.value.eventId,
+     // status: this.itemForm.value.status
+    };
 
-    this.http.registerForEvent(this.formModel.eventId, this.formModel).subscribe({
+    this.http.registerForEvent(payload.eventId, payload).subscribe({
       next: () => {
         this.showMessage = true;
         this.responseMessage = 'Registered Successfully';
         this.itemForm.reset();
       },
-      error: () => {
+      error: (err) => {
         this.showError = true;
-        this.errorMessage = 'Failed to register';
+        this.errorMessage = err?.error?.message || 'Failed to register';
       }
     });
   }

@@ -19,28 +19,41 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private EventRegistrationRepository registrationRepository;
 
-    @Override
-    public EventRegistration registerStudent(Long eventId, Long studentId) {
+   @Override
+public EventRegistration registerStudent(Long eventId, String studentId) {
 
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+    Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        EventRegistration registration = new EventRegistration();
-        registration.setStudentId(studentId);
-        registration.setStatus("REGISTERED");
-        registration.setEvent(event);
+    boolean alreadyRegistered = registrationRepository
+            .findByStudentIdAndEvent_Id(studentId, eventId)
+            .isPresent();
 
-        return registrationRepository.save(registration);
+    if (alreadyRegistered) {
+        throw new RuntimeException("Student already registered for this event");
     }
+    
+    if (event.getEventDateTime() != null && event.getEventDateTime().isBefore(java.time.LocalDateTime.now())) {
+        throw new RuntimeException("Event time already passed. Cannot register.");
+    }
+
+
+    EventRegistration registration = new EventRegistration();
+
+    registration.setStudentId(studentId);
+    registration.setStatus("REGISTERED");
+    registration.setEvent(event);
+
+    return registrationRepository.save(registration);
+}
 
     @Override
     public List<EventRegistration> getAllRegistrations() {
         return registrationRepository.findAll();
     }
 
-    // ✅ IMPLEMENT REQUIRED METHOD
     @Override
-    public List<EventRegistration> getStatus(Long studentId) {
+    public List<EventRegistration> getStatus(String studentId) {
         return registrationRepository.findByStudentId(studentId);
     }
 }

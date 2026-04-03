@@ -22,6 +22,7 @@ public class InstitutionController {
         event.setName(eventDto.getName());
         event.setDescription(eventDto.getDescription());
         event.setMaterials(eventDto.getMaterials());
+        event.setEventDateTime(eventDto.getEventDateTime());
         return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.createEvent(event)));
     }
     @GetMapping(value = "/events", produces = "application/json")
