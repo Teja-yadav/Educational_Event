@@ -4,10 +4,14 @@ import com.edutech.educationalresourcedistributionsystem.entity.Event;
 import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
 import com.edutech.educationalresourcedistributionsystem.repository.EventRegistrationRepository;
 import com.edutech.educationalresourcedistributionsystem.repository.EventRepository;
+import com.edutech.educationalresourcedistributionsystem.service.EmailService;
 import com.edutech.educationalresourcedistributionsystem.service.RegistrationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,33 +23,72 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Autowired
     private EventRegistrationRepository registrationRepository;
 
-   @Override
-public EventRegistration registerStudent(Long eventId, String studentId) {
+    @Autowired
+    private EmailService emailService;
 
-    Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new RuntimeException("Event not found"));
+    @Value("${app.mail.admin:}")
+    private String adminEmail;
 
-    boolean alreadyRegistered = registrationRepository
-            .findByStudentIdAndEvent_Id(studentId, eventId)
-            .isPresent();
+    @Override
+    public EventRegistration registerStudent(Long eventId, String studentId) {
 
-    if (alreadyRegistered) {
-        throw new RuntimeException("Student already registered for this event");
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        boolean alreadyRegistered = registrationRepository
+                .findByStudentIdAndEvent_Id(studentId, eventId)
+                .isPresent();
+
+        if (alreadyRegistered) {
+            if (adminEmail != null && !adminEmail.isBlank()) {
+                String subject = "Duplicate Registration Blocked: " + event.getName();
+                String body =
+                        "Duplicate registration attempt blocked.\n\n" +
+                        "Student ID: " + studentId + "\n" +
+                        "Event ID: " + eventId + "\n" +
+                        "Event Name: " + event.getName() + "\n" +
+                        "Time: " + LocalDateTime.now() + "\n";
+                emailService.sendSimpleMail(adminEmail, subject, body);
+            }
+            throw new RuntimeException("Student already registered for this event");
+        }
+
+        if (event.getEventDateTime() != null && event.getEventDateTime().isBefore(LocalDateTime.now())) {
+            if (adminEmail != null && !adminEmail.isBlank()) {
+                String subject = "Registration Blocked (Event Passed): " + event.getName();
+                String body =
+                        "Registration blocked because event time already passed.\n\n" +
+                        "Student ID: " + studentId + "\n" +
+                        "Event ID: " + eventId + "\n" +
+                        "Event Name: " + event.getName() + "\n" +
+                        "Event DateTime: " + event.getEventDateTime() + "\n" +
+                        "Time: " + LocalDateTime.now() + "\n";
+                emailService.sendSimpleMail(adminEmail, subject, body);
+            }
+            throw new RuntimeException("Event time already passed. Cannot register.");
+        }
+
+        EventRegistration registration = new EventRegistration();
+        registration.setStudentId(studentId);
+        registration.setStatus("REGISTERED");
+        registration.setEvent(event);
+
+        EventRegistration saved = registrationRepository.save(registration);
+
+        if (adminEmail != null && !adminEmail.isBlank()) {
+            String subject = "Student Registered Successfully: " + event.getName();
+            String body =
+                    "A student successfully registered for an event.\n\n" +
+                    "Student ID: " + studentId + "\n" +
+                    "Event ID: " + eventId + "\n" +
+                    "Event Name: " + event.getName() + "\n" +
+                    "Event DateTime: " + event.getEventDateTime() + "\n" +
+                    "Status: " + saved.getStatus() + "\n";
+            emailService.sendSimpleMail(adminEmail, subject, body);
+        }
+
+        return saved;
     }
-    
-    if (event.getEventDateTime() != null && event.getEventDateTime().isBefore(java.time.LocalDateTime.now())) {
-        throw new RuntimeException("Event time already passed. Cannot register.");
-    }
-
-
-    EventRegistration registration = new EventRegistration();
-
-    registration.setStudentId(studentId);
-    registration.setStatus("REGISTERED");
-    registration.setEvent(event);
-
-    return registrationRepository.save(registration);
-}
 
     @Override
     public List<EventRegistration> getAllRegistrations() {

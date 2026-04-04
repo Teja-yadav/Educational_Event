@@ -1,4 +1,136 @@
-<app-navbar></app-navbar>
-<div class="content-wrapper">
-  <router-outlet></router-outlet>
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-badge">E</div>
+      <div class="logo-text">
+        <div class="logo-title">EduTech</div>
+        <div class="logo-sub">{{ role }}</div>
+      </div>
+    </div>
+
+    <div class="section-title">MAIN</div>
+
+    <!-- INSTITUTION MENU -->
+    <ng-container *ngIf="role === 'INSTITUTION'">
+      <button class="nav" [class.active]="active==='home'" (click)="setSection('home')">Dashboard</button>
+      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')">Browse Events</button>
+      <button class="nav" [class.active]="active==='create-event'" (click)="setSection('create-event')">Create Event</button>
+      <button class="nav" [class.active]="active==='add-resource'" (click)="setSection('add-resource')">Add Resource</button>
+      <button class="nav" [class.active]="active==='resource-allocate'" (click)="setSection('resource-allocate')">Allocate Resources</button>
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">Booking Details</button>
+    </ng-container>
+
+    <!-- EDUCATOR MENU -->
+    <ng-container *ngIf="role === 'EDUCATOR'">
+      <button class="nav" [class.active]="active==='educator-agenda'" (click)="setSection('educator-agenda')">View Agenda</button>
+      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')">Update Materials</button>
+    </ng-container>
+
+    <!-- STUDENT MENU -->
+    <ng-container *ngIf="role === 'STUDENT'">
+      <button class="nav" [class.active]="active==='register-for-event'" (click)="setSection('register-for-event')">Register for Event</button>
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">Booking Details</button>
+    </ng-container>
+
+    <div class="section-title">ACCOUNT</div>
+    <button class="signout" (click)="logout()">Sign Out</button>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="crumbs">/ Dashboard</div>
+
+      <div class="top-actions">
+        <div class="icon-btn">🔔</div>
+
+        <div class="profile">
+          <div class="avatar">{{ username[0] | uppercase }}</div>
+          <div class="profile-text">
+            <div class="profile-name">{{ username }}</div>
+            <div class="profile-role">{{ role }}</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+
+      <!-- INSTITUTION DASHBOARD HOME -->
+      <div *ngIf="role === 'INSTITUTION' && active === 'home'">
+        <div class="dash-head">
+          <h1>{{ getGreeting() }}, {{ username }} 👋</h1>
+          <p>Welcome back to your institution dashboard.</p>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="num">{{ activeEvents }}</div>
+            <div class="label">Active Events</div>
+          </div>
+
+          <div class="kpi">
+            <div class="num">{{ registrations }}</div>
+            <div class="label">Registrations</div>
+          </div>
+
+          <div class="kpi">
+            <div class="num">{{ resources }}</div>
+            <div class="label">Resources</div>
+          </div>
+
+          <div class="kpi">
+            <div class="num">{{ totalUsers }}</div>
+            <div class="label">Total Users</div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-title">Upcoming Events</div>
+
+            <div class="event" *ngFor="let e of upcoming">
+              <div>
+                <div class="ename">{{ e.name }}</div>
+                <div class="esub">
+                  {{ e.description }} • {{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}
+                </div>
+              </div>
+              <span class="chip">Upcoming</span>
+            </div>
+
+            <div class="empty" *ngIf="upcoming.length === 0">
+              No upcoming events
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-title">Quick Actions</div>
+            <button class="qa" (click)="setSection('create-event')">Create Event</button>
+            <button class="qa" (click)="setSection('add-resource')">Add Resource</button>
+            <button class="qa" (click)="setSection('resource-allocate')">Allocate</button>
+            <button class="qa" (click)="setSection('booking-details')">View Bookings</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOAD EXISTING COMPONENTS INSIDE DASHBOARD -->
+      <app-create-event *ngIf="active==='create-event'"></app-create-event>
+      <app-add-resource *ngIf="active==='add-resource'"></app-add-resource>
+      <app-resource-allocate *ngIf="active==='resource-allocate'"></app-resource-allocate>
+      <app-view-events *ngIf="active==='view-events'"></app-view-events>
+      <app-booking-details *ngIf="active==='booking-details'"></app-booking-details>
+      <app-register-for-event *ngIf="active==='register-for-event'"></app-register-for-event>
+
+      <!-- EDUCATOR AGENDA (reuse view-events) -->
+      <app-view-events *ngIf="active==='educator-agenda'"></app-view-events>
+
+    </section>
+  </main>
+
 </div>
