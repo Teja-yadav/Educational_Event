@@ -5,6 +5,7 @@
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/entity/Event.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/config/Configurations.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/dto/LoginResponse.java
+/home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/service/impl/EmailServiceImpl.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/dto/EventDto.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/service/impl/EventServiceImpl.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/repository/EventRegistrationRepository.java
@@ -22,6 +23,7 @@
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/EducationalResourceDistributionSystemApplication.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/service/ResourceService.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/repository/EventRepository.java
+/home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/service/EmailService.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/controller/InstitutionController.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/entity/User.java
 /home/coder/app/server/src/main/java/com/edutech/educationalresourcedistributionsystem/service/UserService.java
