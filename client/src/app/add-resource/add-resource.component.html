@@ -1,55 +1,90 @@
-<app-navbar></app-navbar>
-<!-- Page Heading -->
-<h2 class="page-title">Add Resource</h2>
+<div class="resource-page">
 
-<!-- Card Container -->
-<div class="card-container">
-  <div class="card-header">Add Resource</div>
+  <div class="header">
+    <h2 class="title">Resource Management</h2>
+    <p class="subtitle">Add and manage physical and digital resources</p>
+  </div>
 
-  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-    <div class="form-row">
+  <!-- FORM CARD (LEFT ALIGNED) -->
+  <div class="form-wrap">
+    <div class="form-card">
 
-      <div class="form-group">
-        <label>Resource Type</label>
-        <input type="text" formControlName="resourceType" />
-      </div>
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
-      <div class="form-group">
-        <label>Description</label>
-        <input type="text" formControlName="description" />
-      </div>
+        <div class="row-2">
+          <div class="field">
+            <label>Resource Type</label>
+            <select formControlName="resourceType">
+              <option value="" disabled selected>Select type</option>
+              <option value="Projector">Projector</option>
+              <option value="Computer Lab">Computer Lab</option>
+              <option value="Whiteboard">Whiteboard</option>
+              <option value="Auditorium">Auditorium</option>
+              <option value="Server">Dev Server</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-      <div class="form-group">
-        <label>Availability</label>
-        <input type="text" formControlName="availability" />
-      </div>
+          <div class="field">
+            <label>Resource Name / ID</label>
+            <input
+              type="text"
+              formControlName="description"
+              placeholder="e.g. Projector-A1"
+            />
+          </div>
+        </div>
 
-      <div class="form-group button-group">
-        <button type="submit">Add Resource</button>
-      </div>
+        <div class="field full">
+          <label>Notes</label>
+          <textarea
+            rows="2"
+            formControlName="availability"
+            placeholder="Additional notes (optional)"
+          ></textarea>
+        </div>
+
+        <button class="primary-btn" type="submit">Add Resource</button>
+
+        <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
+        <div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
+
+      </form>
 
     </div>
+  </div>
 
-    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
-    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
-  </form>
-</div>
+  <!-- AVAILABLE RESOURCES -->
+  <h3 class="section-title">Available Resources</h3>
 
-<!-- Resource List -->
-<div class="card-container">
-  <div class="card-header">All Resources</div>
+  <div class="cards-grid">
+    <div class="resource-card" *ngFor="let r of resourceList">
+      <div class="card-top">
+        <div class="icon">
+          <span class="dot"></span>
+          <span class="bar"></span>
+        </div>
 
-  <table>
-    <tr>
-      <th>#</th>
-      <th>Resource Type</th>
-      <th>Description</th>
-    </tr>
+        <div class="meta">
+          <div class="name">{{ r.description }}</div>
+          <div class="type">{{ r.resourceType }}</div>
+        </div>
+      </div>
 
-    <tr *ngFor="let r of resourceList; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ r.resourceType }}</td>
-      <td>{{ r.description }}</td>
-    </tr>
-  </table>
+      <div class="status-line">
+        <span
+          class="status"
+          [ngClass]="(r.availability || '').toLowerCase().includes('use') ? 'inuse' : 'available'"
+        >
+          <span class="bullet"></span>
+          {{ (r.availability || '').toLowerCase().includes('use') ? 'In Use' : 'Available' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!resourceList || resourceList.length === 0">
+      No resources found
+    </div>
+  </div>
+
 </div>

@@ -2,6 +2,7 @@ package com.edutech.educationalresourcedistributionsystem.config;
 
 import com.edutech.educationalresourcedistributionsystem.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -58,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // STUDENT APIs
             .antMatchers("/api/student/register/**").hasAuthority("STUDENT")
             .antMatchers("/api/student/registration-status/**").hasAuthority("STUDENT")
+            .antMatchers("/api/student/registration-status/**").hasAnyAuthority("INSTITUTION", "STUDENT")
 
             .anyRequest().authenticated()
             .and()
@@ -71,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

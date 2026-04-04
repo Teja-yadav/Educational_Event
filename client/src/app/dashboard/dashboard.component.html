@@ -15,23 +15,22 @@
     <!-- INSTITUTION MENU -->
     <ng-container *ngIf="role === 'INSTITUTION'">
       <button class="nav" [class.active]="active==='home'" (click)="setSection('home')">Dashboard</button>
-      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')">Browse Events</button>
-      <button class="nav" [class.active]="active==='create-event'" (click)="setSection('create-event')">Create Event</button>
-      <button class="nav" [class.active]="active==='add-resource'" (click)="setSection('add-resource')">Add Resource</button>
-      <button class="nav" [class.active]="active==='resource-allocate'" (click)="setSection('resource-allocate')">Allocate Resources</button>
-      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">Booking Details</button>
+      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')"><span class="qa-icon">📅 </span>Browse Events</button>
+      <button class="nav" [class.active]="active==='create-event'" (click)="setSection('create-event')"><span class="qa-icon">✚ </span>Create Event</button>
+      <button class="nav" [class.active]="active==='add-resource'" (click)="setSection('add-resource')"><span class="qa-icon">📦 </span>Add Resource</button>
+      <button class="nav" [class.active]="active==='resource-allocate'" (click)="setSection('resource-allocate')"><span class="qa-icon"> 🔗</span>Allocate Resources</button>
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')"><span class="qa-icon">📋</span>Booking Details</button>
     </ng-container>
 
     <!-- EDUCATOR MENU -->
     <ng-container *ngIf="role === 'EDUCATOR'">
-      <button class="nav" [class.active]="active==='educator-agenda'" (click)="setSection('educator-agenda')">View Agenda</button>
-      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')">Update Materials</button>
+      <button class="nav" [class.active]="active==='educator-agenda'" (click)="setSection('educator-agenda')"><span class="qa-icon"> 📅 </span>Browse Events</button>
     </ng-container>
 
     <!-- STUDENT MENU -->
     <ng-container *ngIf="role === 'STUDENT'">
       <button class="nav" [class.active]="active==='register-for-event'" (click)="setSection('register-for-event')">Register for Event</button>
-      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">Booking Details</button>
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')"><span class="qa-icon">🎟️</span>My Bookings</button>
     </ng-container>
 
     <div class="section-title">ACCOUNT</div>
@@ -43,7 +42,7 @@
 
     <!-- TOP BAR -->
     <header class="topbar">
-      <div class="crumbs">/ Dashboard</div>
+      <div class="crumbs">Educational Event Management</div>
 
       <div class="top-actions">
         <div class="icon-btn">🔔</div>

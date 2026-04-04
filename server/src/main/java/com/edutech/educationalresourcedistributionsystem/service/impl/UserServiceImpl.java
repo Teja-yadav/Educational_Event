@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -28,18 +27,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Value("${app.mail.admin:}")
     private String adminEmail;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     public User registerUser(User user) {
+
+        if(userRepository.existsByEmail(user.getEmail())){
+            throw new IllegalArgumentException("User with same email already exists");
+        }
+
         user.setPassword(encoder.encode(user.getPassword()));
         User saved = userRepository.save(user);
 
         String to = null;
         try {
             to = saved.getEmail();
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         if (to != null && !to.isBlank()) {
             String subject = "Welcome to Educational Resource Distribution System";
@@ -64,25 +67,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User login(String username, String password) {
-        User user = userRepository.findByUsername(username);
-        if (user != null && encoder.matches(password, user.getPassword())) {
-
-            // OPTIONAL: login notification email (keep if you want)
-            String to = null;
-            try {
-                to = user.getEmail();
-            } catch (Exception ignored) {
-            }
-
-            return user;
-        }
-        return null;
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username);
 
@@ -93,9 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                Collections.singletonList(
-                        new SimpleGrantedAuthority(user.getRole())
-                )
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
         );
     }
 }

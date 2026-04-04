@@ -1,34 +1,73 @@
-<app-navbar></app-navbar>
+<div class="page">
+  <div class="header">
+    <h1>All Booking Details</h1>
+    <p>Overview of all event registrations</p>
+  </div>
 
-<div class="container">
-
-  <h2>Booking Details</h2>
-
-  <form [formGroup]="itemForm" (ngSubmit)="searchEvent()">
-
-    <label>Student ID</label>
-    <input type="text" formControlName="studentId" placeholder="Example: LTM01" />
-
-    <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
-      <div *ngIf="itemForm.get('studentId')?.errors?.['required']">
-        Student ID is required
+  <div class="card">
+    <!-- ✅ Bind formGroup correctly here -->
+    <form class="toolbar" [formGroup]="itemForm" (ngSubmit)="searchEvent()">
+      <div class="field">
+        <label>Student ID</label>
+        <input
+          type="text"
+          formControlName="studentId"
+          placeholder="Example: LTM01"
+        />
       </div>
-      <div *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
-        Student ID must be like LTM01, LTM09, LTM11 (starts with LTM + 2 digits)
-      </div>
+
+      <!-- ✅ Make it submit the form -->
+      <button class="btn" type="submit">
+        Search
+      </button>
+    </form>
+
+    <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+    <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+
+    <div class="table-wrap" *ngIf="eventList.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th>STUDENT</th>
+            <th>EVENT</th>
+            <th class="col-status">STATUS</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let e of eventList; let i = index">
+            <td class="col-num">{{ i + 1 }}</td>
+
+            <td class="muted">
+              {{ e.studentId || e.student?.studentId || '-' }}
+            </td>
+
+            <td class="strong">
+              {{ e.event?.name || e.eventName || '-' }}
+            </td>
+
+
+            <td class="col-status">
+              <span
+                class="status-pill"
+                [ngClass]="{
+                  confirmed: (e.status || '').toUpperCase() === 'CONFIRMED',
+                  pending: (e.status || '').toUpperCase() === 'PENDING',
+                  cancelled: (e.status || '').toUpperCase() === 'CANCELLED'
+                }"
+              >
+                {{ (e.status || 'PENDING') | uppercase }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <button type="submit">Search</button>
-
-  </form>
-
-  <div class="error" *ngIf="showError">{{ errorMessage }}</div>
-  <div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
-
-  <ul *ngIf="eventList.length > 0">
-    <li *ngFor="let e of eventList">
-      {{ e.event?.name }} - {{ e.status }}
-    </li>
-  </ul>
-
+    <div class="empty" *ngIf="!showError && !showMessage && eventList.length === 0">
+      Search with a Student ID to view booking details.
+    </div>
+  </div>
 </div>

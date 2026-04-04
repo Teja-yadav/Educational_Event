@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-resource-allocate',
@@ -12,21 +10,18 @@ import { AuthService } from '../../services/auth.service';
 export class ResourceAllocateComponent implements OnInit {
 
   itemForm!: FormGroup;
-  formModel: any = {};
-  showError: boolean = false;
-  errorMessage: any = '';
-  resourceList: any = [];
-  assignModel: any = {};
-  showMessage: boolean = false;
-  responseMessage: any = '';
-  eventList: any = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private http: HttpService,
-    private auth: AuthService,
-    private router: Router,
-  ) { }
+  eventList: any[] = [];
+  resourceList: any[] = [];
+  allocationList: any[] = [];
+
+  showError = false;
+  errorMessage = '';
+
+  showMessage = false;
+  responseMessage = '';
+
+  constructor(private fb: FormBuilder, private http: HttpService) {}
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
@@ -34,47 +29,52 @@ export class ResourceAllocateComponent implements OnInit {
       resourceId: ['', Validators.required]
     });
 
-    this.getEvent();
+    this.getEvents();
     this.getResources();
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    this.showError = false;
+    this.showMessage = false;
+    this.errorMessage = '';
+    this.responseMessage = '';
+
     if (this.itemForm.invalid) {
       this.showError = true;
-      this.errorMessage = 'Event and Resource fields are required';
+      this.errorMessage = 'Please select event and resource';
       return;
     }
 
-    this.formModel = this.itemForm.value;
+    const eventId = this.itemForm.value.eventId;
+    const resourceId = this.itemForm.value.resourceId;
 
-    this.http.allocateResources(
-      this.formModel.eventId,
-      this.formModel.resourceId,
-      {}
-    ).subscribe({
-      next: (res) => {
+    // ✅ Match your service method name: allocateResources(eventId, resourceId, details)
+    this.http.allocateResources(eventId, resourceId, {}).subscribe({
+      next: () => {
         this.showMessage = true;
-        this.responseMessage = 'Resource Allocated Successfully';
+        this.responseMessage = 'Resource allocated successfully';
         this.itemForm.reset();
       },
       error: () => {
         this.showError = true;
-        this.errorMessage = 'Failed to allocate resource';
+        this.errorMessage = 'Error allocating resource';
       }
     });
   }
 
-  getEvent() {
+  getEvents(): void {
+    // ✅ Match your service method name: GetAllevents()
     this.http.GetAllevents().subscribe({
-      next: (res) => { this.eventList = res; },
-      error: () => { this.eventList = []; }
+      next: (res: any) => this.eventList = res || [],
+      error: () => this.eventList = []
     });
   }
 
-  getResources() {
+  getResources(): void {
     this.http.GetAllResources().subscribe({
-      next: (res) => { this.resourceList = res; },
-      error: () => { this.resourceList = []; }
+      next: (res: any) => this.resourceList = res || [],
+      error: () => this.resourceList = []
     });
   }
+
 }

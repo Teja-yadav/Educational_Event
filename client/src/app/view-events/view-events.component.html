@@ -1,86 +1,101 @@
-<!-- <app-navbar></app-navbar> -->
-<!-- <h2 class="page-title">Manage Events</h2> -->
+<div class="page">
+  <div class="page-header">
+    <h1>Browse Events</h1>
+    <p>Discover and register for educational events</p>
+  </div>
 
-<div class="card-box">
-  <div class="card-header">View Events</div>
-</div>
+  <!-- EVENT INFORMATION CARD -->
+  <div class="card-box">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th>EVENT NAME</th>
+            <th>DESCRIPTION</th>
+            <th>MATERIALS</th>
+            <th>DATE &amp; TIME</th>
+            <th>RESOURCES</th>
+            <th class="col-action" *ngIf="isEducator">ACTION</th>
+          </tr>
+        </thead>
 
-<!-- EVENT INFORMATION CARD -->
-<div class="card-box">
-  <div class="card-header">Event Information</div>
+        <tbody>
+          <tr *ngFor="let e of eventList; let i = index">
+            <td class="col-num">{{ i + 1 }}</td>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Sr#</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Material</th>
-        <th>Date & Time</th>
-        <th>Resources</th>
-        <th *ngIf="isEducator">Action</th>
-      </tr>
-    </thead>
+            <td class="event-name">
+              {{ e.name }}
+            </td>
 
-    <tbody>
-      <tr *ngFor="let e of eventList; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ e.name }}</td>
-        <td>{{ e.description }}</td>
-        <td>{{ e.materials }}</td>
-        <td>{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
+            <td class="muted">
+              {{ e.description }}
+            </td>
 
-        <!-- ✅ FIXED RESOURCES DISPLAY -->
-        <td>
-          <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
-            <span *ngFor="let r of e.resourceAllocations; let last = last">
-              {{ r.resourceType }}<span *ngIf="!last">, </span>
-            </span>
-          </ng-container>
-          <ng-template #noRes>-</ng-template>
-        </td>
+            <td class="muted">
+              {{ e.materials }}
+            </td>
 
-        <td *ngIf="isEducator">
-          <button class="update-btn" (click)="edit(e)">Update</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+            <td class="muted">
+              {{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}
+            </td>
 
-<!-- ✅ UPDATE EVENT CARD -->
-<div class="card-box update-card" *ngIf="isUpdate && isEducator">
-  <div class="card-header">Update Event</div>
+            <td class="muted">
+              <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
+                <span *ngFor="let r of e.resourceAllocations; let last = last">
+                  {{ r.resourceType }}<span *ngIf="!last">, </span>
+                </span>
+              </ng-container>
+              <ng-template #noRes>-</ng-template>
+            </td>
 
-  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="update-form">
+            <td class="col-action" *ngIf="isEducator">
+              <button class="update-btn" (click)="edit(e)">Update</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Name</label>
-        <input formControlName="name" />
+    <div class="empty" *ngIf="!eventList || eventList.length === 0">
+      No events available.
+    </div>
+  </div>
+
+  <!-- UPDATE EVENT CARD -->
+  <div class="card-box update-card" *ngIf="isUpdate && isEducator">
+    <div class="card-header">Update Event</div>
+
+    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="update-form">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Name</label>
+          <input formControlName="name" />
+        </div>
       </div>
-    </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Description</label>
-        <input formControlName="description" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Description</label>
+          <input formControlName="description" />
+        </div>
       </div>
-    </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Materials</label>
-        <input formControlName="materials" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Materials</label>
+          <input formControlName="materials" />
+        </div>
       </div>
-    </div>
 
-    <div class="form-actions">
-      <button type="submit" class="update-submit">Update</button>
-    </div>
+      <div class="form-actions">
+        <button type="submit" class="update-submit">Update</button>
+      </div>
 
-  </form>
+    </form>
+  </div>
+
+  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
 </div>
-
-<div class="error" *ngIf="showError">{{ errorMessage }}</div>
-<div class="success" *ngIf="showMessage">{{ responseMessage }}</div>
