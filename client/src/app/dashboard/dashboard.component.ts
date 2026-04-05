@@ -33,7 +33,6 @@ export class DashboardComponent implements OnInit {
 
   upcoming: any[] = [];
 
-  // ✅ Added for new UI
   eventCountBadge = 0;
   showTotalUsers = false;
 
@@ -74,7 +73,6 @@ export class DashboardComponent implements OnInit {
   }
 
   loadInstitutionStats() {
-    // ✅ Events list → Active Events + Sidebar badge count
     this.http.GetAllevents().subscribe({
       next: (res) => {
         const list = Array.isArray(res) ? res : [];
@@ -93,7 +91,6 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // ✅ Resources count
     this.http.GetAllResources().subscribe({
       next: (res) => {
         const list = Array.isArray(res) ? res : [];
@@ -104,7 +101,6 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // ✅ Registrations count (requires http.getRegistrationsCount())
     this.http.getRegistrationsCount().subscribe({
       next: (res) => {
         this.registrations = Number(res) || 0;
@@ -114,7 +110,6 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    // ✅ keep totalUsers hidden (until you implement backend endpoint)
     this.totalUsers = 0;
     this.showTotalUsers = false;
   }

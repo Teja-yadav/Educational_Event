@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/educator/agenda").hasAuthority("EDUCATOR")
                 .antMatchers("/api/educator/update-material/**").hasAuthority("EDUCATOR")
                 .antMatchers("/api/student/register/**").hasAuthority("STUDENT")
-                .antMatchers("/api/student/registration-status/**").hasAnyAuthority("INSTITUTION", "STUDENT")
+                .antMatchers("/api/student/registration-status/**").hasAnyAuthority("STUDENT")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
