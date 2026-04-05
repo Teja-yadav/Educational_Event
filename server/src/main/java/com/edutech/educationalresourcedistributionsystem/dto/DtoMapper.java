@@ -23,6 +23,7 @@ public class DtoMapper {
                 event.getDescription(),
                 event.getMaterials(),
                 event.getEventDateTime(),
+                event.getVenue(),
                 resources
         );
     }
@@ -51,6 +52,7 @@ public class DtoMapper {
         event.setDescription(dto.getDescription());
         event.setMaterials(dto.getMaterials());
         event.setEventDateTime(dto.getEventDateTime());
+        event.setVenue(dto.getVenue());
         return event;
     }
 

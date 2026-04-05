@@ -125,3 +125,13 @@
   background: #ecfdf3;
   color: #067647;
 }
+select:disabled {
+  background: #f3f4f6;
+  color: #374151;
+  cursor: not-allowed;
+}
+input[readonly] {
+  background: #f3f4f6;
+  color: #374151;
+  cursor: not-allowed;
+}

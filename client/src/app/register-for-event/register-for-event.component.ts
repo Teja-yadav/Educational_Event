@@ -12,15 +12,11 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterForEventComponent implements OnInit {
 
   itemForm!: FormGroup;
-  formModel: any = {};
   showError: boolean = false;
   errorMessage: any = '';
-  eventObj: any = {};
-  assignModel: any = {};
   showMessage: boolean = false;
   responseMessage: any = '';
-  isUpdate: boolean = false;
-  eventList: any = [];
+  eventList: any[] = [];
 
   private studentIdPattern = /^LTM\d{2}$/;
 
@@ -35,27 +31,51 @@ export class RegisterForEventComponent implements OnInit {
     this.itemForm = this.fb.group({
       studentId: ['', [Validators.required, Validators.pattern(this.studentIdPattern)]],
       eventId: ['', Validators.required],
-      //status: ['', Validators.required]
+
+      // ✅ Venue is just a display field (readonly)
+      venue: ['']
     });
 
     this.getEvents();
+
+    // ✅ When event changes -> fill venue immediately
+    this.itemForm.get('eventId')?.valueChanges.subscribe((eventId) => {
+      const selected = this.eventList.find(e => String(e.id) === String(eventId));
+      this.itemForm.get('venue')?.setValue(selected?.venue || '');
+    });
   }
 
-getEvents() {
-  this.http.getStudentEvents().subscribe({
-    next: (res) => {
-      const now = new Date().getTime();
+  getEvents() {
+    this.http.getStudentEvents().subscribe({
+      next: (res) => {
+        const now = new Date().getTime();
 
-      this.eventList = (res || []).filter((e: any) => {
-        const t = new Date(e.eventDateTime).getTime();
-        return !isNaN(t) && t >= now;
-      });
-    },
-    error: () => {
-      this.eventList = [];
-    }
-  });
-}
+        this.eventList = (res || []).filter((e: any) => {
+          const t = new Date(e.eventDateTime).getTime();
+          return !isNaN(t) && t >= now;
+        });
+
+        // ✅ If event already selected, fill venue (safe)
+        const currentEventId = this.itemForm.get('eventId')?.value;
+        if (currentEventId) {
+          const selected = this.eventList.find(e => String(e.id) === String(currentEventId));
+          this.itemForm.get('venue')?.setValue(selected?.venue || '');
+        }
+      },
+      error: () => {
+        this.eventList = [];
+      }
+    });
+  }
+
+  clearForm() {
+    this.itemForm.reset();
+    this.itemForm.get('venue')?.setValue('');
+    this.showError = false;
+    this.errorMessage = '';
+    this.showMessage = false;
+    this.responseMessage = '';
+  }
 
   Submit() {
     this.showError = false;
@@ -78,21 +98,21 @@ getEvents() {
       return;
     }
 
+    // ✅ Do not send venue in payload (backend registers by eventId + studentId)
     const payload = {
       studentId: (this.itemForm.value.studentId as string).toUpperCase(),
-      eventId: this.itemForm.value.eventId,
-     // status: this.itemForm.value.status
+      eventId: this.itemForm.value.eventId
     };
 
     this.http.registerForEvent(payload.eventId, payload).subscribe({
       next: () => {
         this.showMessage = true;
         this.responseMessage = 'Registered Successfully';
-        this.itemForm.reset();
+        this.clearForm();
       },
       error: (err) => {
         this.showError = true;
-        this.errorMessage = err?.error?.message || 'Failed to register';
+        this.errorMessage = err?.error?.message || err?.error || 'Failed to register';
       }
     });
   }

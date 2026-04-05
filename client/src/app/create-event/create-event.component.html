@@ -18,12 +18,19 @@
 
     <div class="field">
       <label>Required Materials / Prerequisites</label>
-      <input formControlName="materials" type="text" placeholder="e.g. Laptop, Python 3.x, basic programming knowledge" />
+      <input formControlName="materials" type="text"
+        placeholder="e.g. Laptop, Python 3.x, basic programming knowledge" />
     </div>
 
     <div class="field">
       <label>Date & Time</label>
       <input type="datetime-local" formControlName="eventDateTime" [min]="minDateTime" />
+    </div>
+
+    <!-- ✅ NEW VENUE FIELD -->
+    <div class="field">
+      <label>Venue</label>
+      <input formControlName="venue" type="text" placeholder="e.g. Auditorium Block A / Lab 2 / Seminar Hall" />
     </div>
 
     <div class="actions">
@@ -48,6 +55,8 @@
         <th>DESCRIPTION</th>
         <th>MATERIALS</th>
         <th>DATE & TIME</th>
+        <!-- ✅ NEW COLUMN -->
+        <th>VENUE</th>
       </tr>
     </thead>
 
@@ -58,6 +67,8 @@
         <td class="col-desc">{{ e.description }}</td>
         <td class="col-mat">{{ e.materials }}</td>
         <td class="col-dt">{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
+        <!-- ✅ SHOW VENUE -->
+        <td class="col-venue">{{ e.venue }}</td>
       </tr>
     </tbody>
   </table>

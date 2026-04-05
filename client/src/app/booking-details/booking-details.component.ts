@@ -50,10 +50,8 @@ export class BookingDetailsComponent implements OnInit {
     this.responseMessage = '';
     this.eventList = [];
 
-    // ✅ force validation to show correctly
     this.itemForm.markAllAsTouched();
 
-    // ✅ normalize input (removes spaces)
     const studentIdRaw = (this.itemForm.value.studentId || '').toString().trim();
     this.itemForm.patchValue({ studentId: studentIdRaw }, { emitEvent: false });
 
@@ -77,10 +75,15 @@ export class BookingDetailsComponent implements OnInit {
 
         this.eventList = data.map((x: any) => {
           const rawDate = x.registeredOn ?? x.createdAt ?? x.registrationDate ?? null;
+
           return {
             ...x,
             studentId: x.studentId ?? x.student?.studentId ?? studentIdRaw,
             eventName: x.event?.name ?? x.eventName ?? x.event?.eventName ?? null,
+
+            // ✅ add venue for UI
+            venue: x.event?.venue ?? x.venue ?? null,
+
             registeredOnDisplay: this.formatDate(rawDate)
           };
         });

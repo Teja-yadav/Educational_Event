@@ -3,119 +3,109 @@
   background: #ffffff;
   min-height: 100vh;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-  border-top-left-radius: 24px;
-  border-bottom-left-radius: 24px;
-      border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px;
+  border-radius: 24px;
 }
 
-/* Page title (UNCHANGED) */
 .page-header {
   margin-bottom: 14px;
-
-  h1 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 800; /* still bold */
-    color: #1d1d1f;
-  }
-
-  p {
-    margin: 6px 0 0;
-    color: #7a7a7a;
-    font-size: 13px;
-  }
 }
 
-/* Event Information Card */
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1d1d1f;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: #7a7a7a;
+  font-size: 13px;
+}
+
+/* ✅ SINGLE MAIN BOX */
 .card-box {
   background: #ffffff;
   border: 1px solid #ece7dd;
   border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(15, 15, 15, 0.06);
+  box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
   margin-bottom: 18px;
   overflow: hidden;
-  max-width: 920px;
+  max-width: 980px;
 }
 
-/* Event Information title — NOT BOLD */
-.card-header {
-  padding: 14px 16px;
-  background: #ffffff;
-  color: #000000;
-  font-weight: 400;
-  border-bottom: 1px solid #f0ebe1;
-}
-
-/* Table wrapper */
+/* ✅ remove inner box look */
 .table-wrap {
-  border-radius: 12px;
-  border: 1px solid #eee7db;
-  margin: 14px 16px 16px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
-  background: #ffffff;
+  background: transparent;
 }
 
-/* Table base */
+/* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
 }
 
-/* ✅✅✅ ONLY THESE ARE BOLD (YELLOW MARKED) */
+/* ✅ ✅ HEADER IS NOW PURE WHITE */
 thead th {
   text-align: left;
-  padding: 12px 14px;
-  background: #ffffff;
-  color: #000000;
-  font-weight: 700;          /* ✅ BOLD */
+  padding: 14px 16px;
+  background: #ffffff;          /* ✅ FIXED: was yellow */
+  color: #6b6b6b;
+  font-weight: 700;
   font-size: 12px;
-  border-bottom: 1px solid #f0ebe1;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5e7eb;  /* clean divider */
 }
 
-/* Table body — NOT BOLD */
+/* BODY */
 tbody td {
-  padding: 12px 14px;
+  padding: 14px 16px;
   border-top: 1px solid #f1ece2;
-  vertical-align: middle;
-  color: #000000;
-  font-weight: 400;          /* ✅ NOT BOLD */
+  vertical-align: top;
+  color: #111827;
+  font-weight: 500;
 }
 
 tbody tr:hover {
-  background: #ffffff;
+  background: #f9fafb; /* very soft hover */
 }
 
-/* Column number — NOT BOLD */
 .col-num {
   width: 46px;
-  color: #000000;
-  font-weight: 400;
+  color: #6f6f6f;
+  font-weight: 700;
 }
 
-/* Text inside table — NOT BOLD */
-.muted {
-  color: #000000;
-  font-weight: 400;
-}
-
-.event-name {
-  color: #000000;
-  font-weight: 400;          /* ✅ NOT BOLD */
-}
-
-/* Action column */
 .col-action {
   width: 120px;
 }
 
-/* Update button */
+.muted {
+  color: #374151;
+  font-weight: 500;
+}
+
+.event-name {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Venue column */
+.col-venue {
+  width: 160px;
+  color: #374151;
+}
+
+/* Buttons */
 .update-btn {
   height: 28px;
   padding: 0 12px;
-  border-radius: 8px;
+  border-radius: 999px;
   border: none;
   background: #2f6f63;
   color: #ffffff;
@@ -128,41 +118,25 @@ tbody tr:hover {
   filter: brightness(0.95);
 }
 
-/* Update form (UNCHANGED) */
-.update-form {
-  padding: 16px;
-  max-width: 640px;
-}
-
-.form-row {
-  margin-bottom: 12px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
+.delete-btn {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: none;
+  background: #b42318;
+  color: #ffffff;
   font-size: 12px;
   font-weight: 600;
-  color: #000000;
-  margin-bottom: 6px;
+  cursor: pointer;
 }
 
-.form-group input {
-  height: 38px;
-  border-radius: 10px;
-  border: 1px solid #d9d6cf;
-  padding: 0 12px;
-  background: #ffffff;
-  font-size: 13px;
-  color: #000000;
+.delete-btn:hover {
+  filter: brightness(0.95);
 }
 
 /* Messages */
 .msg {
-  max-width: 920px;
+  max-width: 980px;
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: 10px;
@@ -182,7 +156,6 @@ tbody tr:hover {
 
 .empty {
   padding: 12px 16px 16px;
-  color: #000000;
+  color: #7a7a7a;
   font-size: 13px;
-  font-weight: 400;
 }

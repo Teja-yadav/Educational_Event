@@ -4,7 +4,6 @@
     <p>Discover and register for educational events</p>
   </div>
 
-  <!-- EVENT INFORMATION CARD -->
   <div class="card-box">
     <div class="table-wrap">
       <table>
@@ -15,8 +14,11 @@
             <th>DESCRIPTION</th>
             <th>MATERIALS</th>
             <th>DATE &amp; TIME</th>
+            <th>VENUE</th>
             <th>RESOURCES</th>
+
             <th class="col-action" *ngIf="isEducator">ACTION</th>
+            <th class="col-action" *ngIf="isInstitution">DELETE</th>
           </tr>
         </thead>
 
@@ -24,20 +26,18 @@
           <tr *ngFor="let e of eventList; let i = index">
             <td class="col-num">{{ i + 1 }}</td>
 
-            <td class="event-name">
-              {{ e.name }}
-            </td>
+            <td class="event-name">{{ e.name }}</td>
+
+            <td class="muted">{{ e.description }}</td>
+
+            <td class="muted">{{ e.materials }}</td>
 
             <td class="muted">
-              {{ e.description }}
+              {{ e.eventDateTime ? (e.eventDateTime | date:'dd-MM-yyyy, hh:mm a') : '-' }}
             </td>
 
-            <td class="muted">
-              {{ e.materials }}
-            </td>
-
-            <td class="muted">
-              {{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}
+            <td class="muted col-venue">
+              {{ e.venue ? e.venue : '-' }}
             </td>
 
             <td class="muted">
@@ -50,7 +50,15 @@
             </td>
 
             <td class="col-action" *ngIf="isEducator">
-              <button class="update-btn" (click)="edit(e)">Update</button>
+              <button type="button" class="update-btn" (click)="openUpdateModal(e)">
+                Update
+              </button>
+            </td>
+
+            <td class="col-action" *ngIf="isInstitution">
+              <button type="button" class="delete-btn" (click)="deleteEvent(e.id)">
+                Delete
+              </button>
             </td>
           </tr>
         </tbody>
@@ -62,40 +70,51 @@
     </div>
   </div>
 
-  <!-- UPDATE EVENT CARD -->
-  <div class="card-box update-card" *ngIf="isUpdate && isEducator">
-    <div class="card-header">Update Event</div>
+  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+</div>
 
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="update-form">
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>Name</label>
-          <input formControlName="name" />
-        </div>
+    <div class="modal-topbar">
+      <div class="modal-title">Update Event</div>
+      <button type="button" class="modal-x" (click)="closeModal()">×</button>
+    </div>
+
+    <form class="modal-body" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+
+      <div class="field">
+        <label>Title:</label>
+        <input type="text" formControlName="name" />
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>Description</label>
-          <input formControlName="description" />
-        </div>
+      <div class="field">
+        <label>Description:</label>
+        <textarea rows="3" formControlName="description"></textarea>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label>Materials</label>
-          <input formControlName="materials" />
-        </div>
+      <div class="field">
+        <label>Date Time:</label>
+        <input type="datetime-local" formControlName="eventDateTime" />
       </div>
 
-      <div class="form-actions">
-        <button type="submit" class="update-submit">Update</button>
+      <div class="field">
+        <label>Materials:</label>
+        <input type="text" formControlName="materials" />
+      </div>
+
+      <div class="field">
+        <label>Venue:</label>
+        <input type="text" formControlName="venue" placeholder="e.g. Auditorium / Lab 2 / Seminar Hall" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-close" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn-update" [disabled]="itemForm.invalid">Update Event</button>
       </div>
 
     </form>
-  </div>
 
-  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
-  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+  </div>
 </div>

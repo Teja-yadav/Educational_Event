@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -31,8 +32,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String uri = request.getRequestURI();
 
-        // ✅ FIXED: BYPASS FOR REGISTER & LOGIN
-        if (uri.contains("/api/user/login") || uri.contains("/api/user/register")) {
+        // ✅ BYPASS JWT FOR PUBLIC APIs
+        if (uri.contains("/api/user/login")
+                || uri.contains("/api/user/register")
+                || uri.contains("/api/user/forgot-password")
+                || uri.contains("/api/user/verify-otp")
+                || uri.contains("/api/user/reset-password")) {
             filterChain.doFilter(request, response);
             return;
         }

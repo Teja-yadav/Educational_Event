@@ -1,51 +1,88 @@
 <div class="layout">
 
-  <!-- LEFT SIDEBAR -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="logo">
-      <div class="logo-badge">E</div>
-      <div class="logo-text">
-        <div class="logo-title">EduTech</div>
-        <div class="logo-sub">{{ role }}</div>
+    <div class="brand">
+      <div class="brand-badge">E</div>
+      <div class="brand-text">
+        <div class="brand-title">EduEvent</div>
       </div>
     </div>
 
-    <div class="section-title">MAIN</div>
+    <div class="sec-title">MAIN</div>
 
     <!-- INSTITUTION MENU -->
     <ng-container *ngIf="role === 'INSTITUTION'">
-      <button class="nav" [class.active]="active==='home'" (click)="setSection('home')">Dashboard</button>
-      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')"><span class="qa-icon">📅 </span>Browse Events</button>
-      <button class="nav" [class.active]="active==='create-event'" (click)="setSection('create-event')"><span class="qa-icon">✚ </span>Create Event</button>
-      <button class="nav" [class.active]="active==='add-resource'" (click)="setSection('add-resource')"><span class="qa-icon">📦 </span>Add Resource</button>
-      <button class="nav" [class.active]="active==='resource-allocate'" (click)="setSection('resource-allocate')"><span class="qa-icon"> 🔗</span>Allocate Resources</button>
-      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')"><span class="qa-icon">📋</span>Booking Details</button>
+      <button class="nav" [class.active]="active==='home'" (click)="setSection('home')">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+      </button>
+
+      <button class="nav" [class.active]="active==='view-events'" (click)="setSection('view-events')">
+        <span class="nav-icon">📅</span>
+        Browse Events
+        <span class="nav-pill">{{ eventCountBadge }}</span>
+      </button>
+
+      <button class="nav" [class.active]="active==='create-event'" (click)="setSection('create-event')">
+        <span class="nav-icon">➕</span>
+        Create Event
+      </button>
+
+      <button class="nav" [class.active]="active==='add-resource'" (click)="setSection('add-resource')">
+        <span class="nav-icon">📦</span>
+        Add Resource
+      </button>
+
+      <button class="nav" [class.active]="active==='resource-allocate'" (click)="setSection('resource-allocate')">
+        <span class="nav-icon">🔗</span>
+        Allocate Resources
+      </button>
+
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">
+        <span class="nav-icon">📋</span>
+        Booking Details
+      </button>
     </ng-container>
 
     <!-- EDUCATOR MENU -->
     <ng-container *ngIf="role === 'EDUCATOR'">
-      <button class="nav" [class.active]="active==='educator-agenda'" (click)="setSection('educator-agenda')"><span class="qa-icon"> 📅 </span>Browse Events</button>
+      <button class="nav" [class.active]="active==='educator-agenda'" (click)="setSection('educator-agenda')">
+        <span class="nav-icon">📅</span>
+        Browse Events
+      </button>
     </ng-container>
 
     <!-- STUDENT MENU -->
     <ng-container *ngIf="role === 'STUDENT'">
-      <button class="nav" [class.active]="active==='register-for-event'" (click)="setSection('register-for-event')">Register for Event</button>
-      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')"><span class="qa-icon">🎟️</span>My Bookings</button>
+      <button class="nav" [class.active]="active==='register-for-event'" (click)="setSection('register-for-event')">
+        <span class="nav-icon">📝</span>
+        Register for Event
+      </button>
+
+      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">
+        <span class="nav-icon">🎟️</span>
+        My Bookings
+      </button>
     </ng-container>
 
-    <div class="section-title">ACCOUNT</div>
-    <button class="signout" (click)="logout()">Sign Out</button>
+    <div class="sec-title">ACCOUNT</div>
+    <button class="signout" (click)="logout()">
+      <span class="nav-icon">↩️</span>
+      Sign Out
+    </button>
   </aside>
 
-  <!-- MAIN AREA -->
+  <!-- MAIN -->
   <main class="main">
-
-    <!-- TOP BAR -->
+    <!-- TOPBAR -->
     <header class="topbar">
-      <div class="crumbs">Educational Event Management</div>
+      <div class="crumbs">
+        <span class="crumb-path">/ Dashboard</span>
+      </div>
 
       <div class="top-actions">
-        <div class="icon-btn">🔔</div>
+        <button class="icon-btn" type="button">🔔</button>
 
         <div class="profile">
           <div class="avatar">{{ username[0] | uppercase }}</div>
@@ -60,76 +97,105 @@
     <!-- CONTENT -->
     <section class="content">
 
-      <!-- INSTITUTION DASHBOARD HOME -->
+      <!-- INSTITUTION HOME -->
       <div *ngIf="role === 'INSTITUTION' && active === 'home'">
-        <div class="dash-head">
-          <h1>{{ getGreeting() }}, {{ username }} 👋</h1>
+
+        <div class="hero">
+          <h1>{{ getGreeting() }}, {{ username }} <span class="wave">👋</span></h1>
           <p>Welcome back to your institution dashboard.</p>
         </div>
 
+        <!-- KPI CARDS -->
         <div class="kpis">
-          <div class="kpi">
-            <div class="num">{{ activeEvents }}</div>
-            <div class="label">Active Events</div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon">📅</div>
+              <div class="kpi-chip up">+12%</div>
+            </div>
+            <div class="kpi-num">{{ activeEvents }}</div>
+            <div class="kpi-label">Active Events</div>
           </div>
 
-          <div class="kpi">
-            <div class="num">{{ registrations }}</div>
-            <div class="label">Registrations</div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon">🎓</div>
+              <div class="kpi-chip up">+8%</div>
+            </div>
+            <div class="kpi-num">{{ registrations }}</div>
+            <div class="kpi-label">Registrations</div>
           </div>
 
-          <div class="kpi">
-            <div class="num">{{ resources }}</div>
-            <div class="label">Resources</div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div class="kpi-icon">📦</div>
+              <div class="kpi-chip tag">Active</div>
+            </div>
+            <div class="kpi-num">{{ resources }}</div>
+            <div class="kpi-label">Resources</div>
           </div>
 
-          <div class="kpi">
-            <div class="num">{{ totalUsers }}</div>
-            <div class="label">Total Users</div>
+          <div class="kpi-card" *ngIf="showTotalUsers">
+            <div class="kpi-top">
+              <div class="kpi-icon">👥</div>
+              <div class="kpi-chip up">+5</div>
+            </div>
+            <div class="kpi-num">{{ totalUsers }}</div>
+            <div class="kpi-label">Total Users</div>
           </div>
         </div>
 
+        <!-- PANELS -->
         <div class="grid">
+          <!-- Upcoming Events -->
           <div class="panel">
             <div class="panel-title">Upcoming Events</div>
 
-            <div class="event" *ngFor="let e of upcoming">
-              <div>
-                <div class="ename">{{ e.name }}</div>
-                <div class="esub">
+            <div class="event-row" *ngFor="let e of upcoming">
+              <div class="dot"></div>
+              <div class="event-main">
+                <div class="event-name">{{ e.name }}</div>
+                <div class="event-sub">
                   {{ e.description }} • {{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}
                 </div>
               </div>
-              <span class="chip">Upcoming</span>
+              <span class="status-chip">Upcoming</span>
             </div>
 
-            <div class="empty" *ngIf="upcoming.length === 0">
-              No upcoming events
-            </div>
+            <div class="empty" *ngIf="upcoming.length === 0">No upcoming events</div>
           </div>
 
+          <!-- Quick Actions -->
           <div class="panel">
             <div class="panel-title">Quick Actions</div>
-            <button class="qa" (click)="setSection('create-event')">Create Event</button>
-            <button class="qa" (click)="setSection('add-resource')">Add Resource</button>
-            <button class="qa" (click)="setSection('resource-allocate')">Allocate</button>
-            <button class="qa" (click)="setSection('booking-details')">View Bookings</button>
+
+            <button class="qa" (click)="setSection('create-event')">
+              <span class="qa-icon">➕</span> Create Event
+            </button>
+
+            <button class="qa" (click)="setSection('add-resource')">
+              <span class="qa-icon">📦</span> Add Resource
+            </button>
+
+            <button class="qa" (click)="setSection('resource-allocate')">
+              <span class="qa-icon">🔗</span> Allocate
+            </button>
+
+            <button class="qa" (click)="setSection('booking-details')">
+              <span class="qa-icon">📋</span> View Bookings
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- LOAD EXISTING COMPONENTS INSIDE DASHBOARD -->
+      <!-- LOAD EXISTING COMPONENTS -->
       <app-create-event *ngIf="active==='create-event'"></app-create-event>
       <app-add-resource *ngIf="active==='add-resource'"></app-add-resource>
       <app-resource-allocate *ngIf="active==='resource-allocate'"></app-resource-allocate>
       <app-view-events *ngIf="active==='view-events'"></app-view-events>
       <app-booking-details *ngIf="active==='booking-details'"></app-booking-details>
       <app-register-for-event *ngIf="active==='register-for-event'"></app-register-for-event>
-
-      <!-- EDUCATOR AGENDA (reuse view-events) -->
       <app-view-events *ngIf="active==='educator-agenda'"></app-view-events>
 
     </section>
   </main>
-
 </div>

@@ -29,14 +29,26 @@
       <div class="form-group">
         <label>Select Event</label>
         <select formControlName="eventId">
-          <option value="" >Select Event</option>
+          <option value="">Select Event</option>
           <option *ngFor="let e of eventList" [value]="e.id">
             {{ e.name }} - {{ e.eventDateTime | date:'dd-MMM-yyyy, hh:mm a' }}
           </option>
         </select>
+
         <div class="error" *ngIf="itemForm.get('eventId')?.touched && itemForm.get('eventId')?.invalid">
           Event selection is required
         </div>
+      </div>
+
+      <!-- ✅ Venue (AUTO-FILLED) -->
+      <div class="form-group">
+        <label>Venue</label>
+        <input
+          type="text"
+          formControlName="venue"
+          placeholder="Select an event to view venue"
+          readonly
+        />
       </div>
 
       <!-- Action Buttons -->
@@ -44,7 +56,7 @@
         <button type="submit" class="primary-btn">
           Register
         </button>
-        <button type="button" class="secondary-btn" (click)="itemForm.reset()">
+        <button type="button" class="secondary-btn" (click)="clearForm()">
           Clear
         </button>
       </div>

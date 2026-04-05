@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -17,6 +18,7 @@ import { BookingDetailsComponent } from './booking-details/booking-details.compo
 
 import { RegisterForEventComponent } from './register-for-event/register-for-event.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     ViewEventsComponent,
     BookingDetailsComponent,
     NavbarComponent,
-    RegisterForEventComponent
+    RegisterForEventComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,6 @@
   </div>
 
   <div class="card">
-    <!-- ✅ Bind formGroup correctly here -->
     <form class="toolbar" [formGroup]="itemForm" (ngSubmit)="searchEvent()">
       <div class="field">
         <label>Student ID</label>
@@ -16,7 +15,6 @@
         />
       </div>
 
-      <!-- ✅ Make it submit the form -->
       <button class="btn" type="submit">
         Search
       </button>
@@ -32,6 +30,10 @@
             <th class="col-num">#</th>
             <th>STUDENT</th>
             <th>EVENT</th>
+
+            <!-- ✅ NEW COLUMN -->
+            <th>VENUE</th>
+
             <th class="col-status">STATUS</th>
           </tr>
         </thead>
@@ -48,6 +50,10 @@
               {{ e.event?.name || e.eventName || '-' }}
             </td>
 
+            <!-- ✅ VENUE CELL -->
+            <td class="muted">
+              {{ e.event?.venue || e.venue || '-' }}
+            </td>
 
             <td class="col-status">
               <span

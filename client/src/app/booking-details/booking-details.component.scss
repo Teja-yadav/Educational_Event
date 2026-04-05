@@ -1,12 +1,10 @@
 .page {
   padding: 28px 34px;
-  background: #ffffff;   // ✅ PURE WHITE BACKGROUND
-  
-border-top-left-radius: 24px;
+  background: #ffffff;
+  border-top-left-radius: 24px;
   border-bottom-left-radius: 24px;
-      border-top-right-radius: 24px;
+  border-top-right-radius: 24px;
   border-bottom-right-radius: 24px;
-
   min-height: 100vh;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
@@ -31,9 +29,9 @@ border-top-left-radius: 24px;
 
 .card {
   background: #ffffff;
-  border-radius: 18px;          // ✅ MORE CURVED
-  border: 1px solid #ebe7df;    // ✅ softer border
-  box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06); // ✅ smooth elevation
+  border-radius: 18px;
+  border: 1px solid #ebe7df;
+  box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
   padding: 22px;
   max-width: 880px;
 }
@@ -134,7 +132,7 @@ table {
 thead th {
   text-align: left;
   padding: 12px 14px;
-  background: #efede7; // header strip like image
+  background: #efede7;
   color: #6b6b6b;
   font-weight: 800;
   letter-spacing: 0.4px;
@@ -156,6 +154,13 @@ tbody td {
 .col-status {
   width: 150px;
   text-align: left;
+}
+
+/* ✅ NEW: Venue column (use this class in your HTML td/th) */
+.col-venue {
+  width: 200px;
+  color: #7a7a7a;
+  font-weight: 600;
 }
 
 .muted {
@@ -198,9 +203,10 @@ tbody td {
   border-color: #ffd1d1;
 }
 
+/* ✅ FIXED: empty message color (was white, not visible) */
 .empty {
   margin: 12px 6px 6px;
-  color: #f8f5f5;
+  color: #7a7a7a;
   font-size: 13px;
   font-weight: 600;
 }

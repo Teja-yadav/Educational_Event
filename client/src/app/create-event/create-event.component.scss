@@ -170,10 +170,13 @@
 .col-desc { color: #374151; }
 .col-mat { color: #374151; }
 
+/* ✅ NEW COLUMN */
+.col-venue { width: 180px; color: #374151; }
+
 /* Responsive */
 @media (max-width: 900px) {
   .table-card { overflow-x: auto; }
-  .events-table { min-width: 820px; }
+  .events-table { min-width: 980px; }
 }
 
 @media (max-width: 720px) {
