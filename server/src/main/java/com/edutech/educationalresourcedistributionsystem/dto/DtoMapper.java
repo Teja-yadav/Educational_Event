@@ -1,24 +1,25 @@
 package com.edutech.educationalresourcedistributionsystem.dto;
 
-import com.edutech.educationalresourcedistributionsystem.entity.*;
+import com.edutech.educationalresourcedistributionsystem.entity.Event;
+import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
+import com.edutech.educationalresourcedistributionsystem.entity.Resource;
+import com.edutech.educationalresourcedistributionsystem.entity.User;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class DtoMapper {
-    public static EventDto toEventDTO(Event event) {
 
-        List<ResourceDto> resources =
-                event.getResourceAllocations() == null
-                        ? Collections.emptyList()
-                        : event.getResourceAllocations()
-                               .stream()
-                               .map(DtoMapper::toResourceDTO)
-                               .collect(Collectors.toList());
+    public static EventDto toEventDTO(Event event) {
+        List<ResourceDto> resources = event.getResourceAllocations() == null
+                ? Collections.emptyList()
+                : event.getResourceAllocations().stream().map(DtoMapper::toResourceDTO).collect(Collectors.toList());
 
         return new EventDto(
                 event.getId(),
+                event.getInstitutionId(),
+                event.getEducatorId(),
                 event.getName(),
                 event.getDescription(),
                 event.getMaterials(),
@@ -29,7 +30,12 @@ public class DtoMapper {
     }
 
     public static ResourceDto toResourceDTO(Resource resource) {
-        return new ResourceDto(resource.getId(), resource.getResourceType(), resource.getDescription());
+        return new ResourceDto(
+                resource.getId(),
+                resource.getInstitutionId(),
+                resource.getResourceType(),
+                resource.getDescription()
+        );
     }
 
     public static UserDto toUserDTO(User user) {
@@ -48,6 +54,8 @@ public class DtoMapper {
     public static Event toEventEntity(EventDto dto) {
         Event event = new Event();
         event.setId(dto.getId());
+        event.setInstitutionId(dto.getInstitutionId());
+        event.setEducatorId(dto.getEducatorId());
         event.setName(dto.getName());
         event.setDescription(dto.getDescription());
         event.setMaterials(dto.getMaterials());
@@ -59,6 +67,7 @@ public class DtoMapper {
     public static Resource toResourceEntity(ResourceDto dto) {
         Resource resource = new Resource();
         resource.setId(dto.getId());
+        resource.setInstitutionId(dto.getInstitutionId());
         resource.setResourceType(dto.getResourceType());
         resource.setDescription(dto.getDescription());
         return resource;

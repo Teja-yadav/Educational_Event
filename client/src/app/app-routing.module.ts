@@ -13,8 +13,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'registration', component: RegistrationComponent },
 
   { path: 'dashboard', component: DashboardComponent },
@@ -25,9 +27,8 @@ const routes: Routes = [
   { path: 'booking-details', component: BookingDetailsComponent },
   { path: 'register-for-event', component: RegisterForEventComponent },
 
-  { path: '**', redirectTo: '' }                
+  { path: '**', redirectTo: 'login' }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

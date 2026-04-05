@@ -18,10 +18,7 @@ export class CreateEventComponent implements OnInit {
   responseMessage = '';
   minDateTime = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private http: HttpService
-  ) {}
+  constructor(private fb: FormBuilder, private http: HttpService) {}
 
   ngOnInit(): void {
     this.minDateTime = this.getNowForDateTimeLocal();
@@ -31,7 +28,8 @@ export class CreateEventComponent implements OnInit {
       description: ['', Validators.required],
       materials: ['', Validators.required],
       eventDateTime: ['', Validators.required],
-      venue: ['', Validators.required]
+      venue: ['', Validators.required],
+      educatorId: ['', Validators.required]
     });
 
     this.getEvent();
@@ -62,7 +60,7 @@ export class CreateEventComponent implements OnInit {
 
     if (this.itemForm.invalid) {
       this.showError = true;
-      this.errorMessage = 'Please fill all required fields (including Date & Time and Venue)';
+      this.errorMessage = 'Please fill all required fields';
       return;
     }
 
@@ -71,7 +69,8 @@ export class CreateEventComponent implements OnInit {
       description: this.itemForm.value.description,
       materials: this.itemForm.value.materials,
       eventDateTime: this.itemForm.value.eventDateTime,
-      venue: this.itemForm.value.venue
+      venue: this.itemForm.value.venue,
+      educatorId: Number(this.itemForm.value.educatorId)
     };
 
     this.http.createEvent(payload).subscribe({

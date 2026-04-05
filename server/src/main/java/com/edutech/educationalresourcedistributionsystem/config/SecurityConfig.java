@@ -33,53 +33,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder);
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .cors().and()
+                .csrf().disable()
+                .cors().and()
+                .authorizeRequests()
+                .antMatchers(
+                        "/api/user/register",
+                        "/api/user/login",
+                        "/api/user/forgot-password",
+                        "/api/user/verify-otp",
+                        "/api/user/reset-password"
+                ).permitAll()
+                .antMatchers(HttpMethod.POST, "/api/institution/event").hasAuthority("INSTITUTION")
+                .antMatchers(HttpMethod.GET, "/api/institution/events").hasAnyAuthority("INSTITUTION", "STUDENT")
+                .antMatchers(HttpMethod.POST, "/api/institution/resource").hasAuthority("INSTITUTION")
+                .antMatchers(HttpMethod.GET, "/api/institution/resources").hasAuthority("INSTITUTION")
+                .antMatchers("/api/institution/event/allocate-resources").hasAuthority("INSTITUTION")
+                .antMatchers(HttpMethod.DELETE, "/api/institution/event/**").hasAuthority("INSTITUTION")
+                .antMatchers(HttpMethod.GET, "/api/institution/registrations/count").hasAuthority("INSTITUTION")
+                .antMatchers("/api/educator/agenda").hasAuthority("EDUCATOR")
+                .antMatchers("/api/educator/update-material/**").hasAuthority("EDUCATOR")
+                .antMatchers("/api/student/register/**").hasAuthority("STUDENT")
+                .antMatchers("/api/student/registration-status/**").hasAnyAuthority("INSTITUTION", "STUDENT")
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-            .authorizeRequests()
-
-            // ✅ PUBLIC APIs (NO JWT)
-            .antMatchers(
-                    "/api/user/register",
-                    "/api/user/login",
-                    "/api/user/forgot-password",
-                    "/api/user/verify-otp",
-                    "/api/user/reset-password"
-            ).permitAll()
-
-            // INSTITUTION APIs
-            .antMatchers(HttpMethod.POST, "/api/institution/event").hasAuthority("INSTITUTION")
-            .antMatchers(HttpMethod.GET, "/api/institution/events").hasAuthority("INSTITUTION")
-            .antMatchers(HttpMethod.POST, "/api/institution/resource").hasAuthority("INSTITUTION")
-            .antMatchers(HttpMethod.GET, "/api/institution/resources").hasAuthority("INSTITUTION")
-            .antMatchers("/api/institution/event/allocate-resources").hasAuthority("INSTITUTION")
-            .antMatchers(HttpMethod.DELETE, "/api/institution/event/**").hasAuthority("INSTITUTION")
-            .antMatchers(HttpMethod.GET, "/api/institution/registrations/count").hasAuthority("INSTITUTION")
-
-            // EDUCATOR APIs
-            .antMatchers("/api/educator/agenda").hasAuthority("EDUCATOR")
-            .antMatchers("/api/educator/update-material/**").hasAuthority("EDUCATOR")
-
-            // STUDENT APIs
-            .antMatchers("/api/student/register/**").hasAuthority("STUDENT")
-            .antMatchers("/api/student/registration-status/**").hasAnyAuthority("INSTITUTION", "STUDENT")
-
-            .anyRequest().authenticated()
-            .and()
-
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(
-                jwtRequestFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

@@ -68,7 +68,7 @@ export class ViewEventsComponent implements OnInit {
       description: event.description,
       materials: event.materials,
       eventDateTime: dt,
-      venue: event.venue || ''   // ✅ PATCH VENUE
+      venue: event.venue || '' 
     });
 
     this.showModal = true;
@@ -94,7 +94,6 @@ export class ViewEventsComponent implements OnInit {
       payload.eventDateTime = this.itemForm.value.eventDateTime;
     }
 
-    // ✅ SEND VENUE ONLY IF FILLED
     if (this.itemForm.value.venue && this.itemForm.value.venue.trim() !== '') {
       payload.venue = this.itemForm.value.venue.trim();
     }
