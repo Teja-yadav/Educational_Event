@@ -27,6 +27,7 @@ export class HttpService {
       'Content-Type': 'application/json'
     });
   }
+
  
   // ---------------- STUDENT ----------------
   getBookingDetails(studentId: any): Observable<any> {
@@ -35,6 +36,18 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
+  deleteEvent(eventId: any): Observable<any> {
+  return this.http.delete<any>(
+    `${this.serverName}/api/institution/event/${eventId}`,
+    { headers: this.getAuthHeaders() }
+  );
+}
+getRegistrationsCount(): Observable<any> {
+  return this.http.get<any>(
+    `${this.serverName}/api/institution/registrations/count`,
+    { headers: this.getAuthHeaders() }
+  );
+}
  
   registerForEvent(eventId: any, details: any): Observable<any> {
     return this.http.post<any>(
@@ -43,6 +56,30 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
+
+forgotPassword(payload: any) {
+  return this.http.post(
+    `${this.serverName}/api/user/forgot-password`,
+    payload,
+    { headers: this.getJsonHeaders(), responseType: 'text' }
+  );
+}
+
+verifyOtp(payload: any) {
+  return this.http.post(
+    `${this.serverName}/api/user/verify-otp`,
+    payload,
+    { headers: this.getJsonHeaders(), responseType: 'text' }
+  );
+}
+
+resetPassword(payload: any) {
+  return this.http.post(
+    `${this.serverName}/api/user/reset-password`,
+    payload,
+    { headers: this.getJsonHeaders(), responseType: 'text' }
+  );
+}
  
   // ---------------- EDUCATOR ----------------
 getAllEducatorAgenda(): Observable<any> {

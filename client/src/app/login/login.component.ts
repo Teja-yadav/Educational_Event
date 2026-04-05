@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   showError: boolean = false;
   errorMessage: any = '';
 
+  showLanding: boolean = true; // Show the landing page by default
+
   constructor(
     private fb: FormBuilder,
     private http: HttpService,
@@ -44,6 +46,11 @@ export class LoginComponent implements OnInit {
       ]
     });
   }
+
+  showLoginPage() {
+    this.showLanding = false;
+  }
+
   registration() {
     if (this.itemForm.invalid) {
       this.showError = true;
@@ -52,10 +59,10 @@ export class LoginComponent implements OnInit {
     }
     this.formModel = this.itemForm.value;
     this.http.Login(this.formModel).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.auth.saveToken(res.token);
         this.auth.SetRole(res.role);
-        localStorage.setItem('username', res.username);
+        localStorage.setItem('username', res.username || this.formModel.username);
         this.router.navigate(['/dashboard']);
       },
       error: () => {

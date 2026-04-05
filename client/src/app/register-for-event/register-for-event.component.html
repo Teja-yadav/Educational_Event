@@ -1,45 +1,70 @@
-<app-navbar></app-navbar>
-<div class="container">
+<div class="page">
+  <div class="page-header">
+    <h1>Register For Event</h1>
+    <p>Select an event and complete your registration</p>
+  </div>
 
-  <h2>Register For Event</h2>
+  <div class="form-card">
+    <form [formGroup]="itemForm" (ngSubmit)="Submit()">
 
-  <form [formGroup]="itemForm" (ngSubmit)="Submit()">
-
-    <label>Student ID</label>
-    <input type="text" formControlName="studentId" placeholder="Example: LTM01" />
-
-    <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
-      <div *ngIf="itemForm.get('studentId')?.errors?.['required']">
-        Student ID is required
+      <!-- Student ID -->
+      <div class="form-group">
+        <label>Student ID</label>
+        <input
+          type="text"
+          formControlName="studentId"
+          placeholder="e.g. LTM01"
+        />
+        <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
+          <span *ngIf="itemForm.get('studentId')?.errors?.['required']">
+            Student ID is required
+          </span>
+          <span *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
+            Student ID must be like LTM01, LTM09, LTM90
+          </span>
+        </div>
       </div>
-      <div *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
-        Student ID must be like LTM01, LTM09, LTM90 (starts with LTM + 2 digits)
+
+      <!-- Select Event -->
+      <div class="form-group">
+        <label>Select Event</label>
+        <select formControlName="eventId">
+          <option value="">Select Event</option>
+          <option *ngFor="let e of eventList" [value]="e.id">
+            {{ e.name }} - {{ e.eventDateTime | date:'dd-MMM-yyyy, hh:mm a' }}
+          </option>
+        </select>
+
+        <div class="error" *ngIf="itemForm.get('eventId')?.touched && itemForm.get('eventId')?.invalid">
+          Event selection is required
+        </div>
       </div>
-    </div>
 
-    <label>Select Event</label>
-    <select formControlName="eventId">
-      <option value="">Select Event</option>
-      <option *ngFor="let e of eventList" [value]="e.id">
-        {{ e.name }} - {{ e.eventDateTime | date:'dd-MMM-yyyy, hh:mm a' }}
-      </option>
-    </select>
+      <!-- ✅ Venue (AUTO-FILLED) -->
+      <div class="form-group">
+        <label>Venue</label>
+        <input
+          type="text"
+          formControlName="venue"
+          placeholder="Select an event to view venue"
+          readonly
+        />
+      </div>
 
-    <div class="error" *ngIf="itemForm.get('eventId')?.touched && itemForm.get('eventId')?.invalid">
-      Event selection is required
-    </div>
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="submit" class="primary-btn">
+          Register
+        </button>
+        <button type="button" class="secondary-btn" (click)="clearForm()">
+          Clear
+        </button>
+      </div>
 
-    <!-- <label>Status</label>
-    <input type="text" formControlName="status" />
+      <!-- Messages -->
+      <div class="alert error" *ngIf="showError">{{ errorMessage }}</div>
+      <div class="alert success" *ngIf="showMessage">{{ responseMessage }}</div>
 
-    <div class="error" *ngIf="itemForm.get('status')?.touched && itemForm.get('status')?.invalid">
-      Status is required
-    </div> -->
-
-    <button type="submit">Register</button>
-
-    <div *ngIf="showError" class="error">{{ errorMessage }}</div>
-    <div *ngIf="showMessage" class="success">{{ responseMessage }}</div>
-
-  </form>
+    </form>
+  </div>
 </div>

@@ -16,7 +16,6 @@ export class CreateEventComponent implements OnInit {
   errorMessage = '';
   showMessage = false;
   responseMessage = '';
-
   minDateTime = '';
 
   constructor(
@@ -31,7 +30,8 @@ export class CreateEventComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       materials: ['', Validators.required],
-      eventDateTime: ['', Validators.required]
+      eventDateTime: ['', Validators.required],
+      venue: ['', Validators.required]
     });
 
     this.getEvent();
@@ -62,7 +62,7 @@ export class CreateEventComponent implements OnInit {
 
     if (this.itemForm.invalid) {
       this.showError = true;
-      this.errorMessage = 'Please fill all required fields (including Date & Time)';
+      this.errorMessage = 'Please fill all required fields (including Date & Time and Venue)';
       return;
     }
 
@@ -70,7 +70,8 @@ export class CreateEventComponent implements OnInit {
       name: this.itemForm.value.name,
       description: this.itemForm.value.description,
       materials: this.itemForm.value.materials,
-      eventDateTime: this.itemForm.value.eventDateTime
+      eventDateTime: this.itemForm.value.eventDateTime,
+      venue: this.itemForm.value.venue
     };
 
     this.http.createEvent(payload).subscribe({

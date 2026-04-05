@@ -24,7 +24,7 @@ export class AddResourceComponent implements OnInit {
     this.itemForm = this.fb.group({
       resourceType: ['', Validators.required],
       description: ['', Validators.required],
-      availability: ['', Validators.required]
+      availability: ['']
     });
 
     this.getResources();

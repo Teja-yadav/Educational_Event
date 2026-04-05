@@ -99,4 +99,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     public List<EventRegistration> getStatus(String studentId) {
         return registrationRepository.findByStudentId(studentId);
     }
+
+    @Override
+    public long getRegistrationCount() {
+        return registrationRepository.count();
+    }
 }

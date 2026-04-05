@@ -6,5 +6,6 @@ import java.util.List;
 public interface RegistrationService {
     EventRegistration registerStudent(Long eventId, String studentId);
     List<EventRegistration> getAllRegistrations();
-    List<EventRegistration>getStatus(String studentId);
+    List<EventRegistration> getStatus(String studentId);
+    long getRegistrationCount();
 }

@@ -1,86 +1,120 @@
-<!-- <app-navbar></app-navbar> -->
-<!-- <h2 class="page-title">Manage Events</h2> -->
+<div class="page">
+  <div class="page-header">
+    <h1>Browse Events</h1>
+    <p>Discover and register for educational events</p>
+  </div>
 
-<div class="card-box">
-  <div class="card-header">View Events</div>
+  <div class="card-box">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th>EVENT NAME</th>
+            <th>DESCRIPTION</th>
+            <th>MATERIALS</th>
+            <th>DATE &amp; TIME</th>
+            <th>VENUE</th>
+            <th>RESOURCES</th>
+
+            <th class="col-action" *ngIf="isEducator">ACTION</th>
+            <th class="col-action" *ngIf="isInstitution">DELETE</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let e of eventList; let i = index">
+            <td class="col-num">{{ i + 1 }}</td>
+
+            <td class="event-name">{{ e.name }}</td>
+
+            <td class="muted">{{ e.description }}</td>
+
+            <td class="muted">{{ e.materials }}</td>
+
+            <td class="muted">
+              {{ e.eventDateTime ? (e.eventDateTime | date:'dd-MM-yyyy, hh:mm a') : '-' }}
+            </td>
+
+            <td class="muted col-venue">
+              {{ e.venue ? e.venue : '-' }}
+            </td>
+
+            <td class="muted">
+              <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
+                <span *ngFor="let r of e.resourceAllocations; let last = last">
+                  {{ r.resourceType }}<span *ngIf="!last">, </span>
+                </span>
+              </ng-container>
+              <ng-template #noRes>-</ng-template>
+            </td>
+
+            <td class="col-action" *ngIf="isEducator">
+              <button type="button" class="update-btn" (click)="openUpdateModal(e)">
+                Update
+              </button>
+            </td>
+
+            <td class="col-action" *ngIf="isInstitution">
+              <button type="button" class="delete-btn" (click)="deleteEvent(e.id)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="empty" *ngIf="!eventList || eventList.length === 0">
+      No events available.
+    </div>
+  </div>
+
+  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
 </div>
 
-<!-- EVENT INFORMATION CARD -->
-<div class="card-box">
-  <div class="card-header">Event Information</div>
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
 
-  <table>
-    <thead>
-      <tr>
-        <th>Sr#</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Material</th>
-        <th>Date & Time</th>
-        <th>Resources</th>
-        <th *ngIf="isEducator">Action</th>
-      </tr>
-    </thead>
+    <div class="modal-topbar">
+      <div class="modal-title">Update Event</div>
+      <button type="button" class="modal-x" (click)="closeModal()">×</button>
+    </div>
 
-    <tbody>
-      <tr *ngFor="let e of eventList; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ e.name }}</td>
-        <td>{{ e.description }}</td>
-        <td>{{ e.materials }}</td>
-        <td>{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
+    <form class="modal-body" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
-        <!-- ✅ FIXED RESOURCES DISPLAY -->
-        <td>
-          <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
-            <span *ngFor="let r of e.resourceAllocations; let last = last">
-              {{ r.resourceType }}<span *ngIf="!last">, </span>
-            </span>
-          </ng-container>
-          <ng-template #noRes>-</ng-template>
-        </td>
+      <div class="field">
+        <label>Title:</label>
+        <input type="text" formControlName="name" />
+      </div>
 
-        <td *ngIf="isEducator">
-          <button class="update-btn" (click)="edit(e)">Update</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <div class="field">
+        <label>Description:</label>
+        <textarea rows="3" formControlName="description"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Date Time:</label>
+        <input type="datetime-local" formControlName="eventDateTime" />
+      </div>
+
+      <div class="field">
+        <label>Materials:</label>
+        <input type="text" formControlName="materials" />
+      </div>
+
+      <div class="field">
+        <label>Venue:</label>
+        <input type="text" formControlName="venue" placeholder="e.g. Auditorium / Lab 2 / Seminar Hall" />
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-close" (click)="closeModal()">Close</button>
+        <button type="submit" class="btn-update" [disabled]="itemForm.invalid">Update Event</button>
+      </div>
+
+    </form>
+
+  </div>
 </div>
-
-<!-- ✅ UPDATE EVENT CARD -->
-<div class="card-box update-card" *ngIf="isUpdate && isEducator">
-  <div class="card-header">Update Event</div>
-
-  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()" class="update-form">
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Name</label>
-        <input formControlName="name" />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Description</label>
-        <input formControlName="description" />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label>Materials</label>
-        <input formControlName="materials" />
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit" class="update-submit">Update</button>
-    </div>
-
-  </form>
-</div>
-
-<div class="error" *ngIf="showError">{{ errorMessage }}</div>
-<div class="success" *ngIf="showMessage">{{ responseMessage }}</div>

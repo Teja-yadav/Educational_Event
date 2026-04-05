@@ -1,105 +1,88 @@
-<div class="auth-page">
+<div class="auth-layout">
+  <!-- LEFT PANEL (DARK) -->
+  <div class="auth-sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">
+        <div class="logo-mark">E</div>
+        <div class="logo-text">Edu<span>Event</span></div>
+      </div>
+    </div>
+    
+    <div>
+      <div class="sidebar-tagline">Start your <em>educational</em> adventure today</div>
+    </div>
+    
+    <div class="sidebar-quote">
+      "The beautiful thing about learning is that no one can take it away from you." — B.B. King
+    </div>
+    
+    <div class="sidebar-dots">
+      <div class="dot"></div><div class="dot active"></div><div class="dot"></div>
+    </div>
+  </div>
 
-  <!-- ✅ BACKGROUND LAYER -->
-  <div class="auth-bg"></div>
-
-  <!-- ✅ MAIN LAYOUT -->
-  <div class="auth-shell">
-
-    <!-- LEFT SIDE -->
-    <div class="auth-left">
-      <div class="brand">
-        <div class="brand-mark">
-          <span class="brand-cap">◆</span>
-          <div>
-            <div class="brand-name">EduEvent</div>
-            <div class="brand-tag">EDUCATIONAL EVENT MANAGEMENT</div>
+  <!-- RIGHT PANEL (WHITE) -->
+  <div class="auth-main">
+    <div>
+      <button class="btn btn-ghost btn-sm" routerLink="/login" style="margin-bottom:24px">← Back to Home</button>
+    </div>
+    
+    <div class="auth-header">
+      <h1 class="auth-title serif">Create your account</h1>
+      <p class="auth-subtitle">Join EduEvent as a student, educator, or institution</p>
+    </div>
+    
+    <form class="auth-form" [formGroup]="itemForm" (ngSubmit)="onRegister()">
+      <!-- Status Message -->
+      <div *ngIf="showMessage" class="alert show" [ngClass]="{'alert-success': responseMessage === 'User Registered Successfully', 'alert-error': responseMessage !== 'User Registered Successfully'}">
+        {{ responseMessage }}
+      </div>
+      
+      <div class="form-row-2">
+        <div class="form-field">
+          <label>Username</label>
+          <input type="text" formControlName="username" placeholder="Enter username"/>
+          <div class="field-error" [class.show]="itemForm.get('username')?.touched && itemForm.get('username')?.invalid">
+            Username is required (min 3 chars)
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" formControlName="email" placeholder="you@example.com"/>
+          <div class="field-error" [class.show]="itemForm.get('email')?.touched && itemForm.get('email')?.invalid">
+            Enter a valid email
           </div>
         </div>
       </div>
-
-      <div class="headline">
-        Manage. Organize,<br />
-        <span class="accent">Elevate Events</span>
-      </div>
-
-      <div class="subtext">
-        Streamline your college events, engage students, and create unforgettable
-        experiences.
-      </div>
-
-      <div class="feature-row">
-        <div class="feature">
-          <div class="feature-title">Event Schedule</div>
+      
+      <div class="form-field">
+        <label>Password</label>
+        <div class="password-wrap">
+          <input type="password" formControlName="password" placeholder="Min 8 chars, uppercase & number"/>
         </div>
-        <div class="feature">
-          <div class="feature-title">Host & Manage</div>
-        </div>
-        <div class="feature">
-          <div class="feature-title">Students</div>
+        <div class="field-error" [class.show]="itemForm.get('password')?.touched && itemForm.get('password')?.invalid">
+          Need uppercase, lowercase, number & special char
         </div>
       </div>
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="auth-right">
-      <div class="card-glow">
-        <div class="auth-card">
-
-          <div class="card-header">
-            <div class="card-title">Register</div>
-            <div class="card-subtitle">Create your account</div>
-          </div>
-
-          <form class="auth-form" [formGroup]="itemForm" (ngSubmit)="onRegister()">
-
-            <div class="field">
-              <label class="field-label">Username</label>
-              <div class="input-wrap">
-                <input class="input" formControlName="username" placeholder="Enter username" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="field-label">Password</label>
-              <div class="input-wrap">
-                <input class="input" type="password" formControlName="password" placeholder="Enter password" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="field-label">Role</label>
-              <div class="input-wrap">
-                <select class="input" formControlName="role">
-                  <option value="">Select role</option>
-                  <option value="INSTITUTION">Institution</option>
-                  <option value="EDUCATOR">Educator</option>
-                  <option value="STUDENT">Student</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="field-label">Email</label>
-              <div class="input-wrap">
-                <input class="input" type="email" formControlName="email" placeholder="Enter email" />
-              </div>
-            </div>
-
-            <button class="btn-primary" type="submit">
-              Sign Up →
-            </button>
-
-            <div class="register">
-              <span class="muted">Already have an account?</span>
-              <a routerLink="/login" class="link">Login</a>
-            </div>
-
-          </form>
-
+      
+      <div class="form-field">
+        <label>I am a...</label>
+        <select formControlName="role">
+          <option value="">Select your role</option>
+          <option value="INSTITUTION">🏛️ Institution</option>
+          <option value="EDUCATOR">👨‍🏫 Educator</option>
+          <option value="STUDENT">🎓 Student</option>
+        </select>
+        <div class="field-error" [class.show]="itemForm.get('role')?.touched && itemForm.get('role')?.invalid">
+          Please select a role
         </div>
       </div>
-    </div>
-
+      
+      <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:8px;">
+        Create Account →
+      </button>
+      
+      <div class="auth-switch">Already have an account? <a routerLink="/login">Sign in here</a></div>
+    </form>
   </div>
 </div>

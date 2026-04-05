@@ -24,55 +24,55 @@ public class Event {
     private String description;
     @Column(name = "event_date_time", nullable = false)
     private LocalDateTime eventDateTime;
+    @Column(name = "venue")
+    private String venue;
     @Column(name = "materials")
     private String materials;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Resource> resourceAllocations;
-
     public Long getId() {
         return id;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getMaterials() {
-        return materials;
-    }
-
-    public List<Resource> getResourceAllocations() {
-        return resourceAllocations;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
-
+    public String getName() {
+        return name;
+    }
     public void setName(String name) {
         this.name = name;
     }
-
+    public String getDescription() {
+        return description;
+    }
     public void setDescription(String description) {
         this.description = description;
     }
-
+    public LocalDateTime getEventDateTime() {
+        return eventDateTime;
+    }
+    public void setEventDateTime(LocalDateTime eventDateTime) {
+        this.eventDateTime = eventDateTime;
+    }
+    public String getVenue() {
+        return venue;
+    }
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+    public String getMaterials() {
+        return materials;
+    }
     public void setMaterials(String materials) {
         this.materials = materials;
     }
-
+    public List<Resource> getResourceAllocations() {
+        return resourceAllocations;
+    }
     public void setResourceAllocations(List<Resource> resourceAllocations) {
         this.resourceAllocations = resourceAllocations;
     }
-    public LocalDateTime getEventDateTime() {
-    return eventDateTime;
-}
-public void setEventDateTime(LocalDateTime eventDateTime) {
-    this.eventDateTime = eventDateTime;
-}
+
+    
 }

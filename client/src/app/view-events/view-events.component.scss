@@ -1,132 +1,161 @@
-.page-title {
-  margin: 20px 0;
-  font-weight: 600;
+.page {
+  padding: 28px 34px;
+  background: #ffffff;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  border-radius: 24px;
 }
 
-/* CARD STYLE */
+.page-header {
+  margin-bottom: 14px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1d1d1f;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: #7a7a7a;
+  font-size: 13px;
+}
+
+/* ✅ SINGLE MAIN BOX */
 .card-box {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 20px;
+  background: #ffffff;
+  border: 1px solid #ece7dd;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
+  margin-bottom: 18px;
+  overflow: hidden;
+  max-width: 980px;
 }
 
-.card-header {
-  padding: 10px 15px;
-  background: #f5f5f5;
-  font-weight: 600;
-  border-bottom: 1px solid #ddd;
+/* ✅ remove inner box look */
+.table-wrap {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent;
 }
 
 /* TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 13px;
 }
 
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
+/* ✅ ✅ HEADER IS NOW PURE WHITE */
+thead th {
   text-align: left;
-  font-size: 14px;
+  padding: 14px 16px;
+  background: #ffffff;          /* ✅ FIXED: was yellow */
+  color: #6b6b6b;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5e7eb;  /* clean divider */
 }
 
-th {
-  background: #fafafa;
+/* BODY */
+tbody td {
+  padding: 14px 16px;
+  border-top: 1px solid #f1ece2;
+  vertical-align: top;
+  color: #111827;
+  font-weight: 500;
 }
 
-/* UPDATE BUTTON (YELLOW LIKE IMAGE) */
+tbody tr:hover {
+  background: #f9fafb; /* very soft hover */
+}
+
+.col-num {
+  width: 46px;
+  color: #6f6f6f;
+  font-weight: 700;
+}
+
+.col-action {
+  width: 120px;
+}
+
+.muted {
+  color: #374151;
+  font-weight: 500;
+}
+
+.event-name {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Venue column */
+.col-venue {
+  width: 160px;
+  color: #374151;
+}
+
+/* Buttons */
 .update-btn {
-  background: #fbbc04;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
   border: none;
-  padding: 6px 14px;
-  border-radius: 4px;
-  font-size: 13px;
+  background: #2f6f63;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-/* UPDATE FORM */
-.update-form {
-  padding: 15px;
+.update-btn:hover {
+  filter: brightness(0.95);
 }
 
-.update-form label {
-  display: block;
-  margin-top: 10px;
-  font-weight: 600;
-}
-
-.update-form input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
-
-.update-submit {
-  margin-top: 15px;
-  padding: 6px 18px;
-}
-
-/* MESSAGES */
-.error {
-  color: red;
-  margin-top: 10px;
-}
-
-.success {
-  color: green;
-  margin-top: 10px;
-}
-
-/* Card already defined earlier */
-
-/* ✅ Update Event card spacing */
-.update-card {
-  margin-top: 20px;
-}
-
-/* ✅ Form layout */
-.update-form {
-  max-width: 600px;
-  padding: 20px;
-}
-
-/* ✅ Each row spacing */
-.form-row {
-  margin-bottom: 15px;
-}
-
-/* ✅ Input blocks */
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.form-group input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* ✅ Button aligned properly */
-.form-actions {
-  text-align: right;
-}
-
-.update-submit {
-  padding: 6px 18px;
-  background: #fbbc04;
+.delete-btn {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
   border: none;
-  border-radius: 4px;
+  background: #b42318;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-/* ✅ Success message spacing */
-.success {
+.delete-btn:hover {
+  filter: brightness(0.95);
+}
+
+/* Messages */
+.msg {
+  max-width: 980px;
   margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.msg.error {
+  background: #fff1f1;
+  color: #b42318;
+}
+
+.msg.success {
+  background: #ecfdf3;
+  color: #067647;
+}
+
+.empty {
+  padding: 12px 16px 16px;
+  color: #7a7a7a;
+  font-size: 13px;
 }

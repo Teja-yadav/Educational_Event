@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { HttpService } from '../../services/http.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { HttpService } from '../../services/http.service';
 
 type Section =
   | 'home'
@@ -22,19 +21,21 @@ type Section =
 })
 export class DashboardComponent implements OnInit {
 
-  role: string | null = null;
+  role: string = '';
   username: string = 'User';
 
-  // sidebar selected item
   active: Section = 'home';
 
-  // dashboard stats
   activeEvents = 0;
   registrations = 0;
   resources = 0;
   totalUsers = 0;
 
   upcoming: any[] = [];
+
+  // ✅ Added for new UI
+  eventCountBadge = 0;
+  showTotalUsers = false;
 
   constructor(
     private router: Router,
@@ -46,7 +47,6 @@ export class DashboardComponent implements OnInit {
     this.role = (localStorage.getItem('role') || '').toUpperCase();
     this.username = (localStorage.getItem('username') || 'User');
 
-    // default landing per role
     if (this.role === 'INSTITUTION') this.active = 'home';
     if (this.role === 'EDUCATOR') this.active = 'educator-agenda';
     if (this.role === 'STUDENT') this.active = 'register-for-event';
@@ -58,8 +58,12 @@ export class DashboardComponent implements OnInit {
   }
 
   setSection(s: Section) {
-    // clear any UI messages if needed later
     this.active = s;
+
+    if (this.role === 'INSTITUTION' && s === 'home') {
+      this.loadInstitutionStats();
+      this.loadUpcoming();
+    }
   }
 
   getGreeting(): string {
@@ -70,28 +74,49 @@ export class DashboardComponent implements OnInit {
   }
 
   loadInstitutionStats() {
+    // ✅ Events list → Active Events + Sidebar badge count
     this.http.GetAllevents().subscribe({
       next: (res) => {
         const list = Array.isArray(res) ? res : [];
         const now = Date.now();
-        this.activeEvents = list.filter((e: any) =>
-          e.eventDateTime ? new Date(e.eventDateTime).getTime() >= now : true
-        ).length;
+
+        this.eventCountBadge = list.length;
+
+        this.activeEvents = list.filter((e: any) => {
+          const t = e.eventDateTime ? new Date(e.eventDateTime).getTime() : now;
+          return !isNaN(t) && t >= now;
+        }).length;
       },
-      error: () => this.activeEvents = 0
+      error: () => {
+        this.eventCountBadge = 0;
+        this.activeEvents = 0;
+      }
     });
 
+    // ✅ Resources count
     this.http.GetAllResources().subscribe({
       next: (res) => {
         const list = Array.isArray(res) ? res : [];
         this.resources = list.length;
       },
-      error: () => this.resources = 0
+      error: () => {
+        this.resources = 0;
+      }
     });
 
-    // If you don’t have backend endpoints for these counts, keep 0 for now
-    this.registrations = 0;
+    // ✅ Registrations count (requires http.getRegistrationsCount())
+    this.http.getRegistrationsCount().subscribe({
+      next: (res) => {
+        this.registrations = Number(res) || 0;
+      },
+      error: () => {
+        this.registrations = 0;
+      }
+    });
+
+    // ✅ keep totalUsers hidden (until you implement backend endpoint)
     this.totalUsers = 0;
+    this.showTotalUsers = false;
   }
 
   loadUpcoming() {
@@ -99,12 +124,15 @@ export class DashboardComponent implements OnInit {
       next: (res) => {
         const list = Array.isArray(res) ? res : [];
         const now = Date.now();
+
         this.upcoming = list
           .filter((e: any) => e.eventDateTime && new Date(e.eventDateTime).getTime() >= now)
           .sort((a: any, b: any) => new Date(a.eventDateTime).getTime() - new Date(b.eventDateTime).getTime())
           .slice(0, 4);
       },
-      error: () => this.upcoming = []
+      error: () => {
+        this.upcoming = [];
+      }
     });
   }
 

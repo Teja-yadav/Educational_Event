@@ -2,6 +2,7 @@ package com.edutech.educationalresourcedistributionsystem.config;
 
 import com.edutech.educationalresourcedistributionsystem.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,7 +43,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().and()
 
             .authorizeRequests()
-            .antMatchers("/api/user/register", "/api/user/login").permitAll()
+
+            // ✅ PUBLIC APIs (NO JWT)
+            .antMatchers(
+                    "/api/user/register",
+                    "/api/user/login",
+                    "/api/user/forgot-password",
+                    "/api/user/verify-otp",
+                    "/api/user/reset-password"
+            ).permitAll()
 
             // INSTITUTION APIs
             .antMatchers(HttpMethod.POST, "/api/institution/event").hasAuthority("INSTITUTION")
@@ -50,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/api/institution/resource").hasAuthority("INSTITUTION")
             .antMatchers(HttpMethod.GET, "/api/institution/resources").hasAuthority("INSTITUTION")
             .antMatchers("/api/institution/event/allocate-resources").hasAuthority("INSTITUTION")
+            .antMatchers(HttpMethod.DELETE, "/api/institution/event/**").hasAuthority("INSTITUTION")
+            .antMatchers(HttpMethod.GET, "/api/institution/registrations/count").hasAuthority("INSTITUTION")
 
             // EDUCATOR APIs
             .antMatchers("/api/educator/agenda").hasAuthority("EDUCATOR")
@@ -57,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             // STUDENT APIs
             .antMatchers("/api/student/register/**").hasAuthority("STUDENT")
-            .antMatchers("/api/student/registration-status/**").hasAuthority("STUDENT")
+            .antMatchers("/api/student/registration-status/**").hasAnyAuthority("INSTITUTION", "STUDENT")
 
             .anyRequest().authenticated()
             .and()
@@ -71,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+    @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
