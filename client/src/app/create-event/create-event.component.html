@@ -1,7 +1,6 @@
 <h2 class="page-title">Create New Event</h2>
 <p class="page-subtitle">Fill in the details to create a new educational event</p>
 
-<!-- CREATE EVENT CARD -->
 <div class="event-card">
   <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
@@ -27,10 +26,14 @@
       <input type="datetime-local" formControlName="eventDateTime" [min]="minDateTime" />
     </div>
 
-    <!-- ✅ NEW VENUE FIELD -->
     <div class="field">
       <label>Venue</label>
       <input formControlName="venue" type="text" placeholder="e.g. Auditorium Block A / Lab 2 / Seminar Hall" />
+    </div>
+
+    <div class="field">
+      <label>Educator ID</label>
+      <input formControlName="educatorId" type="number" placeholder="Enter Educator User ID" />
     </div>
 
     <div class="actions">
@@ -43,7 +46,6 @@
   </form>
 </div>
 
-<!-- ALL EVENTS -->
 <h3 class="section-title">All Events</h3>
 
 <div class="table-card">
@@ -55,8 +57,8 @@
         <th>DESCRIPTION</th>
         <th>MATERIALS</th>
         <th>DATE & TIME</th>
-        <!-- ✅ NEW COLUMN -->
         <th>VENUE</th>
+        <th>EDUCATOR ID</th>
       </tr>
     </thead>
 
@@ -67,8 +69,8 @@
         <td class="col-desc">{{ e.description }}</td>
         <td class="col-mat">{{ e.materials }}</td>
         <td class="col-dt">{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
-        <!-- ✅ SHOW VENUE -->
         <td class="col-venue">{{ e.venue }}</td>
+        <td class="col-venue">{{ e.educatorId }}</td>
       </tr>
     </tbody>
   </table>

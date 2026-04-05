@@ -303,3 +303,13 @@
   .auth-sidebar { display: none; }
   .auth-main { padding: 40px 28px; }
 }
+.fp-link a {
+  color: #25a09a;   /* green-teal */
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fp-link a:hover {
+  color: #1a6b6b;
+  text-decoration: underline;
+}

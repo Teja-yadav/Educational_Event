@@ -39,10 +39,10 @@
         Allocate Resources
       </button>
 
-      <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">
+      <!-- <button class="nav" [class.active]="active==='booking-details'" (click)="setSection('booking-details')">
         <span class="nav-icon">📋</span>
         Booking Details
-      </button>
+      </button> -->
     </ng-container>
 
     <!-- EDUCATOR MENU -->
@@ -78,7 +78,7 @@
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="crumbs">
-        <span class="crumb-path">/ Dashboard</span>
+        <span class="crumb-path"></span>
       </div>
 
       <div class="top-actions">
@@ -96,7 +96,7 @@
 
     <!-- CONTENT -->
     <section class="content">
-
+      
       <!-- INSTITUTION HOME -->
       <div *ngIf="role === 'INSTITUTION' && active === 'home'">
 

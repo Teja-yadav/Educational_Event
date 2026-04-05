@@ -31,13 +31,13 @@ public class InstitutionController {
 
     @PostMapping(value = "/event", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
-
         Event event = new Event();
         event.setName(eventDto.getName());
         event.setDescription(eventDto.getDescription());
         event.setMaterials(eventDto.getMaterials());
         event.setEventDateTime(eventDto.getEventDateTime());
         event.setVenue(eventDto.getVenue());
+        event.setEducatorId(eventDto.getEducatorId());
 
         return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.createEvent(event)));
     }
@@ -51,10 +51,7 @@ public class InstitutionController {
     @GetMapping(value = "/events", produces = "application/json")
     public ResponseEntity<List<EventDto>> getAllEvents() {
         return ResponseEntity.ok(
-                eventService.getAllEvents()
-                        .stream()
-                        .map(DtoMapper::toEventDTO)
-                        .collect(Collectors.toList())
+                eventService.getAllEvents().stream().map(DtoMapper::toEventDTO).collect(Collectors.toList())
         );
     }
 
@@ -69,16 +66,13 @@ public class InstitutionController {
     @GetMapping(value = "/resources", produces = "application/json")
     public ResponseEntity<List<ResourceDto>> getAllResources() {
         return ResponseEntity.ok(
-                resourceService.getAllResources()
-                        .stream()
-                        .map(DtoMapper::toResourceDTO)
-                        .collect(Collectors.toList())
+                resourceService.getAllResources().stream().map(DtoMapper::toResourceDTO).collect(Collectors.toList())
         );
     }
 
     @PostMapping(value = "/event/allocate-resources", produces = "application/json")
-    public ResponseEntity<Event> allocateResources(@RequestParam Long eventId, @RequestParam Long resourceId) {
-        return ResponseEntity.ok(eventService.allocateResource(eventId, resourceId));
+    public ResponseEntity<EventDto> allocateResources(@RequestParam Long eventId, @RequestParam Long resourceId) {
+        return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.allocateResource(eventId, resourceId)));
     }
 
     @GetMapping(value = "/registrations/count", produces = "application/json")
