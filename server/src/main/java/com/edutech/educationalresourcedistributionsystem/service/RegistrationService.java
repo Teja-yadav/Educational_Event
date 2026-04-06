@@ -1,11 +1,10 @@
 package com.edutech.educationalresourcedistributionsystem.service;
 
-import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
 import java.util.List;
+import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
 
 public interface RegistrationService {
-    EventRegistration registerStudent(Long eventId, String studentId);
-    List<EventRegistration> getAllRegistrations();
-    List<EventRegistration> getStatus(String studentId);
-    long getRegistrationCount();
+    EventRegistration registerStudent(Long eventId, String studentUsername);
+    List<EventRegistration> getStatus(String studentUsername);
+    Long getRegistrationCount();
 }

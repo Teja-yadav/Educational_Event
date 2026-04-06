@@ -10,19 +10,20 @@ import { HttpService } from '../../services/http.service';
 export class RegisterForEventComponent implements OnInit {
 
   itemForm!: FormGroup;
-  showError: boolean = false;
+  showError = false;
   errorMessage: any = '';
-  showMessage: boolean = false;
+  showMessage = false;
   responseMessage: any = '';
   eventList: any[] = [];
-
-  private studentIdPattern = /^LTM\d{2}$/;
+  loggedInUsername = '';
 
   constructor(private fb: FormBuilder, private http: HttpService) {}
 
   ngOnInit(): void {
+    this.loggedInUsername = (localStorage.getItem('username') || '').trim();
+
     this.itemForm = this.fb.group({
-      studentId: ['', [Validators.required, Validators.pattern(this.studentIdPattern)]],
+      studentId: [this.loggedInUsername, [Validators.required]],
       eventId: ['', Validators.required],
       venue: ['']
     });
@@ -43,12 +44,6 @@ export class RegisterForEventComponent implements OnInit {
           const t = new Date(e.eventDateTime).getTime();
           return !isNaN(t) && t >= now;
         });
-
-        const currentEventId = this.itemForm.get('eventId')?.value;
-        if (currentEventId) {
-          const selected = this.eventList.find(e => String(e.id) === String(currentEventId));
-          this.itemForm.get('venue')?.setValue(selected?.venue || '');
-        }
       },
       error: () => {
         this.eventList = [];
@@ -57,12 +52,11 @@ export class RegisterForEventComponent implements OnInit {
   }
 
   clearForm() {
-    this.itemForm.reset();
-    this.itemForm.get('venue')?.setValue('');
-    this.showError = false;
-    this.errorMessage = '';
-    this.showMessage = false;
-    this.responseMessage = '';
+    this.itemForm.reset({
+      studentId: this.loggedInUsername,
+      eventId: '',
+      venue: ''
+    });
   }
 
   Submit() {
@@ -73,19 +67,20 @@ export class RegisterForEventComponent implements OnInit {
 
     if (this.itemForm.invalid) {
       this.showError = true;
-      const ctrl = this.itemForm.get('studentId');
-      if (ctrl?.errors?.['required']) {
-        this.errorMessage = 'Student ID is required';
-      } else if (ctrl?.errors?.['pattern']) {
-        this.errorMessage = 'Student ID must be like LTM01, LTM09, LTM90';
-      } else {
-        this.errorMessage = 'All fields are required';
-      }
+      this.errorMessage = 'All fields are required';
+      return;
+    }
+
+    const entered = (this.itemForm.value.studentId || '').trim();
+
+    if (!this.loggedInUsername || entered.toLowerCase() !== this.loggedInUsername.toLowerCase()) {
+      this.showError = true;
+      this.errorMessage = 'You can register only using your own username';
       return;
     }
 
     const payload = {
-      studentId: (this.itemForm.value.studentId as string).toUpperCase(),
+      studentId: entered,
       status: 'REGISTERED'
     };
 
@@ -96,6 +91,11 @@ export class RegisterForEventComponent implements OnInit {
         this.showMessage = true;
         this.responseMessage = 'Registered Successfully';
         this.clearForm();
+
+        setTimeout(() => {
+          this.showMessage = false;
+          this.responseMessage = '';
+        }, 3000);
       },
       error: (err) => {
         this.showError = true;

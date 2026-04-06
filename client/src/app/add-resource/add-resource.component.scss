@@ -1,30 +1,27 @@
-:host {
-  display: block;
+:host {host: block;
   width: 100%;
 }
 
-/* ✅ White background */
 .resource-page {
-  border-top-left-radius: 24px;
-  border-bottom-left-radius: 24px;
-    border-top-right-radius: 24px;
-  border-bottom-right-radius: 24px;
   width: 100%;
-  min-height: 100%;
-  padding: 18px 18px 40px;
-  background: #ffffff; /* ✅ changed from beige to white */
+  min-height: 100vh;
+  padding: 28px 34px 44px;
+  background: #f5f6fa; 
+  border-radius: 24px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
 }
 
-/* Header */
+
 .header {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .title {
   margin: 0;
-  font-size: 28px;
-  font-weight: 800;
-  color: #1f2937;
+  font-size: 26px;
+  font-weight: 700; 
+  color: #111827;
+  letter-spacing: -0.3px;
 }
 
 .subtitle {
@@ -33,25 +30,23 @@
   color: #6b7280;
 }
 
-/* ✅ LEFT aligned form card */
+
 .form-wrap {
-  display: block;       /* ✅ no flex */
   width: 100%;
   margin-top: 14px;
 }
 
-/* Form card size like screenshot */
 .form-card {
   width: 100%;
-  max-width: 760px;
+  max-width: 860px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 22px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  border: 1px solid #eef0f4;
+  border-radius: 24px; 
+  padding: 20px;
+  box-shadow: 0 18px 36px rgba(17, 24, 39, 0.08);
 }
 
-/* Inputs layout */
+/* Two fields row */
 .row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -65,8 +60,8 @@
   margin-bottom: 14px;
 
   label {
-    font-size: 12.5px;
-    font-weight: 650;
+    font-size: 13px;
+    font-weight: 600; 
     color: #374151;
   }
 
@@ -75,9 +70,9 @@
   textarea {
     border: 1px solid #e5e7eb;
     background: #fbfbfb;
-    border-radius: 10px;
-    padding: 11px 12px;
-    font-size: 13.5px;
+    border-radius: 14px; 
+    padding: 12px 14px;
+    font-size: 14px;
     outline: none;
     transition: 0.2s ease;
   }
@@ -90,8 +85,8 @@
   select:focus,
   textarea:focus {
     background: #ffffff;
-    border-color: #2f6f6d;
-    box-shadow: 0 0 0 3px rgba(47, 111, 109, 0.14);
+    border-color: #2f6f63;
+    box-shadow: 0 0 0 4px rgba(47, 111, 99, 0.16);
   }
 }
 
@@ -99,32 +94,52 @@
   grid-column: 1 / -1;
 }
 
-/* Button */
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
 .primary-btn {
-  margin-top: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   height: 42px;
   padding: 0 18px;
   border: none;
-  border-radius: 10px;
-  background: #2f6f6d;
+  border-radius: 14px;
+  background: #2f6f63;
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 700; 
   cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
 }
 
 .primary-btn:hover {
   filter: brightness(0.96);
+  transform: translateY(-1px);
 }
 
-/* Alerts */
+.secondary-btn {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: #f9fafb;
+}
+
+
 .alert {
   margin-top: 14px;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 14px;
   font-size: 13px;
+  font-weight: 600;
   border: 1px solid transparent;
 }
 
@@ -140,29 +155,44 @@
   color: #065f46;
 }
 
-/* Section Title */
-.section-title {
-  margin: 22px 0 12px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #1f2937;
+
+.section-head {
+  margin-top: 22px;
 }
 
-/* Cards grid */
+.section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700; 
+  color: #111827;
+}
+
+.section-sub {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
 .cards-grid {
+  margin-top: 14px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  max-width: 980px; /* ✅ keeps grid like template */
+  gap: 14px;
+  max-width: 980px;
 }
 
-/* Card */
 .resource-card {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
+  border: 1px solid #eef0f4;
+  border-radius: 22px;
   padding: 16px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  box-shadow: 0 18px 36px rgba(17, 24, 39, 0.08);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px rgba(17, 24, 39, 0.10);
 }
 
 .card-top {
@@ -172,32 +202,30 @@
 }
 
 .icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
   background: #f3f4f6;
-  display: grid;
-  place-items: center;
   position: relative;
 
   .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #2f6f6d;
+    background: #2f6f63;
     position: absolute;
-    top: 9px;
-    left: 12px;
+    top: 10px;
+    left: 13px;
   }
 
   .bar {
     width: 14px;
     height: 3px;
-    background: #2f6f6d;
-    border-radius: 4px;
+    background: #2f6f63;
+    border-radius: 999px;
     position: absolute;
     bottom: 10px;
-    left: 10px;
+    left: 11px;
     opacity: 0.8;
   }
 }
@@ -207,10 +235,9 @@
 }
 
 .name {
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   color: #111827;
-  line-height: 1.2;
 }
 
 .type {
@@ -229,12 +256,12 @@
   align-items: center;
   gap: 8px;
   font-size: 12.5px;
-  font-weight: 650;
+  font-weight: 600;
   color: #374151;
 
   .bullet {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #10b981;
   }
@@ -246,17 +273,20 @@
   }
 }
 
+
 .empty {
-  grid-column: 1 / -1;
-  padding: 16px;
+  margin-top: 14px;
+  max-width: 980px;
+  padding: 18px;
   border: 1px dashed #e5e7eb;
-  border-radius: 12px;
+  border-radius: 20px;
   background: #ffffff;
   color: #6b7280;
   text-align: center;
+  font-weight: 600;
 }
 
-/* Responsive */
+
 @media (max-width: 1100px) {
   .cards-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -264,15 +294,15 @@
 }
 
 @media (max-width: 760px) {
+  .resource-page {
+    padding: 20px;
+  }
+
   .row-2 {
     grid-template-columns: 1fr;
   }
 
   .cards-grid {
     grid-template-columns: 1fr;
-  }
-
-  .form-card {
-    max-width: 100%;
   }
 }

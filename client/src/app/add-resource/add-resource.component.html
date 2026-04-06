@@ -5,17 +5,16 @@
     <p class="subtitle">Add and manage physical and digital resources</p>
   </div>
 
-  <!-- FORM CARD (LEFT ALIGNED) -->
+  <!-- FORM CARD -->
   <div class="form-wrap">
     <div class="form-card">
-
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
 
         <div class="row-2">
           <div class="field">
             <label>Resource Type</label>
             <select formControlName="resourceType">
-              <option value="" disabled selected>Select type</option>
+              <option value="" disabled>Select type</option>
               <option value="Projector">Projector</option>
               <option value="Computer Lab">Computer Lab</option>
               <option value="Whiteboard">Whiteboard</option>
@@ -44,21 +43,27 @@
           ></textarea>
         </div>
 
-        <button class="primary-btn" type="submit">Add Resource</button>
+        <div class="actions">
+          <button class="primary-btn" type="submit">Add Resource</button>
+          <button class="secondary-btn" type="button" (click)="itemForm.reset()">Clear</button>
+        </div>
 
         <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
         <div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
 
       </form>
-
     </div>
   </div>
 
   <!-- AVAILABLE RESOURCES -->
-  <h3 class="section-title">Available Resources</h3>
+  <div class="section-head">
+    <h3 class="section-title">Available Resources</h3>
+    <p class="section-sub">Your created resources shown as cards</p>
+  </div>
 
-  <div class="cards-grid">
+  <div class="cards-grid" *ngIf="resourceList && resourceList.length > 0">
     <div class="resource-card" *ngFor="let r of resourceList">
+
       <div class="card-top">
         <div class="icon">
           <span class="dot"></span>
@@ -80,11 +85,13 @@
           {{ (r.availability || '').toLowerCase().includes('use') ? 'In Use' : 'Available' }}
         </span>
       </div>
-    </div>
 
-    <div class="empty" *ngIf="!resourceList || resourceList.length === 0">
-      No resources found
     </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty" *ngIf="!resourceList || resourceList.length === 0">
+    No resources found
   </div>
 
 </div>

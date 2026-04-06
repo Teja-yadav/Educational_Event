@@ -7,15 +7,15 @@
         <div class="logo-text">Edu<span>Event</span></div>
       </div>
     </div>
-    
+
     <div>
       <div class="sidebar-tagline">Start your <em>educational</em> adventure today</div>
     </div>
-    
+
     <div class="sidebar-quote">
       "The beautiful thing about learning is that no one can take it away from you." — B.B. King
     </div>
-    
+
     <div class="sidebar-dots">
       <div class="dot"></div><div class="dot active"></div><div class="dot"></div>
     </div>
@@ -26,45 +26,92 @@
     <div>
       <button class="btn btn-ghost btn-sm" routerLink="/login" style="margin-bottom:24px">← Back to Home</button>
     </div>
-    
+
     <div class="auth-header">
       <h1 class="auth-title serif">Create your account</h1>
       <p class="auth-subtitle">Join EduEvent as a student, educator, or institution</p>
     </div>
-    
+
     <form class="auth-form" [formGroup]="itemForm" (ngSubmit)="onRegister()">
+
       <!-- Status Message -->
-      <div *ngIf="showMessage" class="alert show" [ngClass]="{'alert-success': responseMessage === 'User Registered Successfully', 'alert-error': responseMessage !== 'User Registered Successfully'}">
+      <div
+        *ngIf="showMessage"
+        class="alert show"
+        [ngClass]="{
+          'alert-success': responseMessage === 'User Registered Successfully',
+          'alert-error': responseMessage !== 'User Registered Successfully'
+        }"
+      >
         {{ responseMessage }}
       </div>
-      
+
       <div class="form-row-2">
         <div class="form-field">
           <label>Username</label>
-          <input type="text" formControlName="username" placeholder="Enter username"/>
+          <input type="text" formControlName="username" placeholder="Enter username" />
           <div class="field-error" [class.show]="itemForm.get('username')?.touched && itemForm.get('username')?.invalid">
             Username is required (min 3 chars)
           </div>
         </div>
+
         <div class="form-field">
           <label>Email Address</label>
-          <input type="email" formControlName="email" placeholder="you@example.com"/>
+          <input type="email" formControlName="email" placeholder="you@example.com" />
           <div class="field-error" [class.show]="itemForm.get('email')?.touched && itemForm.get('email')?.invalid">
             Enter a valid email
           </div>
         </div>
       </div>
-      
+
+      <!-- ✅ PASSWORD with STEP-WISE VALIDATION -->
       <div class="form-field">
         <label>Password</label>
         <div class="password-wrap">
-          <input type="password" formControlName="password" placeholder="Min 8 chars, uppercase & number"/>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Min 8 chars, uppercase & number"
+            (input)="onPasswordInput()"
+          />
         </div>
-        <div class="field-error" [class.show]="itemForm.get('password')?.touched && itemForm.get('password')?.invalid">
-          Need uppercase, lowercase, number & special char
+
+        <!-- ✅ Step-wise red validation (ONLY missing rules show) -->
+        <div class="steps" *ngIf="itemForm.get('password')?.touched && itemForm.get('password')?.invalid">
+
+          <div class="step" *ngIf="!passwordChecks.minLen">
+            <span class="dot"></span>
+            Password should be at least 8 characters
+          </div>
+
+          <div class="step" *ngIf="!passwordChecks.upper">
+            <span class="dot"></span>
+            Password should have a capital letter
+          </div>
+
+          <div class="step" *ngIf="!passwordChecks.lower">
+            <span class="dot"></span>
+            Password should have a small letter
+          </div>
+
+          <div class="step" *ngIf="!passwordChecks.number">
+            <span class="dot"></span>
+            Password should have a number
+          </div>
+
+          <div class="step" *ngIf="!passwordChecks.special">
+            <span class="dot"></span>
+            Password should have a special character
+          </div>
+
+          <div class="step" *ngIf="itemForm.get('password')?.errors?.['required'] && !(itemForm.get('password')?.value?.length > 0)">
+            <span class="dot"></span>
+            Password required
+          </div>
+
         </div>
       </div>
-      
+
       <div class="form-field">
         <label>I am a...</label>
         <select formControlName="role">
@@ -77,12 +124,15 @@
           Please select a role
         </div>
       </div>
-      
+
       <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top:8px;">
         Create Account →
       </button>
-      
-      <div class="auth-switch">Already have an account? <a routerLink="/login">Sign in here</a></div>
+
+      <div class="auth-switch">
+        Already have an account? <a routerLink="/login">Sign in here</a>
+      </div>
+
     </form>
   </div>
 </div>

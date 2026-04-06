@@ -1,120 +1,166 @@
 <div class="page">
-  <div class="page-header">
-    <h1>Browse Events</h1>
-    <p>Discover and register for educational events</p>
-  </div>
+<div class="page-header">
+<h1>Browse Events</h1>
+<p>Discover and register for educational events</p>
+</div>
+ 
+  <!-- Cards Grid -->
+<div class="cards-wrap" *ngIf="eventList && eventList.length > 0">
+<div class="cards-grid">
+ 
+      <div class="event-card" *ngFor="let e of eventList; let i = index">
+ 
+        <div class="card-top">
+<div class="index-badge">{{ i + 1 }}</div>
+ 
+          <div class="top-right">
+ 
+            <button
 
-  <div class="card-box">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th>EVENT NAME</th>
-            <th>DESCRIPTION</th>
-            <th>MATERIALS</th>
-            <th>DATE &amp; TIME</th>
-            <th>VENUE</th>
-            <th>RESOURCES</th>
+              type="button"
 
-            <th class="col-action" *ngIf="isEducator">ACTION</th>
-            <th class="col-action" *ngIf="isInstitution">DELETE</th>
-          </tr>
-        </thead>
+              class="update-btn"
 
-        <tbody>
-          <tr *ngFor="let e of eventList; let i = index">
-            <td class="col-num">{{ i + 1 }}</td>
+              *ngIf="isEducator"
 
-            <td class="event-name">{{ e.name }}</td>
+              (click)="openUpdateModal(e)"
+>
 
-            <td class="muted">{{ e.description }}</td>
+              Update
+</button>
+ 
+            <button
 
-            <td class="muted">{{ e.materials }}</td>
+              type="button"
 
-            <td class="muted">
+              class="delete-btn"
+
+              *ngIf="isInstitution"
+
+              (click)="deleteEvent(e.id)"
+>
+
+              Delete
+</button>
+</div>
+</div>
+ 
+        <div class="card-title">{{ e.name }}</div>
+ 
+        <div class="card-desc">
+
+          {{ e.description }}
+</div>
+ 
+        <div class="meta">
+ 
+          <div class="meta-row">
+<span class="meta-ic">🕒</span>
+<span class="meta-label">Date &amp; Time</span>
+<span class="meta-val">
+
               {{ e.eventDateTime ? (e.eventDateTime | date:'dd-MM-yyyy, hh:mm a') : '-' }}
-            </td>
+</span>
+</div>
+ 
+          <div class="meta-row">
+<span class="meta-ic">📍</span>
+<span class="meta-label">Venue</span>
+<span class="meta-val">{{ e.venue ? e.venue : '-' }}</span>
+</div>
+ 
+          <div class="meta-row">
+<span class="meta-ic">📦</span>
+<span class="meta-label">Materials</span>
+<span class="meta-val">{{ e.materials ? e.materials : '-' }}</span>
+</div>
+ 
+          <div class="meta-row">
+<span class="meta-ic">🔗</span>
+<span class="meta-label">Resources</span>
+<span class="meta-val">
+<ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
+<span *ngFor="let r of e.resourceAllocations; let last = last">
 
-            <td class="muted col-venue">
-              {{ e.venue ? e.venue : '-' }}
-            </td>
-
-            <td class="muted">
-              <ng-container *ngIf="e.resourceAllocations?.length > 0; else noRes">
-                <span *ngFor="let r of e.resourceAllocations; let last = last">
                   {{ r.resourceType }}<span *ngIf="!last">, </span>
-                </span>
-              </ng-container>
-              <ng-template #noRes>-</ng-template>
-            </td>
-
-            <td class="col-action" *ngIf="isEducator">
-              <button type="button" class="update-btn" (click)="openUpdateModal(e)">
-                Update
-              </button>
-            </td>
-
-            <td class="col-action" *ngIf="isInstitution">
-              <button type="button" class="delete-btn" (click)="deleteEvent(e.id)">
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="empty" *ngIf="!eventList || eventList.length === 0">
-      No events available.
-    </div>
-  </div>
-
-  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
-  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+</span>
+</ng-container>
+<ng-template #noRes>-</ng-template>
+</span>
 </div>
-
+ 
+        </div>
+</div>
+ 
+    </div>
+</div>
+ 
+  <!-- Empty State -->
+<div class="empty" *ngIf="!eventList || eventList.length === 0">
+<div class="empty-icon">📭</div>
+<div class="empty-title">No events available</div>
+<div class="empty-sub">Once events are created, they will appear here.</div>
+</div>
+ 
+  <!-- Messages -->
+<div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+<div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+</div>
+ 
+<!-- Update Modal -->
 <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-  <div class="modal-card" (click)="$event.stopPropagation()">
-
+<div class="modal-card" (click)="$event.stopPropagation()">
+ 
     <div class="modal-topbar">
-      <div class="modal-title">Update Event</div>
-      <button type="button" class="modal-x" (click)="closeModal()">×</button>
-    </div>
-
+<div class="modal-title">Update Event</div>
+<button type="button" class="modal-x" (click)="closeModal()">×</button>
+</div>
+ 
     <form class="modal-body" [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
+ 
       <div class="field">
-        <label>Title:</label>
-        <input type="text" formControlName="name" />
-      </div>
-
+<label>Title:</label>
+<input type="text" formControlName="name" />
+</div>
+ 
       <div class="field">
-        <label>Description:</label>
-        <textarea rows="3" formControlName="description"></textarea>
-      </div>
-
+<label>Description:</label>
+<textarea rows="3" formControlName="description"></textarea>
+</div>
+ 
       <div class="field">
-        <label>Date Time:</label>
-        <input type="datetime-local" formControlName="eventDateTime" />
-      </div>
-
+<label>Date Time:</label>
+<input type="datetime-local" formControlName="eventDateTime" />
+</div>
+ 
       <div class="field">
-        <label>Materials:</label>
-        <input type="text" formControlName="materials" />
-      </div>
-
+<label>Materials:</label>
+<input type="text" formControlName="materials" />
+</div>
+ 
       <div class="field">
-        <label>Venue:</label>
-        <input type="text" formControlName="venue" placeholder="e.g. Auditorium / Lab 2 / Seminar Hall" />
-      </div>
+<label>Venue:</label>
+<input
 
+          type="text"
+
+          formControlName="venue"
+
+          placeholder="e.g. Auditorium / Lab 2 / Seminar Hall"
+
+        />
+</div>
+ 
       <div class="modal-actions">
-        <button type="button" class="btn-close" (click)="closeModal()">Close</button>
-        <button type="submit" class="btn-update" [disabled]="itemForm.invalid">Update Event</button>
-      </div>
+<button type="button" class="btn-close" (click)="closeModal()">Close</button>
+<button type="submit" class="btn-update" [disabled]="itemForm.invalid">
 
+          Update Event
+</button>
+</div>
+ 
     </form>
-
+ 
   </div>
 </div>
+ 

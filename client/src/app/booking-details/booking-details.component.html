@@ -1,76 +1,53 @@
 <div class="page">
   <div class="header">
-    <h1>All Booking Details</h1>
-    <p>Overview of all event registrations</p>
+    <h1>My Bookings</h1>
+    <p>All events you have registered for</p>
   </div>
 
-  <div class="card">
-    <form class="toolbar" [formGroup]="itemForm" (ngSubmit)="searchEvent()">
-      <div class="field">
-        <label>Student ID</label>
-        <input
-          type="text"
-          formControlName="studentId"
-          placeholder="Example: LTM01"
-        />
+  <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
+  <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+
+  <div class="cards-wrap" *ngIf="eventList.length > 0">
+    <div class="booking-card" *ngFor="let e of eventList; let i = index">
+
+      <div class="card-header">
+        <span class="index">#{{ i + 1 }}</span>
+        <span
+          class="status-pill"
+          [ngClass]="{
+            registered: (e.status || '').toUpperCase() === 'REGISTERED',
+            confirmed: (e.status || '').toUpperCase() === 'CONFIRMED',
+            pending: (e.status || '').toUpperCase() === 'PENDING',
+            cancelled: (e.status || '').toUpperCase() === 'CANCELLED'
+          }"
+        >
+          {{ (e.status || 'REGISTERED') | uppercase }}
+        </span>
       </div>
 
-      <button class="btn" type="submit">
-        Search
-      </button>
-    </form>
+      <div class="card-body">
+        <div class="row">
+          <span class="label">Event</span>
+          <span class="value">{{ e.event?.name || '-' }}</span>
+        </div>
 
-    <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
-    <div class="msg success" *ngIf="showMessage">{{ responseMessage }}</div>
+        <div class="row">
+          <span class="label">Venue</span>
+          <span class="value muted">{{ e.event?.venue || '-' }}</span>
+        </div>
 
-    <div class="table-wrap" *ngIf="eventList.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th>STUDENT</th>
-            <th>EVENT</th>
-            <th>VENUE</th>
+        <div class="row">
+          <span class="label">Date & Time</span>
+          <span class="value muted">
+            {{ e.event?.eventDateTime ? (e.event.eventDateTime | date:'dd MMM yyyy, hh:mm a') : '-' }}
+          </span>
+        </div>
+      </div>
 
-            <th class="col-status">STATUS</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let e of eventList; let i = index">
-            <td class="col-num">{{ i + 1 }}</td>
-
-            <td class="muted">
-              {{ e.studentId || e.student?.studentId || '-' }}
-            </td>
-
-            <td class="strong">
-              {{ e.event?.name || e.eventName || '-' }}
-            </td>
-
-            <td class="muted">
-              {{ e.event?.venue || e.venue || '-' }}
-            </td>
-
-            <td class="col-status">
-              <span
-                class="status-pill"
-                [ngClass]="{
-                  confirmed: (e.status || '').toUpperCase() === 'CONFIRMED',
-                  pending: (e.status || '').toUpperCase() === 'PENDING',
-                  cancelled: (e.status || '').toUpperCase() === 'CANCELLED'
-                }"
-              >
-                {{ (e.status || 'PENDING') | uppercase }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+  </div>
 
-    <div class="empty" *ngIf="!showError && !showMessage && eventList.length === 0">
-      Search with a Student ID to view booking details.
-    </div>
+  <div class="empty" *ngIf="!showError && eventList.length === 0">
+    You have not registered for any events yet.
   </div>
 </div>

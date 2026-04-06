@@ -26,17 +26,28 @@ export class HttpService {
     });
   }
 
-  getBookingDetails(studentId: any): Observable<any> {
-    return this.http.get<any>(
-      `${this.serverName}/api/student/registration-status/${studentId}`,
-      { headers: this.getAuthHeaders() }
-    );
-  }
+  /* ---------- STUDENT ---------- */
 
   registerForEvent(eventId: any, details: any): Observable<any> {
     return this.http.post<any>(
       `${this.serverName}/api/student/register/${eventId}`,
       details,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  /* ✅ NEW: My Bookings (NO search, logged-in student only) */
+  getMyBookings(): Observable<any> {
+    return this.http.get<any>(
+      `${this.serverName}/api/student/my-bookings`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  /* OLD – keep only if Institution/Admin needs search */
+  getBookingDetails(studentId: any): Observable<any> {
+    return this.http.get<any>(
+      `${this.serverName}/api/student/registration-status/${studentId}`,
       { headers: this.getAuthHeaders() }
     );
   }
@@ -47,6 +58,8 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
+
+  /* ---------- EDUCATOR ---------- */
 
   getAllEducatorAgenda(): Observable<any> {
     return this.http.get<any>(
@@ -62,6 +75,8 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
+
+  /* ---------- INSTITUTION ---------- */
 
   GetAllevents(): Observable<any> {
     return this.http.get<any>(
@@ -102,12 +117,11 @@ export class HttpService {
   }
 
   getEducators(): Observable<any> {
-  return this.http.get<any>(
-    `${this.serverName}/api/institution/educators`,
-    { headers: this.getAuthHeaders() }
-  );
-}
-
+    return this.http.get<any>(
+      `${this.serverName}/api/institution/educators`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
 
   deleteEvent(eventId: any): Observable<any> {
     return this.http.delete<any>(
@@ -122,6 +136,8 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
+
+  /* ---------- AUTH / PUBLIC ---------- */
 
   forgotPassword(payload: any): Observable<string> {
     return this.http.post(

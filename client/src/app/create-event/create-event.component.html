@@ -1,83 +1,115 @@
 <h2 class="page-title">Create New Event</h2>
 <p class="page-subtitle">Fill in the details to create a new educational event</p>
-
+ 
+<!-- CREATE EVENT CARD -->
 <div class="event-card">
-  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+ 
     <div class="field">
-      <label>Event Name</label>
-      <input formControlName="name" type="text" placeholder="e.g. Advanced Python Workshop" />
-    </div>
-
+<label>Event Name</label>
+<input formControlName="name" type="text" placeholder="e.g. Advanced Python Workshop" />
+</div>
+ 
     <div class="field">
-      <label>Description</label>
-      <textarea formControlName="description" rows="4"
+<label>Description</label>
+<textarea formControlName="description" rows="4"
+
         placeholder="Describe what this event covers, goals, and target audience..."></textarea>
-    </div>
-
+</div>
+ 
     <div class="field">
-      <label>Required Materials / Prerequisites</label>
-      <input formControlName="materials" type="text"
+<label>Required Materials / Prerequisites</label>
+<input formControlName="materials" type="text"
+
         placeholder="e.g. Laptop, Python 3.x, basic programming knowledge" />
-    </div>
-
+</div>
+ 
     <div class="field">
-      <label>Date & Time</label>
-      <input type="datetime-local" formControlName="eventDateTime" [min]="minDateTime" />
-    </div>
-
+<label>Date &amp; Time</label>
+<input type="datetime-local" formControlName="eventDateTime" [min]="minDateTime" />
+</div>
+ 
     <div class="field">
-      <label>Venue</label>
-      <input formControlName="venue" type="text" placeholder="e.g. Auditorium Block A / Lab 2 / Seminar Hall" />
-    </div>
-
+<label>Venue</label>
+<input formControlName="venue" type="text" placeholder="e.g. Auditorium Block A / Lab 2 / Seminar Hall" />
+</div>
+ 
     <div class="field">
-      <label>Educator Username</label>
-      <select formControlName="educatorUsername">
-        <option value="">Select Educator</option>
-        <option *ngFor="let e of educators" [value]="e.username">
+<label>Educator Username</label>
+<select formControlName="educatorUsername">
+<option value="">Select Educator</option>
+<option *ngFor="let e of educators" [value]="e.username">
+
           {{ e.username }}
-        </option>
-      </select>
-    </div>
-
+</option>
+</select>
+</div>
+ 
     <div class="actions">
-      <button class="btn-primary" type="submit">Create Event</button>
-      <button class="btn-secondary" type="button" (click)="itemForm.reset()">Clear</button>
-    </div>
-
+<button class="btn-primary" type="submit">Create Event</button>
+<button class="btn-secondary" type="button" (click)="itemForm.reset()">Clear</button>
+</div>
+ 
     <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
-    <div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
-
-  </form>
+<div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
+</form>
 </div>
-
+ 
+<!-- ALL EVENTS (Card Layout) -->
+<div class="section-head">
 <h3 class="section-title">All Events</h3>
-
-<div class="table-card">
-  <table class="events-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>NAME</th>
-        <th>DESCRIPTION</th>
-        <th>MATERIALS</th>
-        <th>DATE & TIME</th>
-        <th>VENUE</th>
-        <th>EDUCATOR ID</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let e of eventList; let i = index">
-        <td class="col-id">{{ i + 1 }}</td>
-        <td class="col-name">{{ e.name }}</td>
-        <td class="col-desc">{{ e.description }}</td>
-        <td class="col-mat">{{ e.materials }}</td>
-        <td class="col-dt">{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</td>
-        <td class="col-venue">{{ e.venue }}</td>
-        <td class="col-venue">{{ e.educatorId }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="section-sub">Your created events shown as cards</div>
 </div>
+ 
+<!-- Empty state -->
+<div class="empty-state" *ngIf="!eventList || eventList.length === 0">
+<div class="empty-icon">📭</div>
+<div class="empty-title">No events yet</div>
+<div class="empty-text">Create your first event using the form above.</div>
+</div>
+ 
+<!-- Card grid -->
+<div class="cards-grid" *ngIf="eventList && eventList.length > 0">
+<div class="event-tile" *ngFor="let e of eventList; let i = index">
+ 
+    <div class="tile-top">
+<div class="index-badge">{{ i + 1 }}</div>
+<div class="chip">Upcoming</div>
+</div>
+ 
+    <div class="tile-title">{{ e.name }}</div>
+ 
+    <div class="tile-desc">
+
+      {{ e.description }}
+</div>
+ 
+    <div class="tile-meta">
+<div class="meta-row">
+<span class="meta-ic">🕒</span>
+<span class="meta-label">Date:</span>
+<span class="meta-val">{{ e.eventDateTime | date:'dd-MM-yyyy, hh:mm a' }}</span>
+</div>
+ 
+      <div class="meta-row">
+<span class="meta-ic">📍</span>
+<span class="meta-label">Venue:</span>
+<span class="meta-val">{{ e.venue || '-' }}</span>
+</div>
+ 
+      <div class="meta-row">
+<span class="meta-ic">📦</span>
+<span class="meta-label">Materials:</span>
+<span class="meta-val">{{ e.materials || '-' }}</span>
+</div>
+ 
+      <div class="meta-row">
+<span class="meta-ic">👨‍🏫</span>
+<span class="meta-label">Educator:</span>
+<span class="meta-val">{{ e.educatorId || e.educatorUsername || '-' }}</span>
+</div>
+</div>
+ 
+  </div>
+</div>
+ 

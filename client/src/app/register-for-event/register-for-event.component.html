@@ -7,21 +7,16 @@
   <div class="form-card">
     <form [formGroup]="itemForm" (ngSubmit)="Submit()">
 
-      <!-- Student ID -->
       <div class="form-group">
-        <label>Student ID</label>
+        <label>Student Username</label>
         <input
           type="text"
           formControlName="studentId"
-          placeholder="e.g. LTM01"
+          placeholder="Your username"
+          readonly
         />
-        <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.errors">
-          <span *ngIf="itemForm.get('studentId')?.errors?.['required']">
-            Student ID is required
-          </span>
-          <span *ngIf="itemForm.get('studentId')?.errors?.['pattern']">
-            Student ID must be like LTM01, LTM09, LTM90
-          </span>
+        <div class="error" *ngIf="itemForm.get('studentId')?.touched && itemForm.get('studentId')?.invalid">
+          Student Username is required
         </div>
       </div>
 
@@ -40,7 +35,6 @@
         </div>
       </div>
 
-      <!-- ✅ Venue (AUTO-FILLED) -->
       <div class="form-group">
         <label>Venue</label>
         <input

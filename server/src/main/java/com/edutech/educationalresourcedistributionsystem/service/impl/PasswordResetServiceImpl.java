@@ -7,6 +7,7 @@ import com.edutech.educationalresourcedistributionsystem.repository.UserReposito
 import com.edutech.educationalresourcedistributionsystem.service.EmailService;
 import com.edutech.educationalresourcedistributionsystem.service.PasswordResetService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 public class PasswordResetServiceImpl implements PasswordResetService {
 
@@ -33,8 +35,12 @@ public class PasswordResetServiceImpl implements PasswordResetService {
 
     @Override
     public void sendOtp(String email) {
+
+        log.info("Password reset OTP request received. email={}", email);
+
         User user = userRepository.findByEmail(email);
         if (user == null) {
+            log.warn("OTP request blocked: email not registered. email={}", email);
             throw new RuntimeException("Email not registered");
         }
 
@@ -46,7 +52,9 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         entity.setExpiresAt(LocalDateTime.now().plusMinutes(10));
         entity.setVerified(false);
         entity.setUsed(false);
+
         otpRepository.save(entity);
+        log.info("OTP entry created successfully. email={}, expiresAt={}", email, entity.getExpiresAt());
 
         String subject = "OTP for Password Reset";
         String body =
@@ -55,40 +63,91 @@ public class PasswordResetServiceImpl implements PasswordResetService {
                 "This OTP will expire in 10 minutes.\n\n" +
                 "Thanks,\nEduTech Team";
 
-        emailService.sendSimpleMail(email, subject, body);
+        try {
+            emailService.sendSimpleMail(email, subject, body);
+            log.info("OTP email sent successfully. email={}", email);
+        } catch (Exception e) {
+            log.error("Failed to send OTP email. email={}", email, e);
+            throw e;
+        }
     }
 
     @Override
     public void verifyOtp(String email, String otp) {
-        PasswordResetOtp latest = otpRepository.findTopByEmailOrderByIdDesc(email)
-                .orElseThrow(() -> new RuntimeException("OTP not requested"));
 
-        if (latest.isUsed()) throw new RuntimeException("OTP already used");
-        if (latest.getExpiresAt().isBefore(LocalDateTime.now())) throw new RuntimeException("OTP expired");
-        if (!passwordEncoder.matches(otp, latest.getOtpHash())) throw new RuntimeException("Invalid OTP");
+        log.info("OTP verification request received. email={}", email);
+
+        PasswordResetOtp latest = otpRepository.findTopByEmailOrderByIdDesc(email)
+                .orElseThrow(() -> {
+                    log.warn("OTP verification blocked: OTP not requested. email={}", email);
+                    return new RuntimeException("OTP not requested");
+                });
+
+        if (latest.isUsed()) {
+            log.warn("OTP verification blocked: OTP already used. email={}", email);
+            throw new RuntimeException("OTP already used");
+        }
+
+        if (latest.getExpiresAt().isBefore(LocalDateTime.now())) {
+            log.warn("OTP verification blocked: OTP expired. email={}, expiresAt={}", email, latest.getExpiresAt());
+            throw new RuntimeException("OTP expired");
+        }
+
+        if (!passwordEncoder.matches(otp, latest.getOtpHash())) {
+            log.warn("OTP verification blocked: invalid OTP. email={}", email);
+            throw new RuntimeException("Invalid OTP");
+        }
 
         latest.setVerified(true);
         otpRepository.save(latest);
+
+        log.info("OTP verified successfully. email={}", email);
     }
 
     @Override
     public void resetPassword(String email, String otp, String newPassword) {
+
+        log.info("Password reset request received. email={}", email);
+
         User user = userRepository.findByEmail(email);
-        if (user == null) throw new RuntimeException("Email not registered");
+        if (user == null) {
+            log.warn("Password reset blocked: email not registered. email={}", email);
+            throw new RuntimeException("Email not registered");
+        }
 
         PasswordResetOtp latest = otpRepository.findTopByEmailOrderByIdDesc(email)
-                .orElseThrow(() -> new RuntimeException("OTP not requested"));
+                .orElseThrow(() -> {
+                    log.warn("Password reset blocked: OTP not requested. email={}", email);
+                    return new RuntimeException("OTP not requested");
+                });
 
-        if (latest.isUsed()) throw new RuntimeException("OTP already used");
-        if (latest.getExpiresAt().isBefore(LocalDateTime.now())) throw new RuntimeException("OTP expired");
-        if (!passwordEncoder.matches(otp, latest.getOtpHash())) throw new RuntimeException("Invalid OTP");
-        if (!latest.isVerified()) throw new RuntimeException("OTP not verified");
+        if (latest.isUsed()) {
+            log.warn("Password reset blocked: OTP already used. email={}", email);
+            throw new RuntimeException("OTP already used");
+        }
+
+        if (latest.getExpiresAt().isBefore(LocalDateTime.now())) {
+            log.warn("Password reset blocked: OTP expired. email={}, expiresAt={}", email, latest.getExpiresAt());
+            throw new RuntimeException("OTP expired");
+        }
+
+        if (!passwordEncoder.matches(otp, latest.getOtpHash())) {
+            log.warn("Password reset blocked: invalid OTP. email={}", email);
+            throw new RuntimeException("Invalid OTP");
+        }
+
+        if (!latest.isVerified()) {
+            log.warn("Password reset blocked: OTP not verified. email={}", email);
+            throw new RuntimeException("OTP not verified");
+        }
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
         latest.setUsed(true);
         otpRepository.save(latest);
+
+        log.info("Password reset successful. email={}, userId={}", email, user.getId());
 
         String subject = "Password Reset Successful";
         String body =
@@ -97,6 +156,12 @@ public class PasswordResetServiceImpl implements PasswordResetService {
                 "If you did not perform this action, please contact support immediately.\n\n" +
                 "Thanks,\nEduTech Team";
 
-        emailService.sendSimpleMail(email, subject, body);
+        try {
+            emailService.sendSimpleMail(email, subject, body);
+            log.info("Password reset confirmation email sent. email={}", email);
+        } catch (Exception e) {
+            log.error("Failed to send password reset confirmation email. email={}", email, e);
+            throw e;
+        }
     }
 }
