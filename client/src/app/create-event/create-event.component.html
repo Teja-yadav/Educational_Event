@@ -32,8 +32,13 @@
     </div>
 
     <div class="field">
-      <label>Educator ID</label>
-      <input formControlName="educatorId" type="number" placeholder="Enter Educator User ID" />
+      <label>Educator Username</label>
+      <select formControlName="educatorUsername">
+        <option value="">Select Educator</option>
+        <option *ngFor="let e of educators" [value]="e.username">
+          {{ e.username }}
+        </option>
+      </select>
     </div>
 
     <div class="actions">
@@ -43,6 +48,7 @@
 
     <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
     <div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
+
   </form>
 </div>
 

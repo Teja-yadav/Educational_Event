@@ -81,7 +81,6 @@ export class BookingDetailsComponent implements OnInit {
             studentId: x.studentId ?? x.student?.studentId ?? studentIdRaw,
             eventName: x.event?.name ?? x.eventName ?? x.event?.eventName ?? null,
 
-            // ✅ add venue for UI
             venue: x.event?.venue ?? x.venue ?? null,
 
             registeredOnDisplay: this.formatDate(rawDate)

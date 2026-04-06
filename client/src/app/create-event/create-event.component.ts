@@ -11,6 +11,7 @@ export class CreateEventComponent implements OnInit {
 
   itemForm!: FormGroup;
   eventList: any[] = [];
+  educators: any[] = [];
 
   showError = false;
   errorMessage = '';
@@ -29,16 +30,28 @@ export class CreateEventComponent implements OnInit {
       materials: ['', Validators.required],
       eventDateTime: ['', Validators.required],
       venue: ['', Validators.required],
-      educatorId: ['', Validators.required]
+      educatorUsername: ['', Validators.required]
     });
 
     this.getEvent();
+    this.loadEducators();
   }
 
   private getNowForDateTimeLocal(): string {
     const now = new Date();
     const pad = (n: number) => (n < 10 ? '0' + n : n);
     return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+
+  loadEducators() {
+    this.http.getEducators().subscribe({
+      next: (res) => {
+        this.educators = Array.isArray(res) ? res : [];
+      },
+      error: () => {
+        this.educators = [];
+      }
+    });
   }
 
   getEvent() {
@@ -70,7 +83,7 @@ export class CreateEventComponent implements OnInit {
       materials: this.itemForm.value.materials,
       eventDateTime: this.itemForm.value.eventDateTime,
       venue: this.itemForm.value.venue,
-      educatorId: Number(this.itemForm.value.educatorId)
+      educatorUsername: this.itemForm.value.educatorUsername
     };
 
     this.http.createEvent(payload).subscribe({

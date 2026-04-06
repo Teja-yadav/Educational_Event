@@ -30,14 +30,13 @@ public class RegisterAndLoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    // ✅ TASK: "/api/user/register" with CREATED
+
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User saved = userService.registerUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    // ✅ TASK: "/api/user/login" with AuthenticationManager + catch AuthenticationException
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
