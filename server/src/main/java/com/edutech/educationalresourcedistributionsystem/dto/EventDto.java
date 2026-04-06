@@ -13,6 +13,10 @@ public class EventDto {
     private Long institutionId;
     private Long educatorId;
 
+    @NotBlank(message = "Educator username is required")
+    @Size(min = 3, max = 30, message = "Educator username must be between 3 and 30 characters")
+    private String educatorUsername;
+
     @NotBlank(message = "Event name is required")
     @Size(min = 3, max = 100, message = "Event name must be between 3 and 100 characters")
     private String name;
@@ -38,11 +42,12 @@ public class EventDto {
     public EventDto() {
     }
 
-    public EventDto(Long id, Long institutionId, Long educatorId, String name, String description, String materials,
-                    LocalDateTime eventDateTime, String venue, List<ResourceDto> resourceAllocations) {
+    public EventDto(Long id, Long institutionId, Long educatorId, String educatorUsername, String name, String description,
+                    String materials, LocalDateTime eventDateTime, String venue, List<ResourceDto> resourceAllocations) {
         this.id = id;
         this.institutionId = institutionId;
         this.educatorId = educatorId;
+        this.educatorUsername = educatorUsername;
         this.name = name;
         this.description = description;
         this.materials = materials;
@@ -61,6 +66,10 @@ public class EventDto {
 
     public Long getEducatorId() {
         return educatorId;
+    }
+
+    public String getEducatorUsername() {
+        return educatorUsername;
     }
 
     public String getName() {
@@ -97,6 +106,10 @@ public class EventDto {
 
     public void setEducatorId(Long educatorId) {
         this.educatorId = educatorId;
+    }
+
+    public void setEducatorUsername(String educatorUsername) {
+        this.educatorUsername = educatorUsername;
     }
 
     public void setName(String name) {

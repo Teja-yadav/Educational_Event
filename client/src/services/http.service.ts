@@ -101,6 +101,14 @@ export class HttpService {
     );
   }
 
+  getEducators(): Observable<any> {
+  return this.http.get<any>(
+    `${this.serverName}/api/institution/educators`,
+    { headers: this.getAuthHeaders() }
+  );
+}
+
+
   deleteEvent(eventId: any): Observable<any> {
     return this.http.delete<any>(
       `${this.serverName}/api/institution/event/${eventId}`,

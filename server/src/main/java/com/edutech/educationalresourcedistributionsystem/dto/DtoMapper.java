@@ -14,12 +14,16 @@ public class DtoMapper {
     public static EventDto toEventDTO(Event event) {
         List<ResourceDto> resources = event.getResourceAllocations() == null
                 ? Collections.emptyList()
-                : event.getResourceAllocations().stream().map(DtoMapper::toResourceDTO).collect(Collectors.toList());
+                : event.getResourceAllocations()
+                        .stream()
+                        .map(DtoMapper::toResourceDTO)
+                        .collect(Collectors.toList());
 
         return new EventDto(
                 event.getId(),
                 event.getInstitutionId(),
                 event.getEducatorId(),
+                null,
                 event.getName(),
                 event.getDescription(),
                 event.getMaterials(),

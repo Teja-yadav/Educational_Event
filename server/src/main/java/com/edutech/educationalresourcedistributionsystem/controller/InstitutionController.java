@@ -3,8 +3,11 @@ package com.edutech.educationalresourcedistributionsystem.controller;
 import com.edutech.educationalresourcedistributionsystem.dto.DtoMapper;
 import com.edutech.educationalresourcedistributionsystem.dto.EventDto;
 import com.edutech.educationalresourcedistributionsystem.dto.ResourceDto;
+import com.edutech.educationalresourcedistributionsystem.dto.UserDto;
 import com.edutech.educationalresourcedistributionsystem.entity.Event;
 import com.edutech.educationalresourcedistributionsystem.entity.Resource;
+import com.edutech.educationalresourcedistributionsystem.entity.User;
+import com.edutech.educationalresourcedistributionsystem.repository.UserRepository;
 import com.edutech.educationalresourcedistributionsystem.service.EventService;
 import com.edutech.educationalresourcedistributionsystem.service.RegistrationService;
 import com.edutech.educationalresourcedistributionsystem.service.ResourceService;
@@ -29,15 +32,37 @@ public class InstitutionController {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping(value = "/educators", produces = "application/json")
+    public ResponseEntity<List<UserDto>> getAllEducators() {
+        List<UserDto> educators = userRepository.findByRoleOrderByUsernameAsc("EDUCATOR")
+                .stream()
+                .map(DtoMapper::toUserDTO)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(educators);
+    }
+
     @PostMapping(value = "/event", consumes = "application/json", produces = "application/json")
     public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
+
         Event event = new Event();
         event.setName(eventDto.getName());
         event.setDescription(eventDto.getDescription());
         event.setMaterials(eventDto.getMaterials());
         event.setEventDateTime(eventDto.getEventDateTime());
         event.setVenue(eventDto.getVenue());
-        event.setEducatorId(eventDto.getEducatorId());
+
+        if (eventDto.getEducatorUsername() != null && !eventDto.getEducatorUsername().trim().isEmpty()) {
+            User educator = userRepository.findByUsername(eventDto.getEducatorUsername().trim());
+            if (educator == null || !"EDUCATOR".equals(educator.getRole())) {
+                throw new RuntimeException("Invalid educator username");
+            }
+            event.setEducatorId(educator.getId());
+        } else {
+            event.setEducatorId(eventDto.getEducatorId());
+        }
 
         return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.createEvent(event)));
     }
@@ -51,7 +76,10 @@ public class InstitutionController {
     @GetMapping(value = "/events", produces = "application/json")
     public ResponseEntity<List<EventDto>> getAllEvents() {
         return ResponseEntity.ok(
-                eventService.getAllEvents().stream().map(DtoMapper::toEventDTO).collect(Collectors.toList())
+                eventService.getAllEvents()
+                        .stream()
+                        .map(DtoMapper::toEventDTO)
+                        .collect(Collectors.toList())
         );
     }
 
@@ -66,7 +94,10 @@ public class InstitutionController {
     @GetMapping(value = "/resources", produces = "application/json")
     public ResponseEntity<List<ResourceDto>> getAllResources() {
         return ResponseEntity.ok(
-                resourceService.getAllResources().stream().map(DtoMapper::toResourceDTO).collect(Collectors.toList())
+                resourceService.getAllResources()
+                        .stream()
+                        .map(DtoMapper::toResourceDTO)
+                        .collect(Collectors.toList())
         );
     }
 
