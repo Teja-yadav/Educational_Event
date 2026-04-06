@@ -142,3 +142,50 @@
   .auth-sidebar { display: none; }
   .auth-main { padding: 40px 28px; }
 }
+/* ✅ Step-wise password validation (red bullets like login) *//* ✅ Step10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: #d92d20;
+  font-weight: 700; /* bold red like your screenshot */
+
+
+.step .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d92d20;
+  flex: 0 0 7px;
+}
+/* Step-wise password validation (red bullets) */
+.steps {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #c56868;
+}
+
+.step .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c56868;
+  flex: 0 0 7px;
+}
+

@@ -1,33 +1,39 @@
-<div class="allocate-page">
-
-  <div class="header">
-    <h2 class="title">Allocate Resources</h2>
-    <p class="subtitle">Assign resources to events</p>
-  </div>
-
-  <div class="form-card">
-    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-
-      <div class="field">
-        <label>Select Event</label>
-        <select formControlName="eventId">
-          <option value="" disabled>Select Event</option>
-          <option *ngFor="let e of eventList" [value]="e.id">{{ e.name }}</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>Select Resource</label>
-        <select formControlName="resourceId">
-          <option value="" disabled>Select Resource</option>
-          <option *ngFor="let r of resourceList" [value]="r.id">{{ r.resourceType }}</option>
-        </select>
-      </div>
-
-      <button class="primary-btn" type="submit">Allocate Resource</button>
-
-      <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
-      <div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
-    </form>
-  </div>
+<div class="page">  <div class="page-header">
+<h1>Allocate Resources</h1>
+<p>Assign resources to events</p>
 </div>
+ 
+  <div class="card">
+<form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+ 
+      <div class="grid">
+<div class="field">
+<label>Select Event</label>
+<select formControlName="eventId">
+<option value="" disabled>Select Event</option>
+<option *ngFor="let e of eventList" [value]="e.id">{{ e.name }}</option>
+</select>
+</div>
+ 
+        <div class="field">
+<label>Select Resource</label>
+<select formControlName="resourceId">
+<option value="" disabled>Select Resource</option>
+<option *ngFor="let r of resourceList" [value]="r.id">{{ r.resourceType }}</option>
+</select>
+</div>
+</div>
+ 
+      <div class="actions">
+<button class="btn-primary" type="submit">Allocate Resource</button>
+<button class="btn-secondary" type="button" (click)="itemForm.reset()">Clear</button>
+</div>
+ 
+      <div *ngIf="showError" class="alert alert-error">{{ errorMessage }}</div>
+<div *ngIf="showMessage" class="alert alert-success">{{ responseMessage }}</div>
+ 
+    </form>
+</div>
+</div>
+ 
+ 
