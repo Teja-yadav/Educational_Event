@@ -49,7 +49,7 @@ export class ResourceAllocateComponent implements OnInit {
     const resourceId = this.itemForm.value.resourceId;
 
     // ✅ Match your service method name: allocateResources(eventId, resourceId, details)
-    this.http.allocateResources(eventId, resourceId, {}).subscribe({
+    this.http.allocateResources(eventId, resourceId).subscribe({
       next: () => {
         this.showMessage = true;
         this.responseMessage = 'Resource allocated successfully';

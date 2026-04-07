@@ -26,8 +26,6 @@ export class HttpService {
     });
   }
 
-  /* ---------- STUDENT ---------- */
-
   registerForEvent(eventId: any, details: any): Observable<any> {
     return this.http.post<any>(
       `${this.serverName}/api/student/register/${eventId}`,
@@ -36,7 +34,6 @@ export class HttpService {
     );
   }
 
-  /* ✅ NEW: My Bookings (NO search, logged-in student only) */
   getMyBookings(): Observable<any> {
     return this.http.get<any>(
       `${this.serverName}/api/student/my-bookings`,
@@ -44,7 +41,6 @@ export class HttpService {
     );
   }
 
-  /* OLD – keep only if Institution/Admin needs search */
   getBookingDetails(studentId: any): Observable<any> {
     return this.http.get<any>(
       `${this.serverName}/api/student/registration-status/${studentId}`,
@@ -58,8 +54,6 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
-
-  /* ---------- EDUCATOR ---------- */
 
   getAllEducatorAgenda(): Observable<any> {
     return this.http.get<any>(
@@ -75,8 +69,6 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
-
-  /* ---------- INSTITUTION ---------- */
 
   GetAllevents(): Observable<any> {
     return this.http.get<any>(
@@ -108,10 +100,10 @@ export class HttpService {
     );
   }
 
-  allocateResources(eventId: any, resourceId: any, details: any): Observable<any> {
+  allocateResources(eventId: any, resourceId: any): Observable<any> {
     return this.http.post<any>(
       `${this.serverName}/api/institution/event/allocate-resources?eventId=${eventId}&resourceId=${resourceId}`,
-      details,
+      {},
       { headers: this.getAuthHeaders() }
     );
   }
@@ -136,8 +128,6 @@ export class HttpService {
       { headers: this.getAuthHeaders() }
     );
   }
-
-  /* ---------- AUTH / PUBLIC ---------- */
 
   forgotPassword(payload: any): Observable<string> {
     return this.http.post(

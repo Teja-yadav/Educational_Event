@@ -13,7 +13,6 @@ public class EventDto {
     private Long institutionId;
     private Long educatorId;
 
-    @NotBlank(message = "Educator username is required")
     @Size(min = 3, max = 30, message = "Educator username must be between 3 and 30 characters")
     private String educatorUsername;
 

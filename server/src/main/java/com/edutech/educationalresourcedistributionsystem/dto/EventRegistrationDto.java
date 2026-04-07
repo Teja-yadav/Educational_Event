@@ -17,8 +17,7 @@ public class EventRegistrationDto {
     @Size(min = 3, max = 20, message = "Student ID must be between 3 and 20 characters")
     @Pattern(regexp = "^[A-Za-z0-9_-]+$", message = "Student ID can contain only letters, numbers, underscore and hyphen")
     private String studentId;
-
-    @NotNull(message = "Event ID is required")
+    
     private Long eventId;
 
     public EventRegistrationDto() {
