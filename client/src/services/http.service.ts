@@ -41,6 +41,13 @@ export class HttpService {
     );
   }
 
+  getInstitutionRegistrations(): Observable<any> {
+    return this.http.get<any>(
+      `${this.serverName}/api/institution/registrations`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
   getBookingDetails(studentId: any): Observable<any> {
     return this.http.get<any>(
       `${this.serverName}/api/student/registration-status/${studentId}`,

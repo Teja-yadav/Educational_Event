@@ -5,6 +5,7 @@ import com.edutech.educationalresourcedistributionsystem.dto.EventDto;
 import com.edutech.educationalresourcedistributionsystem.dto.ResourceDto;
 import com.edutech.educationalresourcedistributionsystem.dto.UserDto;
 import com.edutech.educationalresourcedistributionsystem.entity.Event;
+import com.edutech.educationalresourcedistributionsystem.entity.EventRegistration;
 import com.edutech.educationalresourcedistributionsystem.entity.Resource;
 import com.edutech.educationalresourcedistributionsystem.entity.User;
 import com.edutech.educationalresourcedistributionsystem.repository.UserRepository;
@@ -14,8 +15,12 @@ import com.edutech.educationalresourcedistributionsystem.service.ResourceService
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,6 +42,22 @@ public class InstitutionController {
 
     @Autowired
     private UserRepository userRepository;
+
+    private Long currentInstitutionId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth == null ? null : String.valueOf(auth.getPrincipal());
+        if (username == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
+        if (!"INSTITUTION".equals(user.getRole())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
+        }
+        return user.getId();
+    }
 
     @GetMapping("/educators")
     public ResponseEntity<List<UserDto>> getAllEducators() {
@@ -98,7 +119,6 @@ public class InstitutionController {
 
     @PostMapping(value = "/resource", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ResourceDto> createResource(@Valid @RequestBody ResourceDto resourceDto) {
-
         log.info("Create resource request. resourceType={}", resourceDto.getResourceType());
 
         Resource resource = new Resource();
@@ -129,5 +149,12 @@ public class InstitutionController {
     public ResponseEntity<Long> getRegistrationCount() {
         log.info("Fetching registration count");
         return ResponseEntity.ok(registrationService.getRegistrationCount());
+    }
+
+    @GetMapping(value = "/registrations", produces = "application/json")
+    public ResponseEntity<List<EventRegistration>> getAllRegistrationsForInstitution() {
+        Long institutionId = currentInstitutionId();
+        log.info("Fetching all registrations for institution. institutionId={}", institutionId);
+        return ResponseEntity.ok(registrationService.getInstitutionRegistrations(institutionId));
     }
 }
