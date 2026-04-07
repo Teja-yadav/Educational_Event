@@ -8,7 +8,6 @@ public class ResourceDto {
 
     private Long id;
 
-    @NotNull(message = "Institution ID is required")
     private Long institutionId;
 
     @NotBlank(message = "Resource type is required")

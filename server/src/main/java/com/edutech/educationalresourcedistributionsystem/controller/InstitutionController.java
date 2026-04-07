@@ -119,6 +119,12 @@ public class InstitutionController {
         );
     }
 
+    @PostMapping(value = "/event/allocate-resources", produces = "application/json")
+    public ResponseEntity<EventDto> allocateResources(@RequestParam Long eventId, @RequestParam Long resourceId) {
+        log.info("Allocate resource request. eventId={}, resourceId={}", eventId, resourceId);
+        return ResponseEntity.ok(DtoMapper.toEventDTO(eventService.allocateResource(eventId, resourceId)));
+    }
+
     @GetMapping("/registrations/count")
     public ResponseEntity<Long> getRegistrationCount() {
         log.info("Fetching registration count");
