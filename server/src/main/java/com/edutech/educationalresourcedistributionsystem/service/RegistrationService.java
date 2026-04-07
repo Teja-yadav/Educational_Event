@@ -7,4 +7,5 @@ public interface RegistrationService {
     EventRegistration registerStudent(Long eventId, String studentUsername);
     List<EventRegistration> getStatus(String studentUsername);
     Long getRegistrationCount();
+    List<EventRegistration> getInstitutionRegistrations(Long institutionId);
 }

@@ -10,4 +10,5 @@ public interface EventRegistrationRepository extends JpaRepository<EventRegistra
     Optional<EventRegistration> findByStudentIdAndEvent_Id(String studentId, Long eventId);
     void deleteByEvent_Id(Long eventId);
     boolean existsByEvent_Id(Long eventId);
+    List<EventRegistration> findByEvent_InstitutionId(Long institutionId);
 }

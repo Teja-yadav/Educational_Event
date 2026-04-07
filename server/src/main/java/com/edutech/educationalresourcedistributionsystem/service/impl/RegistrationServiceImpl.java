@@ -111,6 +111,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationRepository.count();
     }
 
+    @Override
+    public List<EventRegistration> getInstitutionRegistrations(Long institutionId) {
+        log.info("Fetching registrations for institution. institutionId={}", institutionId);
+        List<EventRegistration> list = registrationRepository.findByEvent_InstitutionId(institutionId);
+        log.info("Institution registrations fetched. institutionId={}, count={}", institutionId, list.size());
+        return list;
+    }
+
     private void safeMail(String subject, String body) {
         if (adminEmail == null || adminEmail.isBlank()) {
             return;

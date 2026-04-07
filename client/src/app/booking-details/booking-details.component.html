@@ -1,7 +1,14 @@
 <div class="page">
+
   <div class="header">
-    <h1>My Bookings</h1>
-    <p>All events you have registered for</p>
+    <h1>
+      {{ role === 'INSTITUTION' ? 'Booking Details' : 'My Bookings' }}
+    </h1>
+    <p>
+      {{ role === 'INSTITUTION'
+        ? 'All students registered for your events'
+        : 'All events you have registered for' }}
+    </p>
   </div>
 
   <div class="msg error" *ngIf="showError">{{ errorMessage }}</div>
@@ -26,6 +33,13 @@
       </div>
 
       <div class="card-body">
+
+        <!-- ✅ ONLY FOR INSTITUTION -->
+        <div class="row" *ngIf="role === 'INSTITUTION'">
+          <span class="label">Student</span>
+          <span class="value">{{ e.studentId || '-' }}</span>
+        </div>
+
         <div class="row">
           <span class="label">Event</span>
           <span class="value">{{ e.event?.name || '-' }}</span>
@@ -39,15 +53,22 @@
         <div class="row">
           <span class="label">Date & Time</span>
           <span class="value muted">
-            {{ e.event?.eventDateTime ? (e.event.eventDateTime | date:'dd MMM yyyy, hh:mm a') : '-' }}
+            {{ e.event?.eventDateTime
+              ? (e.event.eventDateTime | date:'dd MMM yyyy, hh:mm a')
+              : '-' }}
           </span>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 
   <div class="empty" *ngIf="!showError && eventList.length === 0">
-    You have not registered for any events yet.
+    {{
+      role === 'INSTITUTION'
+        ? 'No registrations found for your events.'
+        : 'You have not registered for any events yet.'
+    }}
   </div>
+
 </div>
